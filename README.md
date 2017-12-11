@@ -1,38 +1,45 @@
-Role Name
-=========
+Ansible Role for etcd
+=====================
 
-A brief description of the role goes here.
+[![Travis](https://img.shields.io/travis/alvistack/ansible-role-etcd.svg)](https://travis-ci.org/alvistack/ansible-role-etcd)
+[![GitHub release](https://img.shields.io/github/release/alvistack/ansible-role-etcd.svg)](https://github.com/alvistack/ansible-role-etcd)
+[![GitHub license](https://img.shields.io/github/license/alvistack/ansible-role-etcd.svg)](https://github.com/alvistack/ansible-role-etcd/blob/master/LICENSE)
+[![Ansible Role](https://img.shields.io/badge/galaxy-alvistack.etcd-blue.svg)](https://galaxy.ansible.com/alvistack/etcd)
+
+Ansible Role for etcd Management.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+This role require Ansible 2.4 or higher.
+
+This role was designed for Ubuntu 14.04/16.04/17.10/18.04 or RHEL/CentOS 6/7.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+[defaults/main.yml](defaults/main.yml)
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+[meta/main.yml](meta/main.yml)
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+[tests/test.yml](tests/test.yml)
 
 License
 -------
 
-BSD
+-   Code released under [Apache License 2.0](LICENSE)
+-   Docs released under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/)
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+-   Wong Hoi Sing Edison
+    -   <https://twitter.com/hswong3i>
+    -   <https://github.com/hswong3i>
+
