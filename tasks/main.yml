@@ -44,25 +44,34 @@
     loop_var: "loop_var"
   tags: etcd
 
-#- name: copy templates
-#  template:
-#    src: "{{ item.src }}"
-#    dest: "{{ item.dest }}"
-#    owner: "{{ item.owner }}"
-#    group: "{{ item.group }}"
-#    mode: "{{ item.mode }}"
-#  with_items: "{{ _template }}"
-#  tags: etcd
-#
-#- name: systemctl daemon-reload
-#  systemd:
-#    daemon_reload: "yes"
-#  changed_when: false
-#  ignore_errors: "yes"
-#  tags: etcd
-#
-#- name: enable service
-#  service:
-#    name: "etcd"
-#    enabled: "yes"
-#  tags: etcd
+- name: prepare directories
+  file:
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0755') }}"
+    state: "{{ item.state | default('directory') }}"
+  with_items:
+    - { dest: "/usr/local/bin" }
+  tags: etcd
+
+- name: unarchive package
+  shell: |
+    cd /usr/local/bin
+    curl -skL {{ etcd_download_url }} | tar zxf - --strip-components=1 --wildcards "etcd*/etcd" "etcd*/etcdctl"
+    chown -Rf root:root etcd etcdctl
+  args:
+    creates:  "/usr/local/bin/etcd"
+  tags: etcd
+
+- name: prepare files
+  file:
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+    state: "{{ item.state | default('file') }}"
+  with_items:
+    - { dest: "/usr/local/bin/etcd", mode: "0755" }
+    - { dest: "/usr/local/bin/etcdctl", mode: "0755" }
+  tags: etcd

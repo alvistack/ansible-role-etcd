@@ -1,9 +1,10 @@
-Ansible Role for etcd
-=====================
+# Ansible Role for etcd
 
-1.2.0 - TBC
------------
+## 2.2.0 - TBC
 
--   Ininitial release for Ansible 2.4
--   Support both Ubuntu 14.04/16.04/17.10/18.04 or RHEL/CentOS 6/7
+### Major Changes
 
+## 2.1.0 - 2018-12-13
+
+  - Initial release for Ansible 2.6 or higher
+  - Support both Ubuntu 16.04/18.04 and RHEL/CentOS 7

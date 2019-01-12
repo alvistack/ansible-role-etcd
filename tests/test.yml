@@ -20,11 +20,17 @@
   remote_user: root
   gather_facts: no
   roles:
-    - role: ansible-role-python
+    - role: python
 
 - hosts: all
   remote_user: root
   roles:
-    - role: ansible-role-apt
-    - role: ansible-role-yum
-    - role: ansible-role-etcd
+    - role: etcd
+
+- hosts: all
+  remote_user: root
+  tasks:
+    - name: etcd --version
+      command: etcd --version
+      register: result
+      changed_when: result is not succeeded
