@@ -44,6 +44,23 @@
     loop_var: "loop_var"
   tags: etcd
 
+- name: create system group
+  group:
+    name: "etcd"
+    system: "yes"
+    state: "present"
+  tags: etcd
+
+- name: create system user
+  user:
+    name: "etcd"
+    group: "etcd"
+    shell: "/bin/bash"
+    home: "/var/lib/etcd"
+    system: "yes"
+    state: "present"
+  tags: etcd
+
 - name: prepare directories
   file:
     dest: "{{ item.dest }}"
@@ -52,7 +69,9 @@
     mode: "{{ item.mode | default('0755') }}"
     state: "{{ item.state | default('directory') }}"
   with_items:
+    - { dest: "/etc/systemd/system" }
     - { dest: "/usr/local/bin" }
+    - { dest: "/var/lib/etcd", owner: "etcd", group: "etcd" }
   tags: etcd
 
 - name: unarchive package
@@ -62,6 +81,19 @@
     chown -Rf root:root etcd etcdctl
   args:
     creates:  "/usr/local/bin/etcd"
+  tags: etcd
+
+- name: copy templates
+  template:
+    src: "./templates{{ item.dest }}.j2"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+  with_items:
+    - { dest: "/etc/systemd/system/etcd.service" }
+  notify:
+    - systemctl daemon-reload
   tags: etcd
 
 - name: prepare files
@@ -74,4 +106,12 @@
   with_items:
     - { dest: "/usr/local/bin/etcd", mode: "0755" }
     - { dest: "/usr/local/bin/etcdctl", mode: "0755" }
+  tags: etcd
+
+- name: enable service
+  service:
+    name: etcd
+    enabled: yes
+  changed_when: false
+  ignore_errors: yes
   tags: etcd
