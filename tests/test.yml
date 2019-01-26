@@ -34,3 +34,10 @@
       command: etcd --version
       register: result
       changed_when: result is not succeeded
+
+    - name: start service
+      service:
+        name: etcd
+        state: started
+      changed_when: false
+      ignore_errors: yes

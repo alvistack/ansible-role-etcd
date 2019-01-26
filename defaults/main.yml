@@ -15,7 +15,7 @@
 # limitations under the License.
 
 # etcd version.
-etcd_version: "v3.3.10"
+etcd_version: "v3.3.11"
 
 # URL for download etcd binary.
 etcd_download_url: "https://github.com/etcd-io/etcd/releases/download/{{ etcd_version }}/etcd-{{ etcd_version }}-linux-amd64.tar.gz"
