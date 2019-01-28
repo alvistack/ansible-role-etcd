@@ -24,7 +24,7 @@
         - "{{ ansible_distribution | lower }}.yml"
         - "{{ ansible_os_family | lower }}.yml"
       paths: "../vars"
-      skip: "yes"
+      skip: true
   loop_control:
     loop_var: "loop_var"
   tags: etcd
@@ -39,7 +39,7 @@
         - "{{ ansible_distribution | lower }}.yml"
         - "{{ ansible_os_family | lower }}.yml"
       paths: "."
-      skip: "yes"
+      skip: true
   loop_control:
     loop_var: "loop_var"
   tags: etcd
@@ -63,7 +63,7 @@
     curl -skL {{ etcd_download_url }} | tar zxf - --strip-components=1 --wildcards "etcd*/etcd" "etcd*/etcdctl"
     chown -Rf root:root etcd etcdctl
   args:
-    creates:  "/usr/local/bin/etcd"
+    creates: "/usr/local/bin/etcd"
   tags: etcd
 
 - name: copy templates
@@ -94,7 +94,7 @@
 - name: enable service
   service:
     name: etcd
-    enabled: yes
+    enabled: true
   changed_when: false
-  ignore_errors: yes
+  ignore_errors: true
   tags: etcd

@@ -14,30 +14,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Use `gather_faces: no` to initialize Python on system that not yet
-# pre-installed with Python (e.g. Ubuntu 16.04 Cloud Image and Docker Image).
-- hosts: all
-  remote_user: root
-  gather_facts: no
-  roles:
-    - role: python
-
-- hosts: all
-  remote_user: root
-  roles:
-    - role: etcd
-
-- hosts: all
-  remote_user: root
-  tasks:
-    - name: etcd --version
-      command: etcd --version
-      register: result
-      changed_when: result is not succeeded
-
-    - name: start service
-      service:
-        name: etcd
-        state: started
-      changed_when: false
-      ignore_errors: yes
+scenario:
+  name: centos-7
+driver:
+  name: lxd
+platforms:
+  - name: ${LXC_ID}-1
+    url: unix:/var/snap/lxd/common/lxd/unix.socket
+    source:
+      server: https://images.linuxcontainers.org
+      alias: centos/7/amd64
+lint:
+  name: yamllint
+dependency:
+  name: galaxy
+  options:
+    role-file: ansible-role-requirements.yml
+    roles-path: ${ANSIBLE_ROLES_PATH}
+    ignore-errors: true
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}
+  lint:
+    name: ansible-lint
+verifier:
+  name: testinfra
+  lint:
+    name: flake8
