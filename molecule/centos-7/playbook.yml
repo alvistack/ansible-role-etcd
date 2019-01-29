@@ -17,6 +17,7 @@
 - hosts: all
   remote_user: root
   roles:
+    - role: python
     - role: etcd
 
 - hosts: all
@@ -33,3 +34,9 @@
         state: started
       changed_when: false
       ignore_errors: true
+
+    - name: etcdctl put foo bar
+      etcd3:
+        key: "foo"
+        value: "bar"
+        state: "present"
