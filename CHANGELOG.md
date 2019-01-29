@@ -5,6 +5,7 @@
 ### Major Changes
   
   - Porting test to Molecule based
+  - Add python-etcd3 for Ansible etcd3 support
 
 ## 2.2.0 - 2019-01-26
 

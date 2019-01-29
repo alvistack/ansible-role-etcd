@@ -14,29 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: all
-  remote_user: root
-  roles:
-    - role: python
-    - role: etcd
-
-- hosts: all
-  remote_user: root
-  tasks:
-    - name: etcd --version
-      command: etcd --version
-      register: result
-      changed_when: result is not succeeded
-
-    - name: start service
-      service:
-        name: etcd
-        state: started
-      changed_when: false
-      ignore_errors: true
-
-    - name: etcdctl put foo bar
-      etcd3:
-        key: "foo"
-        value: "bar"
-        state: "present"
+- name: python
+  src: https://github.com/alvistack/ansible-role-python
+  version: develop
