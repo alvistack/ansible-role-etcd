@@ -1,8 +1,15 @@
 # Ansible Role for etcd
 
-## 2.3.0 - TBC
+## 2.4.0 - TBC
 
 ### Major Changes
+
+## 2.3.0 - 2019-01-30
+
+### Major Changes
+
+  - Porting test to Molecule based
+  - Add python-etcd3 for Ansible etcd3 support
 
 ## 2.2.0 - 2019-01-26
 

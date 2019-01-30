@@ -1,4 +1,4 @@
-#!/bin/bash
+---
 
 # (c) Wong Hoi Sing Edison <hswong3i@pantarei-design.com>
 #
@@ -14,17 +14,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -o xtrace
+- hosts: all
+  remote_user: root
+  roles:
+    - role: python
+    - role: etcd
 
-cd "$(cd "$(dirname "$0")"; pwd -P)/../"
+- hosts: all
+  remote_user: root
+  tasks:
+    - name: etcd --version
+      command: etcd --version
+      register: result
+      changed_when: result is not succeeded
 
-export ANSIBLE_FORCE_COLOR=true
-export ANSIBLE_LOG_PATH="$PWD/ansible.log"
-export ANSIBLE_ROLES_PATH="$HOME/.ansible/roles"
+    - name: start service
+      service:
+        name: etcd
+        state: started
+      changed_when: false
+      ignore_errors: true
 
-export LXC_IMAGE=${LXC_IMAGE:-"ubuntu/bionic/amd64"}
-export LXC_ID=${LXC_ID:-"$(cat /dev/urandom | tr -dc a-z | head -c1)$(cat /dev/urandom | tr -dc a-z0-9 | head -c11)"}
-
-export MOLECULE_SCENARIO_NAME=${MOLECULE_SCENARIO_NAME:-"default"}
-
-molecule test -s $MOLECULE_SCENARIO_NAME
+    - name: etcdctl put foo bar
+      etcd3:
+        key: "foo"
+        value: "bar"
+        state: "present"

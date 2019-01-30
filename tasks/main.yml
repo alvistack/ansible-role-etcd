@@ -24,7 +24,7 @@
         - "{{ ansible_distribution | lower }}.yml"
         - "{{ ansible_os_family | lower }}.yml"
       paths: "../vars"
-      skip: "yes"
+      skip: true
   loop_control:
     loop_var: "loop_var"
   tags: etcd
@@ -39,7 +39,7 @@
         - "{{ ansible_distribution | lower }}.yml"
         - "{{ ansible_os_family | lower }}.yml"
       paths: "."
-      skip: "yes"
+      skip: true
   loop_control:
     loop_var: "loop_var"
   tags: etcd
@@ -63,7 +63,7 @@
     curl -skL {{ etcd_download_url }} | tar zxf - --strip-components=1 --wildcards "etcd*/etcd" "etcd*/etcdctl"
     chown -Rf root:root etcd etcdctl
   args:
-    creates:  "/usr/local/bin/etcd"
+    creates: "/usr/local/bin/etcd"
   tags: etcd
 
 - name: copy templates
@@ -87,14 +87,25 @@
     mode: "{{ item.mode | default('0644') }}"
     state: "{{ item.state | default('file') }}"
   with_items:
+    - { dest: "/etc/systemd/system/etcd.service" }
     - { dest: "/usr/local/bin/etcd", mode: "0755" }
     - { dest: "/usr/local/bin/etcdctl", mode: "0755" }
+  tags: etcd
+
+- name: pip install
+  pip:
+    name: "{{ item.name | default(None) or omit }}"
+    state: "{{ item.state | default(None) or omit }}"
+    version: "{{ item.version | default(None) or omit }}"
+  with_items: "{{ _pip }}"
+  register: result
+  until: result is succeeded
   tags: etcd
 
 - name: enable service
   service:
     name: etcd
-    enabled: yes
+    enabled: true
   changed_when: false
-  ignore_errors: yes
+  ignore_errors: true
   tags: etcd
