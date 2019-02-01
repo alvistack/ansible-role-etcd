@@ -52,9 +52,9 @@
     mode: "{{ item.mode | default('0755') }}"
     state: "{{ item.state | default('directory') }}"
   with_items:
-    - { dest: "/etc/systemd/system" }
+    - { dest: "/lib/systemd/system" }
     - { dest: "/usr/local/bin" }
-    - { dest: "/var/lib/etcd" }
+    - { dest: "/var/lib/etcd/default" }
   tags: etcd
 
 - name: unarchive package
@@ -74,7 +74,7 @@
     group: "{{ item.group | default('root') }}"
     mode: "{{ item.mode | default('0644') }}"
   with_items:
-    - { dest: "/etc/systemd/system/etcd.service" }
+    - { dest: "/lib/systemd/system/etcd.service" }
   notify:
     - systemctl daemon-reload
   tags: etcd
@@ -87,7 +87,7 @@
     mode: "{{ item.mode | default('0644') }}"
     state: "{{ item.state | default('file') }}"
   with_items:
-    - { dest: "/etc/systemd/system/etcd.service" }
+    - { dest: "/lib/systemd/system/etcd.service" }
     - { dest: "/usr/local/bin/etcd", mode: "0755" }
     - { dest: "/usr/local/bin/etcdctl", mode: "0755" }
   tags: etcd
