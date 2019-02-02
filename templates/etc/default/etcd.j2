@@ -11,11 +11,11 @@
 ## This value is referenced as this node's own entries listed in the `-initial-cluster`
 ## flag (Ex: `default=http://localhost:2380` or `default=http://localhost:2380,default=http://localhost:7001`).
 ## This needs to match the key used in the flag if you're using [static boostrapping](clustering.md#static).
-# ETCD_NAME="hostname"
+ETCD_NAME="{{ etcd_name }}"
 
 ##### -data-dir
 ## Path to the data directory.
-# ETCD_DATA_DIR="/var/lib/etcd/default"
+ETCD_DATA_DIR="{{ etcd_data_dir }}"
 
 ##### -wal-dir
 ## Path to the dedicated wal directory. If this flag is set, etcd will write the
@@ -51,7 +51,7 @@
 ## example: "http://10.0.0.1:2380"
 ## invalid example: "http://example.com:2380" (domain name is invalid for binding)
 ## default: "http://localhost:2380,http://localhost:7001"
-# ETCD_LISTEN_PEER_URLS="http://localhost:2380,http://localhost:7001"
+ETCD_LISTEN_PEER_URLS="{{ etcd_listen_peer_urls }}"
 
 ##### -listen-client-urls
 ## List of URLs to listen on for client traffic. This flag tells the etcd to accept
@@ -65,7 +65,7 @@
 ## example: "http://10.0.0.1:2379"
 ## invalid example: "http://example.com:2379" (domain name is invalid for binding)
 ## default: "http://localhost:2379,http://localhost:4001"
-# ETCD_LISTEN_CLIENT_URLS="http://localhost:2379,http://localhost:4001"
+ETCD_LISTEN_CLIENT_URLS="{{ etcd_listen_client_urls }}"
 
 ##### -max-snapshots
 ## Maximum number of snapshot files to retain (0 is unlimited)
@@ -97,14 +97,14 @@
 ## These URLs can contain domain names.
 ## example: "http://example.com:2380, http://10.0.0.1:2380"
 ## default: "http://localhost:2380,http://localhost:7001"
-# ETCD_INITIAL_ADVERTISE_PEER_URLS="http://localhost:2380,http://localhost:7001"
+ETCD_INITIAL_ADVERTISE_PEER_URLS="{{ etcd_initial_advertise_peer_urls }}"
 
 ##### -initial-cluster
 ## initial cluster configuration for bootstrapping.
 ## The key is the value of the `-name` flag for each node provided.
 ## The default uses `default` for the key because this is the default for the `-name` flag.
 ## default: "default=http://localhost:2380,default=http://localhost:7001"
-# ETCD_INITIAL_CLUSTER="default=http://localhost:2380,default=http://localhost:7001"
+ETCD_INITIAL_CLUSTER="{{ etcd_initial_cluster }}"
 
 ##### -initial-cluster-state
 ## Initial cluster state ("new" or "existing"). Set to `new` for all members
@@ -112,7 +112,7 @@
 ## `existing`, etcd will attempt to join the existing cluster. If the wrong
 ## value is set, etcd will attempt to start but fail safely.
 ## default: "new"
-# ETCD_INITIAL_CLUSTER_STATE="existing"
+ETCD_INITIAL_CLUSTER_STATE="{{ etcd_initial_cluster_state }}"
 
 ##### -initial-cluster-token
 ## Initial cluster token for the etcd cluster during bootstrap.
@@ -121,7 +121,7 @@
 ## recommended that you specify a unique initial-cluster-token for the
 ## different clusters.
 ## default: "etcd-cluster"
-# ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster"
+ETCD_INITIAL_CLUSTER_TOKEN="{{ etcd_initial_cluster_token }}"
 
 ##### -advertise-client-urls
 ## List of this member's client URLs to advertise to the rest of the cluster.
@@ -132,7 +132,7 @@
 ## because the proxy will be forwarding requests to itself until its resources
 ## (memory, file descriptors) are eventually depleted.
 ## default: "http://localhost:2379,http://localhost:4001"
-# ETCD_ADVERTISE_CLIENT_URLS="http://localhost:2379,http://localhost:4001"
+ETCD_ADVERTISE_CLIENT_URLS="{{ etcd_advertise_client_urls }}"
 
 ##### -discovery
 ## Discovery URL used to bootstrap the cluster.

@@ -19,3 +19,30 @@ etcd_version: "v3.3.11"
 
 # URL for download etcd binary.
 etcd_download_url: "https://github.com/etcd-io/etcd/releases/download/{{ etcd_version }}/etcd-{{ etcd_version }}-linux-amd64.tar.gz"
+
+# Human-readable name for this member.
+etcd_name: "{{ ansible_hostname }}"
+
+# Path to the data directory.
+etcd_data_dir: "/var/lib/etcd/default"
+
+# List of URLs to listen on for peer traffic.
+etcd_listen_peer_urls: "http://0.0.0.0:2380"
+
+# List of URLs to listen on for client traffic.
+etcd_listen_client_urls: "http://0.0.0.0:2379"
+
+# List of this member's peer URLs to advertise to the rest of the cluster.
+etcd_initial_advertise_peer_urls: "http://0.0.0.0:2380"
+
+# initial cluster configuration for bootstrapping.
+etcd_initial_cluster: "{{ etcd_name }}=http://0.0.0.0:2380"
+
+# Initial cluster state ("new" or "existing").
+etcd_initial_cluster_state: "new"
+
+# Initial cluster token for the etcd cluster during bootstrap.
+etcd_initial_cluster_token: "etcd-cluster"
+
+# List of this member's client URLs to advertise to the rest of the cluster.
+etcd_advertise_client_urls: "http://0.0.0.0:2379"
