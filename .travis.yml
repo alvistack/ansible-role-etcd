@@ -9,6 +9,7 @@ env:
     - MOLECULE_OPTIONS="-s centos-7"
     - MOLECULE_OPTIONS="-s ubuntu-16.04"
     - MOLECULE_OPTIONS="-s ubuntu-18.04"
+    - MOLECULE_OPTIONS="-s ubuntu-18.04-multinode"
 
 before_install:
   - sudo apt-get -y purge lxc-* lxd-* && sudo apt-get -y autoremove
