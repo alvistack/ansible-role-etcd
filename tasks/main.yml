@@ -44,6 +44,23 @@
     loop_var: "loop_var"
   tags: etcd
 
+- name: groupadd
+  group:
+    name: "etcd"
+    system: true
+    state: "present"
+  tags: etcd
+
+- name: useradd
+  user:
+    name: "etcd"
+    group: "etcd"
+    home: "/var/lib/etcd"
+    shell: "/usr/sbin/nologin"
+    system: true
+    state: "present"
+  tags: etcd
+
 - name: prepare directories
   file:
     dest: "{{ item.dest }}"
@@ -54,7 +71,7 @@
   with_items:
     - { dest: "/lib/systemd/system" }
     - { dest: "/usr/local/bin" }
-    - { dest: "/var/lib/etcd" }
+    - { dest: "/var/lib/etcd", owner: "etcd", group: "etcd" }
   tags: etcd
 
 - name: unarchive package
