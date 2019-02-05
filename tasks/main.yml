@@ -58,6 +58,7 @@
     home: "/var/lib/etcd"
     shell: "/usr/sbin/nologin"
     system: true
+    create_home: false
     state: "present"
   tags: etcd
 
