@@ -112,16 +112,6 @@
     - { dest: "/usr/local/bin/etcdctl", mode: "0755" }
   tags: etcd
 
-- name: pip install
-  pip:
-    name: "{{ item.name | default(None) or omit }}"
-    state: "{{ item.state | default(None) or omit }}"
-    version: "{{ item.version | default(None) or omit }}"
-  with_items: "{{ _pip }}"
-  register: result
-  until: result is succeeded
-  tags: etcd
-
 - name: enable service
   service:
     name: etcd

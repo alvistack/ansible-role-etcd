@@ -17,7 +17,6 @@
 - hosts: all
   remote_user: root
   roles:
-    - role: python
     - role: etcd
 
 - hosts: all
@@ -36,16 +35,13 @@
       ignore_errors: true
 
     - name: etcdctl put foo bar
-      etcd3:
-        key: "foo"
-        value: "bar"
-        state: "present"
+      command: etcdctl put foo bar
       when: inventory_hostname == ansible_play_batch[0]
-
-    - name: etcdctl put foo bar
-      etcd3:
-        key: "foo"
-        value: "bar"
-        state: "present"
       register: result
-      failed_when: result is changed
+      changed_when: result is not succeeded
+
+    - name: etcdctl get foo
+      command: etcdctl get foo
+      register: result
+      changed_when: result is not succeeded
+      failed_when: "'bar' not in result.stdout"
