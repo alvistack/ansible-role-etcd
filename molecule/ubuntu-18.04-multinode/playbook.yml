@@ -36,12 +36,16 @@
 
     - name: etcdctl put foo bar
       command: etcdctl put foo bar
+      environment:
+        ETCDCTL_API: 3
       when: inventory_hostname == ansible_play_batch[0]
       register: result
       changed_when: result is not succeeded
 
     - name: etcdctl get foo
       command: etcdctl get foo
+      environment:
+        ETCDCTL_API: 3
       register: result
       changed_when: result is not succeeded
       failed_when: "'bar' not in result.stdout"
