@@ -82,7 +82,7 @@
     curl -skL {{ etcd_download_url }} | tar zxf - --strip-components=1 --wildcards "etcd*/etcd" "etcd*/etcdctl"
     chown -Rf root:root etcd etcdctl
   args:
-    executable: /bin/bash
+    executable: "/bin/bash"
     creates: "/usr/local/bin/etcd"
   tags: etcd
 
