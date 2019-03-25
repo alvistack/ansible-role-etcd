@@ -18,7 +18,10 @@
 etcd_version: "v3.3.12"
 
 # URL for download etcd binary.
-etcd_download_url: "https://github.com/etcd-io/etcd/releases/download/{{ etcd_version }}/etcd-{{ etcd_version }}-linux-amd64.tar.gz"
+etcd_download:
+  url: "https://github.com/etcd-io/etcd/releases/download/{{ etcd_version }}/etcd-{{ etcd_version }}-linux-amd64.tar.gz"
+  dest: "/tmp/etcd-{{ etcd_version }}-linux-amd64.tar.gz"
+  checksum: "sha1:9e7ad22414c6bf435193b2534f5a5015de9cbb1b"
 
 # Human-readable name for this member.
 etcd_name: "{{ ansible_hostname }}"
