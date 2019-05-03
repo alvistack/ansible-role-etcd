@@ -39,6 +39,7 @@
       command: etcdctl put foo bar
       environment:
         ETCDCTL_API: 3
+      when: inventory_hostname == ansible_play_batch[0]
       register: result
       changed_when: result is not succeeded
 
