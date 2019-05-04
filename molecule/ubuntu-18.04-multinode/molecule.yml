@@ -19,19 +19,19 @@ scenario:
 driver:
   name: lxd
 platforms:
-  - name: ${LXC_ID}-1
+  - name: ${MOLECULE_INSTANCE_NAME}-1
     url: unix:/var/snap/lxd/common/lxd/unix.socket
     source:
       server: https://images.linuxcontainers.org
       protocol: simplestreams
       alias: ubuntu/bionic/amd64
-  - name: ${LXC_ID}-2
+  - name: ${MOLECULE_INSTANCE_NAME}-2
     url: unix:/var/snap/lxd/common/lxd/unix.socket
     source:
       server: https://images.linuxcontainers.org
       protocol: simplestreams
       alias: ubuntu/bionic/amd64
-  - name: ${LXC_ID}-3
+  - name: ${MOLECULE_INSTANCE_NAME}-3
     url: unix:/var/snap/lxd/common/lxd/unix.socket
     source:
       server: https://images.linuxcontainers.org
