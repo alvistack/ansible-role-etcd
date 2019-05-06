@@ -4,6 +4,8 @@
 
 ### Major Changes
 
+  - Enable TLS protocol
+
 ## 2.6.0 - 2019-05-04
 
 ### Major Changes

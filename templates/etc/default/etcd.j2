@@ -27,7 +27,7 @@ ETCD_DATA_DIR="{{ etcd_data_dir }}"
 ##### -snapshot-count
 ## Number of committed transactions to trigger a snapshot to disk.
 ## default: "10000"
-# ETCD_SNAPSHOT_COUNT="10000"
+ETCD_SNAPSHOT_COUNT="{{ etcd_snapshot_count }}"
 
 ##### -heartbeat-interval
 ## Time (in milliseconds) of a heartbeat interval.
@@ -198,22 +198,22 @@ ETCD_ADVERTISE_CLIENT_URLS="{{ etcd_advertise_client_urls }}"
 ##### -cert-file
 ## Path to the client server TLS cert file.
 ## default: none
-# ETCD_CERT_FILE=""
+ETCD_CERT_FILE="/etc/etcd/pki/server.crt"
 
 ##### -key-file
 ## Path to the client server TLS key file.
 ## default: none
-# ETCD_KEY_FILE=""
+ETCD_KEY_FILE="/etc/etcd/pki/server.key"
 
 ##### -client-cert-auth
 ## Enable client cert authentication.
 ## default: false
-# ETCD_CLIENT_CERT_AUTH
+ETCD_CLIENT_CERT_AUTH={{ etcd_client_cert_auth | bool | lower }}
 
 ##### -trusted-ca-file
 ## Path to the client server TLS trusted CA key file.
 ## default: none
-# ETCD_TRUSTED_CA_FILE
+ETCD_TRUSTED_CA_FILE="/etc/etcd/pki/ca.crt"
 
 ##### -peer-ca-file [DEPRECATED]
 ## Path to the peer server TLS CA file. `-peer-ca-file ca.crt` could be replaced
@@ -224,22 +224,22 @@ ETCD_ADVERTISE_CLIENT_URLS="{{ etcd_advertise_client_urls }}"
 ##### -peer-cert-file
 ## Path to the peer server TLS cert file.
 ## default: none
-# ETCD_PEER_CERT_FILE
+ETCD_PEER_CERT_FILE="/etc/etcd/pki/peer.crt"
 
 ##### -peer-key-file
 ## Path to the peer server TLS key file.
 ## default: none
-# ETCD_PEER_KEY_FILE
+ETCD_PEER_KEY_FILE="/etc/etcd/pki/peer.key"
 
 ##### -peer-client-cert-auth
 ## Enable peer client cert authentication.
 ## default: false
-# ETCD_PEER_CLIENT_CERT_AUTH
+ETCD_PEER_CLIENT_CERT_AUTH={{ etcd_peer_client_cert_auth | bool | lower }}
 
 ##### -peer-trusted-ca-file
 ## Path to the peer server TLS trusted CA file.
 ## default: none
-# ETCD_PEER_TRUSTED_CA_FILE
+ETCD_PEER_TRUSTED_CA_FILE="/etc/etcd/pki/ca.crt"
 
 ### Logging Flags
 ##### -debug
