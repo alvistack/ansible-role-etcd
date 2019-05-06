@@ -44,6 +44,138 @@
     loop_var: "loop_var"
   tags: etcd
 
+- name: prepare directories
+  file:
+    dest: "{{ inventory_dir }}/etc/etcd/pki"
+    mode: "0755"
+    state: "directory"
+  run_once: true
+  delegate_to: "localhost"
+  tags: etcd
+
+- name: generate root ca private key
+  openssl_privatekey:
+    path: "{{ inventory_dir }}/etc/etcd/pki/ca.key"
+  run_once: true
+  delegate_to: "localhost"
+  tags: etcd
+
+- name: generate root ca csr
+  openssl_csr:
+    path: "{{ inventory_dir }}/etc/etcd/pki/ca.csr"
+    privatekey_path: "{{ inventory_dir }}/etc/etcd/pki/ca.key"
+    common_name: "{{ ansible_play_batch[0] }}"
+    subject:
+      CN: "{{ ansible_play_batch[0] }}"
+    basic_constraints: "CA:TRUE"
+  run_once: true
+  delegate_to: "localhost"
+  tags: etcd
+
+- name: generate root ca selfsigned certificate
+  openssl_certificate:
+    path: "{{ inventory_dir }}/etc/etcd/pki/ca.crt"
+    csr_path: "{{ inventory_dir }}/etc/etcd/pki/ca.csr"
+    privatekey_path: "{{ inventory_dir }}/etc/etcd/pki/ca.key"
+    provider: "selfsigned"
+  run_once: true
+  delegate_to: "localhost"
+  tags: etcd
+
+- name: generate server private key
+  openssl_privatekey:
+    path: "{{ inventory_dir }}/etc/etcd/pki/server.key"
+  run_once: true
+  delegate_to: "localhost"
+  tags: etcd
+
+- name: generate server csr
+  openssl_csr:
+    path: "{{ inventory_dir }}/etc/etcd/pki/server.csr"
+    privatekey_path: "{{ inventory_dir }}/etc/etcd/pki/server.key"
+    common_name: "{{ ansible_play_batch[0] }}"
+    subject:
+      CN: "{{ ansible_play_batch[0] }}"
+    subject_alt_name: >-
+      {%- for host in ansible_play_batch -%}
+      DNS:{{ host }},
+      {%- endfor -%}
+      DNS:localhost,
+      {%- for host in ansible_play_batch -%}
+      IP:{{ hostvars[host]['ansible_default_ipv4']['address'] }},
+      {%- endfor -%}
+      IP:127.0.0.1
+    key_usage:
+      - digitalSignature
+      - keyEncipherment
+      - nonRepudiation
+    extended_key_usage:
+      - clientAuth
+      - serverAuth
+    basic_constraints: "CA:FALSE"
+  run_once: true
+  delegate_to: "localhost"
+  tags: etcd
+
+- name: generate server ownca certificate
+  openssl_certificate:
+    path: "{{ inventory_dir }}/etc/etcd/pki/server.crt"
+    csr_path: "{{ inventory_dir }}/etc/etcd/pki/server.csr"
+    privatekey_path: "{{ inventory_dir }}/etc/etcd/pki/server.key"
+    ownca_path: "{{ inventory_dir }}/etc/etcd/pki/ca.crt"
+    ownca_privatekey_path: "{{ inventory_dir }}/etc/etcd/pki/ca.key"
+    provider: "ownca"
+  run_once: true
+  delegate_to: "localhost"
+  tags: etcd
+
+- name: generate peer private key
+  openssl_privatekey:
+    path: "{{ inventory_dir }}/etc/etcd/pki/peer.key"
+  run_once: true
+  delegate_to: "localhost"
+  tags: etcd
+
+- name: generate peer csr
+  openssl_csr:
+    path: "{{ inventory_dir }}/etc/etcd/pki/peer.csr"
+    privatekey_path: "{{ inventory_dir }}/etc/etcd/pki/peer.key"
+    common_name: "{{ ansible_play_batch[0] }}"
+    subject:
+      CN: "{{ ansible_play_batch[0] }}"
+    subject_alt_name: >-
+      {%- for host in ansible_play_batch -%}
+      DNS:{{ host }},
+      {%- endfor -%}
+      DNS:localhost,
+      {%- for host in ansible_play_batch -%}
+      IP:{{ hostvars[host]['ansible_default_ipv4']['address'] }},
+      {%- endfor -%}
+      IP:127.0.0.1
+    key_usage:
+      - digitalSignature
+      - keyEncipherment
+      - nonRepudiation
+    extended_key_usage:
+      - clientAuth
+      - serverAuth
+    basic_constraints: "CA:FALSE"
+  run_once: true
+  delegate_to: "localhost"
+  tags: etcd
+
+- name: generate peer ownca certificate
+  openssl_certificate:
+    path: "{{ inventory_dir }}/etc/etcd/pki/peer.crt"
+    csr_path: "{{ inventory_dir }}/etc/etcd/pki/peer.csr"
+    privatekey_path: "{{ inventory_dir }}/etc/etcd/pki/peer.key"
+    ownca_path: "{{ inventory_dir }}/etc/etcd/pki/ca.crt"
+    ownca_privatekey_path: "{{ inventory_dir }}/etc/etcd/pki/ca.key"
+    provider: "ownca"
+  run_once: true
+  delegate_to: "localhost"
+  tags: etcd
+
 - name: groupadd
   group:
     name: "etcd"
@@ -70,6 +202,8 @@
     mode: "{{ item.mode | default('0755') }}"
     state: "{{ item.state | default('directory') }}"
   with_items:
+    - { dest: "/etc/default" }
+    - { dest: "/etc/etcd/pki", owner: "etcd", group: "etcd", mode: "0700" }
     - { dest: "/lib/systemd/system" }
     - { dest: "/usr/local/bin" }
     - { dest: "/var/lib/etcd", owner: "etcd", group: "etcd" }
@@ -111,6 +245,21 @@
     - systemctl daemon-reload
   tags: etcd
 
+- name: copy certificates
+  copy:
+    src: "{{ inventory_dir }}/{{ item.dest }}"
+    dest: "{{ item.dest }}"
+    owner: "etcd"
+    group: "etcd"
+    mode: "0600"
+  with_items:
+    - { dest: "/etc/etcd/pki/ca.crt" }
+    - { dest: "/etc/etcd/pki/peer.crt" }
+    - { dest: "/etc/etcd/pki/peer.key" }
+    - { dest: "/etc/etcd/pki/server.crt" }
+    - { dest: "/etc/etcd/pki/server.key" }
+  tags: etcd
+
 - name: prepare files
   file:
     dest: "{{ item.dest }}"
@@ -120,6 +269,11 @@
     state: "{{ item.state | default('file') }}"
   with_items:
     - { dest: "/etc/default/etcd" }
+    - { dest: "/etc/etcd/pki/ca.crt", owner: "etcd", group: "etcd", mode: "0600" }
+    - { dest: "/etc/etcd/pki/peer.crt", owner: "etcd", group: "etcd", mode: "0600" }
+    - { dest: "/etc/etcd/pki/peer.key", owner: "etcd", group: "etcd", mode: "0600" }
+    - { dest: "/etc/etcd/pki/server.crt", owner: "etcd", group: "etcd", mode: "0600" }
+    - { dest: "/etc/etcd/pki/server.key", owner: "etcd", group: "etcd", mode: "0600" }
     - { dest: "/lib/systemd/system/etcd.service" }
     - { dest: "/usr/local/bin/etcd", mode: "0755" }
     - { dest: "/usr/local/bin/etcdctl", mode: "0755" }

@@ -27,19 +27,22 @@ etcd_name: "{{ ansible_hostname }}"
 # Path to the data directory.
 etcd_data_dir: "/var/lib/etcd/default"
 
+# Number of committed transactions to trigger a snapshot to disk.
+etcd_snapshot_count: 10000
+
 # List of URLs to listen on for peer traffic.
-etcd_listen_peer_urls: "http://{{ ansible_default_ipv4.address }}:2380,http://127.0.0.1:2380"
+etcd_listen_peer_urls: "https://{{ ansible_default_ipv4.address }}:2380,https://127.0.0.1:2380"
 
 # List of URLs to listen on for client traffic.
-etcd_listen_client_urls: "http://{{ ansible_default_ipv4.address }}:2379,http://127.0.0.1:2379"
+etcd_listen_client_urls: "https://{{ ansible_default_ipv4.address }}:2379,https://127.0.0.1:2379"
 
 # List of this member's peer URLs to advertise to the rest of the cluster.
-etcd_initial_advertise_peer_urls: "http://{{ ansible_default_ipv4.address }}:2380"
+etcd_initial_advertise_peer_urls: "https://{{ ansible_default_ipv4.address }}:2380"
 
 # initial cluster configuration for bootstrapping.
 etcd_initial_cluster: >-
   {%- for host in ansible_play_batch -%}
-  {{ host }}=http://{{ hostvars[host]['ansible_default_ipv4']['address'] }}:2380,
+  {{ host }}=https://{{ hostvars[host]['ansible_default_ipv4']['address'] }}:2380,
   {%- endfor -%}
 
 # Initial cluster state ("new" or "existing").
@@ -49,4 +52,10 @@ etcd_initial_cluster_state: "new"
 etcd_initial_cluster_token: "etcd-cluster"
 
 # List of this member's client URLs to advertise to the rest of the cluster.
-etcd_advertise_client_urls: "http://{{ ansible_default_ipv4.address }}:2379"
+etcd_advertise_client_urls: "https://{{ ansible_default_ipv4.address }}:2379"
+
+# Enable client cert authentication.
+etcd_client_cert_auth: true
+
+# Enable peer client cert authentication.
+etcd_peer_client_cert_auth: true
