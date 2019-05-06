@@ -18,6 +18,7 @@
   remote_user: root
   roles:
     - role: bootstrap
+    - role: python
     - role: etcd
 
 - hosts: all
