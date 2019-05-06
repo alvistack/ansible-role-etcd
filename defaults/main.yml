@@ -41,7 +41,7 @@ etcd_initial_advertise_peer_urls: "https://{{ ansible_default_ipv4.address }}:23
 
 # initial cluster configuration for bootstrapping.
 etcd_initial_cluster: >-
-  {%- for host in ansible_play_batch -%}
+  {%- for host in ansible_play_hosts -%}
   {{ host }}=https://{{ hostvars[host]['ansible_default_ipv4']['address'] }}:2380,
   {%- endfor -%}
 

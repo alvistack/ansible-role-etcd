@@ -116,20 +116,20 @@
 - name: generate root ca private key
   openssl_privatekey:
     path: "/etc/etcd/pki/ca.key"
-  when: inventory_hostname == ansible_play_batch[0]
-  delegate_to: "{{ ansible_play_batch[0] }}"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
   tags: etcd
 
 - name: generate root ca csr
   openssl_csr:
     path: "/etc/etcd/pki/ca.csr"
     privatekey_path: "/etc/etcd/pki/ca.key"
-    common_name: "{{ ansible_play_batch[0] }}"
+    common_name: "{{ ansible_play_hosts[0] }}"
     subject:
-      CN: "{{ ansible_play_batch[0] }}"
+      CN: "{{ ansible_play_hosts[0] }}"
     basic_constraints: "CA:TRUE"
-  when: inventory_hostname == ansible_play_batch[0]
-  delegate_to: "{{ ansible_play_batch[0] }}"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
   tags: etcd
 
 - name: generate root ca selfsigned certificate
@@ -138,30 +138,30 @@
     csr_path: "/etc/etcd/pki/ca.csr"
     privatekey_path: "/etc/etcd/pki/ca.key"
     provider: "selfsigned"
-  when: inventory_hostname == ansible_play_batch[0]
-  delegate_to: "{{ ansible_play_batch[0] }}"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
   tags: etcd
 
 - name: generate server private key
   openssl_privatekey:
     path: "/etc/etcd/pki/server.key"
-  when: inventory_hostname == ansible_play_batch[0]
-  delegate_to: "{{ ansible_play_batch[0] }}"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
   tags: etcd
 
 - name: generate server csr
   openssl_csr:
     path: "/etc/etcd/pki/server.csr"
     privatekey_path: "/etc/etcd/pki/server.key"
-    common_name: "{{ ansible_play_batch[0] }}"
+    common_name: "{{ ansible_play_hosts[0] }}"
     subject:
-      CN: "{{ ansible_play_batch[0] }}"
+      CN: "{{ ansible_play_hosts[0] }}"
     subject_alt_name: >-
-      {%- for host in ansible_play_batch -%}
+      {%- for host in ansible_play_hosts -%}
       DNS:{{ host }},
       {%- endfor -%}
       DNS:localhost,
-      {%- for host in ansible_play_batch -%}
+      {%- for host in ansible_play_hosts -%}
       IP:{{ hostvars[host]['ansible_default_ipv4']['address'] }},
       {%- endfor -%}
       IP:127.0.0.1
@@ -173,8 +173,8 @@
       - clientAuth
       - serverAuth
     basic_constraints: "CA:FALSE"
-  when: inventory_hostname == ansible_play_batch[0]
-  delegate_to: "{{ ansible_play_batch[0] }}"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
   tags: etcd
 
 - name: generate server ownca certificate
@@ -185,30 +185,30 @@
     ownca_path: "/etc/etcd/pki/ca.crt"
     ownca_privatekey_path: "/etc/etcd/pki/ca.key"
     provider: "ownca"
-  when: inventory_hostname == ansible_play_batch[0]
-  delegate_to: "{{ ansible_play_batch[0] }}"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
   tags: etcd
 
 - name: generate peer private key
   openssl_privatekey:
     path: "/etc/etcd/pki/peer.key"
-  when: inventory_hostname == ansible_play_batch[0]
-  delegate_to: "{{ ansible_play_batch[0] }}"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
   tags: etcd
 
 - name: generate peer csr
   openssl_csr:
     path: "/etc/etcd/pki/peer.csr"
     privatekey_path: "/etc/etcd/pki/peer.key"
-    common_name: "{{ ansible_play_batch[0] }}"
+    common_name: "{{ ansible_play_hosts[0] }}"
     subject:
-      CN: "{{ ansible_play_batch[0] }}"
+      CN: "{{ ansible_play_hosts[0] }}"
     subject_alt_name: >-
-      {%- for host in ansible_play_batch -%}
+      {%- for host in ansible_play_hosts -%}
       DNS:{{ host }},
       {%- endfor -%}
       DNS:localhost,
-      {%- for host in ansible_play_batch -%}
+      {%- for host in ansible_play_hosts -%}
       IP:{{ hostvars[host]['ansible_default_ipv4']['address'] }},
       {%- endfor -%}
       IP:127.0.0.1
@@ -220,8 +220,8 @@
       - clientAuth
       - serverAuth
     basic_constraints: "CA:FALSE"
-  when: inventory_hostname == ansible_play_batch[0]
-  delegate_to: "{{ ansible_play_batch[0] }}"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
   tags: etcd
 
 - name: generate peer ownca certificate
@@ -232,8 +232,8 @@
     ownca_path: "/etc/etcd/pki/ca.crt"
     ownca_privatekey_path: "/etc/etcd/pki/ca.key"
     provider: "ownca"
-  when: inventory_hostname == ansible_play_batch[0]
-  delegate_to: "{{ ansible_play_batch[0] }}"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
   tags: etcd
 
 - name: base64 encode certificates
@@ -242,7 +242,7 @@
     tar zcf - -C / etc/etcd/pki | base64 -w 0
   args:
     executable: "/bin/bash"
-  delegate_to: "{{ ansible_play_batch[0] }}"
+  delegate_to: "{{ ansible_play_hosts[0] }}"
   register: base64_encode_result
   changed_when: base64_encode_result is not succeeded
   tags: etcd
@@ -253,7 +253,7 @@
     echo -n {{ base64_encode_result.stdout | quote }} | base64 -d | tar zx -C /
   args:
     executable: "/bin/bash"
-  when: inventory_hostname != ansible_play_batch[0]
+  when: inventory_hostname != ansible_play_hosts[0]
   register: base64_decode_result
   changed_when: base64_decode_result is not succeeded
   tags: etcd
