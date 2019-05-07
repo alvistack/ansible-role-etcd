@@ -239,7 +239,7 @@
 - name: base64 encode certificates
   shell: |
     set -o pipefail
-    tar zcf - -C / etc/etcd/pki | base64 -w 0
+    tar zcfP - {{ _etcd_base64 | join(' ') }} | base64 -w 0
   args:
     executable: "/bin/bash"
   delegate_to: "{{ ansible_play_hosts[0] }}"
@@ -268,13 +268,9 @@
   with_items:
     - { dest: "/etc/default/etcd" }
     - { dest: "/etc/etcd/pki/ca.crt", group: "etcd" }
-    - { dest: "/etc/etcd/pki/ca.csr", group: "etcd", mode: "0640" }
-    - { dest: "/etc/etcd/pki/ca.key", group: "etcd", mode: "0640" }
     - { dest: "/etc/etcd/pki/peer.crt", group: "etcd" }
-    - { dest: "/etc/etcd/pki/peer.csr", group: "etcd", mode: "0640" }
     - { dest: "/etc/etcd/pki/peer.key", group: "etcd", mode: "0640" }
     - { dest: "/etc/etcd/pki/server.crt", group: "etcd" }
-    - { dest: "/etc/etcd/pki/server.csr", group: "etcd", mode: "0640" }
     - { dest: "/etc/etcd/pki/server.key", group: "etcd", mode: "0640" }
     - { dest: "/lib/systemd/system/etcd.service" }
     - { dest: "/usr/local/bin/etcd", mode: "0755" }
