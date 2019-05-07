@@ -71,7 +71,7 @@
     state: "{{ item.state | default('directory') }}"
   with_items:
     - { dest: "/etc/default" }
-    - { dest: "/etc/etcd/pki", owner: "etcd", group: "etcd", mode: "0700" }
+    - { dest: "/etc/etcd/pki" }
     - { dest: "/lib/systemd/system" }
     - { dest: "/usr/local/bin" }
     - { dest: "/var/lib/etcd", owner: "etcd", group: "etcd" }
@@ -267,15 +267,15 @@
     state: "{{ item.state | default('file') }}"
   with_items:
     - { dest: "/etc/default/etcd" }
-    - { dest: "/etc/etcd/pki/ca.crt", owner: "etcd", group: "etcd" }
-    - { dest: "/etc/etcd/pki/ca.csr", owner: "etcd", group: "etcd", mode: "0600" }
-    - { dest: "/etc/etcd/pki/ca.key", owner: "etcd", group: "etcd", mode: "0600" }
-    - { dest: "/etc/etcd/pki/peer.crt", owner: "etcd", group: "etcd" }
-    - { dest: "/etc/etcd/pki/peer.csr", owner: "etcd", group: "etcd", mode: "0600" }
-    - { dest: "/etc/etcd/pki/peer.key", owner: "etcd", group: "etcd", mode: "0600" }
-    - { dest: "/etc/etcd/pki/server.crt", owner: "etcd", group: "etcd" }
-    - { dest: "/etc/etcd/pki/server.csr", owner: "etcd", group: "etcd", mode: "0600" }
-    - { dest: "/etc/etcd/pki/server.key", owner: "etcd", group: "etcd", mode: "0600" }
+    - { dest: "/etc/etcd/pki/ca.crt" }
+    - { dest: "/etc/etcd/pki/ca.csr", mode: "0600" }
+    - { dest: "/etc/etcd/pki/ca.key", mode: "0600" }
+    - { dest: "/etc/etcd/pki/peer.crt" }
+    - { dest: "/etc/etcd/pki/peer.csr", mode: "0600" }
+    - { dest: "/etc/etcd/pki/peer.key", mode: "0600" }
+    - { dest: "/etc/etcd/pki/server.crt" }
+    - { dest: "/etc/etcd/pki/server.csr", mode: "0600" }
+    - { dest: "/etc/etcd/pki/server.key", mode: "0600" }
     - { dest: "/lib/systemd/system/etcd.service" }
     - { dest: "/usr/local/bin/etcd", mode: "0755" }
     - { dest: "/usr/local/bin/etcdctl", mode: "0755" }
