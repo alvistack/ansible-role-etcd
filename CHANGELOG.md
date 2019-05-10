@@ -5,6 +5,8 @@
 ### Major Changes
 
   - Enable TLS protocol
+  - Split certificates management to ansible-role-etcd-certs
+  - Simplify service owner as root, simpler Kubernetes intergration
 
 ## 2.6.0 - 2019-05-04
 

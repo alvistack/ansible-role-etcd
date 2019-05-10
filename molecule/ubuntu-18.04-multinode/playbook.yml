@@ -19,6 +19,7 @@
   roles:
     - role: bootstrap
     - role: python
+    - role: etcd-certs
     - role: etcd
 
 - hosts: all
