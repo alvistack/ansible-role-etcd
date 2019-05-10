@@ -54,8 +54,26 @@ etcd_initial_cluster_token: "etcd-cluster"
 # List of this member's client URLs to advertise to the rest of the cluster.
 etcd_advertise_client_urls: "https://{{ ansible_default_ipv4.address }}:2379"
 
+# Path to the client server TLS cert file.
+etcd_cert_file: "/etc/etcd/pki/server.crt"
+
+# Path to the client server TLS key file.
+etcd_key_file: "{{ etcd_cert_file | splitext | first }}.key"
+
 # Enable client cert authentication.
 etcd_client_cert_auth: true
 
+# Path to the client server TLS trusted CA key file.
+etcd_trusted_ca_file: "/etc/etcd/pki/ca.crt"
+
+# Path to the peer server TLS cert file.
+etcd_peer_cert_file: "/etc/etcd/pki/peer.crt"
+
+# Path to the peer server TLS key file.
+etcd_peer_key_file: "{{ etcd_peer_cert_file | splitext | first }}.key"
+
 # Enable peer client cert authentication.
 etcd_peer_client_cert_auth: true
+
+# Path to the peer server TLS trusted CA file.
+etcd_peer_trusted_ca_file: "{{ etcd_trusted_ca_file }}"

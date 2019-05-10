@@ -198,22 +198,22 @@ ETCD_ADVERTISE_CLIENT_URLS="{{ etcd_advertise_client_urls }}"
 ##### -cert-file
 ## Path to the client server TLS cert file.
 ## default: none
-ETCD_CERT_FILE="/etc/etcd/pki/server.crt"
+ETCD_CERT_FILE="{{ etcd_cert_file | default(None) }}"
 
 ##### -key-file
 ## Path to the client server TLS key file.
 ## default: none
-ETCD_KEY_FILE="/etc/etcd/pki/server.key"
+ETCD_KEY_FILE="{{ etcd_key_file | default(None) }}"
 
 ##### -client-cert-auth
 ## Enable client cert authentication.
 ## default: false
-ETCD_CLIENT_CERT_AUTH={{ etcd_client_cert_auth | bool | lower }}
+ETCD_CLIENT_CERT_AUTH={{ etcd_client_cert_auth | default(false) | bool | lower }}
 
 ##### -trusted-ca-file
 ## Path to the client server TLS trusted CA key file.
 ## default: none
-ETCD_TRUSTED_CA_FILE="/etc/etcd/pki/ca.crt"
+ETCD_TRUSTED_CA_FILE="{{ etcd_trusted_ca_file | default(None) }}"
 
 ##### -peer-ca-file [DEPRECATED]
 ## Path to the peer server TLS CA file. `-peer-ca-file ca.crt` could be replaced
@@ -224,22 +224,22 @@ ETCD_TRUSTED_CA_FILE="/etc/etcd/pki/ca.crt"
 ##### -peer-cert-file
 ## Path to the peer server TLS cert file.
 ## default: none
-ETCD_PEER_CERT_FILE="/etc/etcd/pki/peer.crt"
+ETCD_PEER_CERT_FILE="{{ etcd_peer_cert_file | default(None) }}"
 
 ##### -peer-key-file
 ## Path to the peer server TLS key file.
 ## default: none
-ETCD_PEER_KEY_FILE="/etc/etcd/pki/peer.key"
+ETCD_PEER_KEY_FILE="{{ etcd_peer_key_file | default(None) }}"
 
 ##### -peer-client-cert-auth
 ## Enable peer client cert authentication.
 ## default: false
-ETCD_PEER_CLIENT_CERT_AUTH={{ etcd_peer_client_cert_auth | bool | lower }}
+ETCD_PEER_CLIENT_CERT_AUTH={{ etcd_peer_client_cert_auth | default(false) | bool | lower }}
 
 ##### -peer-trusted-ca-file
 ## Path to the peer server TLS trusted CA file.
 ## default: none
-ETCD_PEER_TRUSTED_CA_FILE="/etc/etcd/pki/ca.crt"
+ETCD_PEER_TRUSTED_CA_FILE="{{ etcd_peer_trusted_ca_file | default(None) }}"
 
 ### Logging Flags
 ##### -debug
