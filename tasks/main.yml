@@ -56,6 +56,12 @@
     - { dest: "/lib/systemd/system" }
     - { dest: "/usr/local/bin" }
     - { dest: "/var/lib/etcd" }
+    - { dest: "{{ etcd_cert_file | dirname }}" }
+    - { dest: "{{ etcd_key_file | dirname }}" }
+    - { dest: "{{ etcd_peer_cert_file | dirname }}" }
+    - { dest: "{{ etcd_peer_key_file | dirname }}" }
+    - { dest: "{{ etcd_peer_trusted_ca_file | dirname }}" }
+    - { dest: "{{ etcd_trusted_ca_file | dirname }}" }
   tags: etcd
 
 - name: download archive
@@ -94,6 +100,191 @@
     - systemctl daemon-reload
   tags: etcd
 
+- name: generate trusted ca private key
+  openssl_privatekey:
+    path: "{{ etcd_trusted_ca_file | splitext | first }}.key"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
+  tags: etcd
+
+- name: generate trusted ca csr
+  openssl_csr:
+    path: "{{ etcd_trusted_ca_file | splitext | first }}.csr"
+    privatekey_path: "{{ etcd_trusted_ca_file | splitext | first }}.key"
+    common_name: "{{ ansible_play_hosts[0] }}"
+    subject:
+      CN: "{{ ansible_play_hosts[0] }}"
+    basic_constraints: "CA:TRUE"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
+  tags: etcd
+
+- name: generate trusted ca selfsigned certificate
+  openssl_certificate:
+    path: "{{ etcd_trusted_ca_file }}"
+    csr_path: "{{ etcd_trusted_ca_file | splitext | first }}.csr"
+    privatekey_path: "{{ etcd_trusted_ca_file | splitext | first }}.key"
+    provider: "selfsigned"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
+  tags: etcd
+
+- name: generate client server private key
+  openssl_privatekey:
+    path: "{{ etcd_key_file }}"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
+  tags: etcd
+
+- name: generate client server csr
+  openssl_csr:
+    path: "{{ etcd_cert_file | splitext | first }}.csr"
+    privatekey_path: "{{ etcd_key_file }}"
+    common_name: "{{ ansible_play_hosts[0] }}"
+    subject:
+      CN: "{{ ansible_play_hosts[0] }}"
+    subject_alt_name: >-
+      {%- for host in ansible_play_hosts -%}
+      DNS:{{ host }},
+      {%- endfor -%}
+      DNS:localhost,
+      {%- for host in ansible_play_hosts -%}
+      IP:{{ hostvars[host]['ansible_default_ipv4']['address'] }},
+      {%- endfor -%}
+      IP:127.0.0.1
+    key_usage:
+      - digitalSignature
+      - keyEncipherment
+      - nonRepudiation
+    extended_key_usage:
+      - clientAuth
+      - serverAuth
+    basic_constraints: "CA:FALSE"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
+  tags: etcd
+
+- name: generate client server ownca certificate
+  openssl_certificate:
+    path: "{{ etcd_cert_file }}"
+    csr_path: "{{ etcd_cert_file | splitext | first }}.csr"
+    privatekey_path: "{{ etcd_key_file }}"
+    ownca_path: "{{ etcd_trusted_ca_file }}"
+    ownca_privatekey_path: "{{ etcd_trusted_ca_file | splitext | first }}.key"
+    provider: "ownca"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
+  tags: etcd
+
+- name: generate peer server trusted ca private key
+  openssl_privatekey:
+    path: "{{ etcd_peer_trusted_ca_file | splitext | first }}.key"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
+  tags: etcd
+
+- name: generate peer server trusted ca csr
+  openssl_csr:
+    path: "{{ etcd_peer_trusted_ca_file | splitext | first }}.csr"
+    privatekey_path: "{{ etcd_peer_trusted_ca_file | splitext | first }}.key"
+    common_name: "{{ ansible_play_hosts[0] }}"
+    subject:
+      CN: "{{ ansible_play_hosts[0] }}"
+    basic_constraints: "CA:TRUE"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
+  tags: etcd
+
+- name: generate peer server trusted ca selfsigned certificate
+  openssl_certificate:
+    path: "{{ etcd_peer_trusted_ca_file }}"
+    csr_path: "{{ etcd_peer_trusted_ca_file | splitext | first }}.csr"
+    privatekey_path: "{{ etcd_peer_trusted_ca_file | splitext | first }}.key"
+    provider: "selfsigned"
+  with_items:
+    - { path: "{{ etcd_trusted_ca_file }}" }
+    - { path: "{{ etcd_peer_trusted_ca_file }}" }
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
+  tags: etcd
+
+- name: generate peer private key
+  openssl_privatekey:
+    path: "{{ etcd_peer_key_file }}"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
+  tags: etcd
+
+- name: generate peer csr
+  openssl_csr:
+    path: "{{ etcd_peer_cert_file | splitext | first }}.csr"
+    privatekey_path: "{{ etcd_peer_key_file }}"
+    common_name: "{{ ansible_play_hosts[0] }}"
+    subject:
+      CN: "{{ ansible_play_hosts[0] }}"
+    subject_alt_name: >-
+      {%- for host in ansible_play_hosts -%}
+      DNS:{{ host }},
+      {%- endfor -%}
+      DNS:localhost,
+      {%- for host in ansible_play_hosts -%}
+      IP:{{ hostvars[host]['ansible_default_ipv4']['address'] }},
+      {%- endfor -%}
+      IP:127.0.0.1
+    key_usage:
+      - digitalSignature
+      - keyEncipherment
+      - nonRepudiation
+    extended_key_usage:
+      - clientAuth
+      - serverAuth
+    basic_constraints: "CA:FALSE"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
+  tags: etcd
+
+- name: generate peer ownca certificate
+  openssl_certificate:
+    path: "{{ etcd_peer_cert_file }}"
+    csr_path: "{{ etcd_peer_cert_file | splitext | first }}.csr"
+    privatekey_path: "{{ etcd_peer_key_file }}"
+    ownca_path: "{{ etcd_peer_trusted_ca_file }}"
+    ownca_privatekey_path: "{{ etcd_peer_trusted_ca_file | splitext | first }}.key"
+    provider: "ownca"
+  when: inventory_hostname == ansible_play_hosts[0]
+  delegate_to: "{{ ansible_play_hosts[0] }}"
+  tags: etcd
+
+- name: base64 encode certificates
+  shell: |
+    set -o pipefail
+    tar zcfP - {{ item.value | join(' ') }} | base64 -w 0
+  with_dict:
+    base64:
+      - "{{ etcd_cert_file }}"
+      - "{{ etcd_key_file }}"
+      - "{{ etcd_trusted_ca_file }}"
+      - "{{ etcd_peer_cert_file }}"
+      - "{{ etcd_peer_key_file }}"
+      - "{{ etcd_peer_trusted_ca_file }}"
+  args:
+    executable: "/bin/bash"
+  delegate_to: "{{ ansible_play_hosts[0] }}"
+  register: base64_encode_result
+  changed_when: base64_encode_result is not succeeded
+  tags: etcd
+
+- name: base64 decode certificates
+  shell: |
+    set -o pipefail
+    echo -n {{ base64_encode_result.results[0].stdout | quote }} | base64 -d | tar zx -C /
+  args:
+    executable: "/bin/bash"
+  when: inventory_hostname != ansible_play_hosts[0]
+  register: base64_decode_result
+  changed_when: base64_decode_result is not succeeded
+  tags: etcd
+
 - name: prepare files
   file:
     dest: "{{ item.dest }}"
@@ -106,6 +297,12 @@
     - { dest: "/lib/systemd/system/etcd.service" }
     - { dest: "/usr/local/bin/etcd", mode: "0755" }
     - { dest: "/usr/local/bin/etcdctl", mode: "0755" }
+    - { dest: "{{ etcd_cert_file }}" }
+    - { dest: "{{ etcd_key_file }}", mode: "0600" }
+    - { dest: "{{ etcd_peer_cert_file }}" }
+    - { dest: "{{ etcd_peer_key_file }}", mode: "0600" }
+    - { dest: "{{ etcd_peer_trusted_ca_file }}" }
+    - { dest: "{{ etcd_trusted_ca_file }}" }
   tags: etcd
 
 - name: enable service
