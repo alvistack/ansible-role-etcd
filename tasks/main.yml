@@ -201,9 +201,6 @@
     csr_path: "{{ etcd_peer_trusted_ca_file | splitext | first }}.csr"
     privatekey_path: "{{ etcd_peer_trusted_ca_file | splitext | first }}.key"
     provider: "selfsigned"
-  with_items:
-    - { path: "{{ etcd_trusted_ca_file }}" }
-    - { path: "{{ etcd_peer_trusted_ca_file }}" }
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   tags: etcd
