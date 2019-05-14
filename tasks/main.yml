@@ -98,6 +98,7 @@
     - { dest: "/lib/systemd/system/etcd.service" }
   notify:
     - systemctl daemon-reload
+    - systemctl restart
   tags: etcd
 
 - name: generate trusted ca private key
