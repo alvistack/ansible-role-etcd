@@ -1,9 +1,16 @@
 # Ansible Role for etcd
 
-## 2.7.0 - TBC
+## 3.1.0 - TBC
 
 ### Major Changes
 
+## 3.0.0 - 2019-05-20
+
+### Major Changes
+
+  - Upgrade minimal Ansible support to 2.8.0
+  - Improve handlers implementation
+  - Restart service if templates changed
   - Enable TLS protocol
   - Support certificates path customization
   - Simplify service owner as root, simpler Kubernetes intergration
