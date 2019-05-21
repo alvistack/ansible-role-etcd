@@ -22,7 +22,7 @@ etcd_download:
   checksum: "sha1:edb7a4bb97dc6480833288d1c5ad7ec4156881ae"
 
 # Human-readable name for this member.
-etcd_name: "{{ ansible_hostname }}"
+etcd_name: "{{ inventory_hostname }}"
 
 # Path to the data directory.
 etcd_data_dir: "/var/lib/etcd/default"
