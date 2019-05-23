@@ -107,6 +107,8 @@
     path: "{{ etcd_trusted_ca_file | splitext | first }}.key"
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
+  notify:
+    - etcd | systemctl restart
   tags: etcd
 
 - name: generate trusted ca csr
@@ -119,6 +121,8 @@
     basic_constraints: "CA:TRUE"
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
+  notify:
+    - etcd | systemctl restart
   tags: etcd
 
 - name: generate trusted ca selfsigned certificate
@@ -129,6 +133,8 @@
     provider: "selfsigned"
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
+  notify:
+    - etcd | systemctl restart
   tags: etcd
 
 - name: generate client server private key
@@ -136,6 +142,8 @@
     path: "{{ etcd_key_file }}"
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
+  notify:
+    - etcd | systemctl restart
   tags: etcd
 
 - name: generate client server csr
@@ -164,6 +172,8 @@
     basic_constraints: "CA:FALSE"
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
+  notify:
+    - etcd | systemctl restart
   tags: etcd
 
 - name: generate client server ownca certificate
@@ -176,6 +186,8 @@
     provider: "ownca"
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
+  notify:
+    - etcd | systemctl restart
   tags: etcd
 
 - name: generate peer server trusted ca private key
@@ -183,6 +195,8 @@
     path: "{{ etcd_peer_trusted_ca_file | splitext | first }}.key"
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
+  notify:
+    - etcd | systemctl restart
   tags: etcd
 
 - name: generate peer server trusted ca csr
@@ -195,6 +209,8 @@
     basic_constraints: "CA:TRUE"
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
+  notify:
+    - etcd | systemctl restart
   tags: etcd
 
 - name: generate peer server trusted ca selfsigned certificate
@@ -205,6 +221,8 @@
     provider: "selfsigned"
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
+  notify:
+    - etcd | systemctl restart
   tags: etcd
 
 - name: generate peer private key
@@ -212,6 +230,8 @@
     path: "{{ etcd_peer_key_file }}"
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
+  notify:
+    - etcd | systemctl restart
   tags: etcd
 
 - name: generate peer csr
@@ -240,6 +260,8 @@
     basic_constraints: "CA:FALSE"
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
+  notify:
+    - etcd | systemctl restart
   tags: etcd
 
 - name: generate peer ownca certificate
@@ -252,6 +274,8 @@
     provider: "ownca"
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
+  notify:
+    - etcd | systemctl restart
   tags: etcd
 
 - name: base64 encode certificates
