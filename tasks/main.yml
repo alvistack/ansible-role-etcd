@@ -105,7 +105,7 @@
 - name: generate trusted ca private key
   openssl_privatekey:
     path: "{{ etcd_trusted_ca_file | splitext | first }}.key"
-  when: inventory_hostname == ansible_play_hosts[0]
+  when: ansible_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart
@@ -119,7 +119,7 @@
     subject:
       CN: "{{ ansible_play_hosts[0] }}"
     basic_constraints: "CA:TRUE"
-  when: inventory_hostname == ansible_play_hosts[0]
+  when: ansible_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart
@@ -131,7 +131,7 @@
     csr_path: "{{ etcd_trusted_ca_file | splitext | first }}.csr"
     privatekey_path: "{{ etcd_trusted_ca_file | splitext | first }}.key"
     provider: "selfsigned"
-  when: inventory_hostname == ansible_play_hosts[0]
+  when: ansible_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart
@@ -140,7 +140,7 @@
 - name: generate client server private key
   openssl_privatekey:
     path: "{{ etcd_key_file }}"
-  when: inventory_hostname == ansible_play_hosts[0]
+  when: ansible_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart
@@ -170,7 +170,7 @@
       - clientAuth
       - serverAuth
     basic_constraints: "CA:FALSE"
-  when: inventory_hostname == ansible_play_hosts[0]
+  when: ansible_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart
@@ -184,7 +184,7 @@
     ownca_path: "{{ etcd_trusted_ca_file }}"
     ownca_privatekey_path: "{{ etcd_trusted_ca_file | splitext | first }}.key"
     provider: "ownca"
-  when: inventory_hostname == ansible_play_hosts[0]
+  when: ansible_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart
@@ -193,7 +193,7 @@
 - name: generate peer server trusted ca private key
   openssl_privatekey:
     path: "{{ etcd_peer_trusted_ca_file | splitext | first }}.key"
-  when: inventory_hostname == ansible_play_hosts[0]
+  when: ansible_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart
@@ -207,7 +207,7 @@
     subject:
       CN: "{{ ansible_play_hosts[0] }}"
     basic_constraints: "CA:TRUE"
-  when: inventory_hostname == ansible_play_hosts[0]
+  when: ansible_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart
@@ -219,7 +219,7 @@
     csr_path: "{{ etcd_peer_trusted_ca_file | splitext | first }}.csr"
     privatekey_path: "{{ etcd_peer_trusted_ca_file | splitext | first }}.key"
     provider: "selfsigned"
-  when: inventory_hostname == ansible_play_hosts[0]
+  when: ansible_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart
@@ -228,7 +228,7 @@
 - name: generate peer private key
   openssl_privatekey:
     path: "{{ etcd_peer_key_file }}"
-  when: inventory_hostname == ansible_play_hosts[0]
+  when: ansible_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart
@@ -258,7 +258,7 @@
       - clientAuth
       - serverAuth
     basic_constraints: "CA:FALSE"
-  when: inventory_hostname == ansible_play_hosts[0]
+  when: ansible_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart
@@ -272,7 +272,7 @@
     ownca_path: "{{ etcd_peer_trusted_ca_file }}"
     ownca_privatekey_path: "{{ etcd_peer_trusted_ca_file | splitext | first }}.key"
     provider: "ownca"
-  when: inventory_hostname == ansible_play_hosts[0]
+  when: ansible_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart
@@ -303,7 +303,7 @@
     echo -n {{ base64_encode_result.results[0].stdout | quote }} | base64 -d | tar zx -C /
   args:
     executable: "/bin/bash"
-  when: inventory_hostname != ansible_play_hosts[0]
+  when: ansible_hostname != ansible_play_hosts[0]
   register: base64_decode_result
   changed_when: base64_decode_result is not succeeded
   tags: etcd

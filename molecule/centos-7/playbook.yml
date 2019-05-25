@@ -49,7 +49,7 @@
           put foo bar
       args:
         executable: "/bin/bash"
-      when: inventory_hostname == ansible_play_hosts[0]
+      when: ansible_hostname == ansible_play_hosts[0]
       register: result
       changed_when: result is not succeeded
 
