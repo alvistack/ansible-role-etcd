@@ -20,12 +20,14 @@
   roles:
     - role: bootstrap
     - role: python
-    - role: etcd
 
-- hosts: all
+- hosts: etcd
   remote_user: root
   become: true
-  tasks:
+  roles:
+    - role: etcd
+
+  post_tasks:
     - name: etcd --version
       command: etcd --version
       register: result

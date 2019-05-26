@@ -25,6 +25,8 @@ platforms:
       server: https://images.linuxcontainers.org
       protocol: simplestreams
       alias: ubuntu/xenial/amd64
+    groups:
+      - etcd
 lint:
   name: yamllint
 dependency:
