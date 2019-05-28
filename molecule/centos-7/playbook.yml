@@ -16,14 +16,18 @@
 
 - hosts: all
   remote_user: root
+  become: true
   roles:
     - role: bootstrap
     - role: python
+
+- hosts: etcd
+  remote_user: root
+  become: true
+  roles:
     - role: etcd
 
-- hosts: all
-  remote_user: root
-  tasks:
+  post_tasks:
     - name: etcd --version
       command: etcd --version
       register: result
@@ -47,7 +51,7 @@
           put foo bar
       args:
         executable: "/bin/bash"
-      when: inventory_hostname == ansible_play_hosts[0]
+      when: ansible_hostname == ansible_play_hosts[0]
       register: result
       changed_when: result is not succeeded
 
