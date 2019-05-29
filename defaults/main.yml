@@ -14,12 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# URL for download etcd binary.
+# etcd version.
 etcd_version: "v3.3.13"
-etcd_download:
-  url: "https://github.com/etcd-io/etcd/releases/download/{{ etcd_version }}/etcd-{{ etcd_version }}-linux-amd64.tar.gz"
-  dest: "/tmp/etcd-{{ etcd_version }}-linux-amd64.tar.gz"
-  checksum: "sha1:edb7a4bb97dc6480833288d1c5ad7ec4156881ae"
+
+# etcd download details.
+etcd_download: "{{ _etcd_download[etcd_version] }}"
 
 # Human-readable name for this member.
 etcd_name: "{{ ansible_hostname }}"
