@@ -337,8 +337,10 @@
 
 - name: enable service
   service:
-    name: etcd
+    name: "{{ item.name }}"
     enabled: true
+  with_items:
+    - { name: "etcd" }
   changed_when: false
   ignore_errors: true
   tags: etcd
