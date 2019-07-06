@@ -153,18 +153,10 @@
   openssl_csr:
     path: "{{ etcd_cert_file | splitext | first }}.csr"
     privatekey_path: "{{ etcd_key_file }}"
-    common_name: "{{ ansible_play_hosts[0] }}"
+    common_name: "{{ etcd_csr_common_name }}"
     subject:
-      CN: "{{ ansible_play_hosts[0] }}"
-    subject_alt_name: >-
-      {%- for host in ansible_play_hosts -%}
-      DNS:{{ host }},
-      {%- endfor -%}
-      DNS:localhost,
-      {%- for host in ansible_play_hosts -%}
-      IP:{{ hostvars[host]['ansible_default_ipv4']['address'] }},
-      {%- endfor -%}
-      IP:127.0.0.1
+      CN: "{{ etcd_csr_common_name }}"
+    subject_alt_name: "{{ etcd_csr_subject_alt_name }}"
     key_usage:
       - digitalSignature
       - keyEncipherment
@@ -241,18 +233,10 @@
   openssl_csr:
     path: "{{ etcd_peer_cert_file | splitext | first }}.csr"
     privatekey_path: "{{ etcd_peer_key_file }}"
-    common_name: "{{ ansible_play_hosts[0] }}"
+    common_name: "{{ etcd_peer_csr_common_name }}"
     subject:
-      CN: "{{ ansible_play_hosts[0] }}"
-    subject_alt_name: >-
-      {%- for host in ansible_play_hosts -%}
-      DNS:{{ host }},
-      {%- endfor -%}
-      DNS:localhost,
-      {%- for host in ansible_play_hosts -%}
-      IP:{{ hostvars[host]['ansible_default_ipv4']['address'] }},
-      {%- endfor -%}
-      IP:127.0.0.1
+      CN: "{{ etcd_peer_csr_common_name }}"
+    subject_alt_name: "{{ etcd_peer_csr_subject_alt_name }}"
     key_usage:
       - digitalSignature
       - keyEncipherment
