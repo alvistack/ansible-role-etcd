@@ -55,7 +55,7 @@
     group: "{{ item.group | default('root') }}"
     mode: "{{ item.mode | default('0755') }}"
     state: "{{ item.state | default('directory') }}"
-  with_items:
+  loop:
     - { dest: "/etc/default" }
     - { dest: "/lib/systemd/system" }
     - { dest: "/usr/local/bin" }
@@ -73,7 +73,7 @@
     url: "{{ item.url }}"
     dest: "{{ item.dest }}"
     checksum: "{{ item.checksum }}"
-  with_items:
+  loop:
     - "{{ etcd_download }}"
   register: result
   until: result is succeeded
@@ -97,7 +97,7 @@
     owner: "{{ item.owner | default('root') }}"
     group: "{{ item.group | default('root') }}"
     mode: "{{ item.mode | default('0644') }}"
-  with_items:
+  loop:
     - { dest: "/etc/default/etcd" }
     - { dest: "/lib/systemd/system/etcd.service" }
   notify:
@@ -318,7 +318,7 @@
     group: "{{ item.group | default('root') }}"
     mode: "{{ item.mode | default('0644') }}"
     state: "{{ item.state | default('file') }}"
-  with_items:
+  loop:
     - { dest: "/etc/default/etcd" }
     - { dest: "/lib/systemd/system/etcd.service" }
     - { dest: "/usr/local/bin/etcd", mode: "0755" }
@@ -339,7 +339,7 @@
   service:
     name: "{{ item.name }}"
     enabled: true
-  with_items:
+  loop:
     - { name: "etcd" }
   changed_when: false
   ignore_errors: true
