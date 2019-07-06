@@ -284,9 +284,9 @@
 - name: base64 encode certificates
   shell: |
     set -o pipefail
-    tar zcfP - {{ params | join(' ') }} | base64 -w 0
+    tar zcfP - {{ _params | join(' ') }} | base64 -w 0
   vars:
-    params:
+    _params:
       - "{{ etcd_cert_file }}"
       - "{{ etcd_key_file }}"
       - "{{ etcd_trusted_ca_file }}"
