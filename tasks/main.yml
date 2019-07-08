@@ -19,32 +19,32 @@
   tags: etcd
 
 - name: include release specific variables
-  include_vars: "{{ loop_var }}"
-  with_first_found:
-    - files:
+  include_vars: "{{ lookup('first_found', _params) }}"
+  vars:
+    _params:
+      files:
         - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
         - "{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
         - "{{ ansible_os_family | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
         - "{{ ansible_distribution | lower }}.yml"
         - "{{ ansible_os_family | lower }}.yml"
-      paths: "../vars"
-  loop_control:
-    loop_var: "loop_var"
+      paths:
+        - "../vars"
   ignore_errors: true
   tags: etcd
 
 - name: include release specific tasks
-  include_tasks: "{{ loop_var }}"
-  with_first_found:
-    - files:
+  include_tasks: "{{ lookup('first_found', _params) }}"
+  vars:
+    _params:
+      files:
         - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
         - "{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
         - "{{ ansible_os_family | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
         - "{{ ansible_distribution | lower }}.yml"
         - "{{ ansible_os_family | lower }}.yml"
-      paths: "."
-  loop_control:
-    loop_var: "loop_var"
+      paths:
+        - "."
   ignore_errors: true
   tags: etcd
 
@@ -55,7 +55,7 @@
     group: "{{ item.group | default('root') }}"
     mode: "{{ item.mode | default('0755') }}"
     state: "{{ item.state | default('directory') }}"
-  with_items:
+  loop:
     - { dest: "/etc/default" }
     - { dest: "/lib/systemd/system" }
     - { dest: "/usr/local/bin" }
@@ -73,7 +73,7 @@
     url: "{{ item.url }}"
     dest: "{{ item.dest }}"
     checksum: "{{ item.checksum }}"
-  with_items:
+  loop:
     - "{{ etcd_download }}"
   register: result
   until: result is succeeded
@@ -97,7 +97,7 @@
     owner: "{{ item.owner | default('root') }}"
     group: "{{ item.group | default('root') }}"
     mode: "{{ item.mode | default('0644') }}"
-  with_items:
+  loop:
     - { dest: "/etc/default/etcd" }
     - { dest: "/lib/systemd/system/etcd.service" }
   notify:
@@ -153,18 +153,10 @@
   openssl_csr:
     path: "{{ etcd_cert_file | splitext | first }}.csr"
     privatekey_path: "{{ etcd_key_file }}"
-    common_name: "{{ ansible_play_hosts[0] }}"
+    common_name: "{{ etcd_csr_common_name }}"
     subject:
-      CN: "{{ ansible_play_hosts[0] }}"
-    subject_alt_name: >-
-      {%- for host in ansible_play_hosts -%}
-      DNS:{{ host }},
-      {%- endfor -%}
-      DNS:localhost,
-      {%- for host in ansible_play_hosts -%}
-      IP:{{ hostvars[host]['ansible_default_ipv4']['address'] }},
-      {%- endfor -%}
-      IP:127.0.0.1
+      CN: "{{ etcd_csr_common_name }}"
+    subject_alt_name: "{{ etcd_csr_subject_alt_name }}"
     key_usage:
       - digitalSignature
       - keyEncipherment
@@ -241,18 +233,10 @@
   openssl_csr:
     path: "{{ etcd_peer_cert_file | splitext | first }}.csr"
     privatekey_path: "{{ etcd_peer_key_file }}"
-    common_name: "{{ ansible_play_hosts[0] }}"
+    common_name: "{{ etcd_peer_csr_common_name }}"
     subject:
-      CN: "{{ ansible_play_hosts[0] }}"
-    subject_alt_name: >-
-      {%- for host in ansible_play_hosts -%}
-      DNS:{{ host }},
-      {%- endfor -%}
-      DNS:localhost,
-      {%- for host in ansible_play_hosts -%}
-      IP:{{ hostvars[host]['ansible_default_ipv4']['address'] }},
-      {%- endfor -%}
-      IP:127.0.0.1
+      CN: "{{ etcd_peer_csr_common_name }}"
+    subject_alt_name: "{{ etcd_peer_csr_subject_alt_name }}"
     key_usage:
       - digitalSignature
       - keyEncipherment
@@ -284,9 +268,9 @@
 - name: base64 encode certificates
   shell: |
     set -o pipefail
-    tar zcfP - {{ item.value | join(' ') }} | base64 -w 0
-  with_dict:
-    base64:
+    tar zcfP - {{ _params | join(' ') }} | base64 -w 0
+  vars:
+    _params:
       - "{{ etcd_cert_file }}"
       - "{{ etcd_key_file }}"
       - "{{ etcd_trusted_ca_file }}"
@@ -303,7 +287,7 @@
 - name: base64 decode certificates
   shell: |
     set -o pipefail
-    echo -n {{ base64_encode_result.results[0].stdout | quote }} | base64 -d | tar zx -C /
+    echo -n {{ base64_encode_result.stdout | quote }} | base64 -d | tar zx -C /
   args:
     executable: "/bin/bash"
   when: ansible_hostname != ansible_play_hosts[0]
@@ -318,7 +302,7 @@
     group: "{{ item.group | default('root') }}"
     mode: "{{ item.mode | default('0644') }}"
     state: "{{ item.state | default('file') }}"
-  with_items:
+  loop:
     - { dest: "/etc/default/etcd" }
     - { dest: "/lib/systemd/system/etcd.service" }
     - { dest: "/usr/local/bin/etcd", mode: "0755" }
@@ -339,7 +323,7 @@
   service:
     name: "{{ item.name }}"
     enabled: true
-  with_items:
+  loop:
     - { name: "etcd" }
   changed_when: false
   ignore_errors: true
