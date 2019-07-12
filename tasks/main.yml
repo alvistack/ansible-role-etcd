@@ -61,6 +61,7 @@
     - { dest: "/usr/local/bin" }
     - { dest: "/var/lib/etcd" }
     - { dest: "{{ etcd_cert_file | dirname }}" }
+    - { dest: "{{ etcd_download.dest | dirname }}" }
     - { dest: "{{ etcd_key_file | dirname }}" }
     - { dest: "{{ etcd_peer_cert_file | dirname }}" }
     - { dest: "{{ etcd_peer_key_file | dirname }}" }
