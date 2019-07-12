@@ -17,13 +17,13 @@
 _etcd_download:
   v3.3.13:
     url: "https://github.com/etcd-io/etcd/releases/download/v3.3.13/etcd-v3.3.13-linux-amd64.tar.gz"
-    dest: "/tmp/etcd-v3.3.13-linux-amd64.tar.gz"
+    dest: "/var/cache/ansible/etcd-v3.3.13-linux-amd64.tar.gz"
     checksum: "sha1:edb7a4bb97dc6480833288d1c5ad7ec4156881ae"
   v3.3.12:
     url: "https://github.com/etcd-io/etcd/releases/download/v3.3.12/etcd-v3.3.12-linux-amd64.tar.gz"
-    dest: "/tmp/etcd-3.3.12-linux-amd64.tar.gz"
+    dest: "/var/cache/ansible/etcd-3.3.12-linux-amd64.tar.gz"
     checksum: "sha1:9e7ad22414c6bf435193b2534f5a5015de9cbb1b"
   v3.3.11:
     url: "https://github.com/etcd-io/etcd/releases/download/v3.3.11/etcd-v3.3.11-linux-amd64.tar.gz"
-    dest: "/tmp/etcd-v3.3.11-linux-amd64.tar.gz"
+    dest: "/var/cache/ansible/etcd-v3.3.11-linux-amd64.tar.gz"
     checksum: "sha1:d894db1cf0c48f0d6340ab3dc6d236527e883935"
