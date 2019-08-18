@@ -321,10 +321,8 @@
 
 - name: enable service
   service:
-    name: "{{ item.name }}"
+    name: "etcd"
     enabled: true
-  loop:
-    - { name: "etcd" }
   changed_when: false
   ignore_errors: true
   tags: etcd

@@ -35,8 +35,8 @@
 
     - name: start service
       service:
-        name: etcd
-        state: started
+        name: "etcd"
+        state: "started"
       changed_when: false
       ignore_errors: true
 
