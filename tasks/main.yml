@@ -76,19 +76,18 @@
     checksum: "{{ item.checksum }}"
   loop:
     - "{{ etcd_download }}"
-  register: result
-  until: result is succeeded
+  register: get_url_result
+  until: get_url_result is succeeded
   tags: etcd
 
 - name: unarchive package
   shell: |
     set -o pipefail
     cd /usr/local/bin
-    tar zxf {{ etcd_download.dest }} --strip-components=1 --wildcards "etcd*/etcd" "etcd*/etcdctl"
-    chown -Rf root:root etcd etcdctl
+    TMP_DIR="`mktemp -d`" && tar -zx -C $TMP_DIR -f {{ etcd_download.dest }} && mv $TMP_DIR/*/etcd* . && rm -rf $TMP_DIR
   args:
     executable: "/bin/bash"
-    creates: "/usr/local/bin/etcd"
+  when: get_url_result is changed
   tags: etcd
 
 - name: copy templates
