@@ -88,6 +88,9 @@
   args:
     executable: "/bin/bash"
   when: get_url_result is changed
+  notify:
+    - etcd | systemctl daemon-reload
+    - etcd | systemctl restart
   tags: etcd
 
 - name: copy templates
