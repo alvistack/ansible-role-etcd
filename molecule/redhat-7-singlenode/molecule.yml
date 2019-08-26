@@ -15,44 +15,14 @@
 # limitations under the License.
 
 scenario:
-  name: ubuntu-18.04-multinode
+  name: redhat-7-singlenode
 driver:
   name: vagrant
   provider:
     name: virtualbox
 platforms:
   - name: ${MOLECULE_INSTANCE_NAME}-1
-    box: generic/ubuntu1804
-    cpu: 2
-    memory: 4096
-    interfaces:
-      - auto_config: true
-        network_name: private_network
-        type: dhcp
-    provider_raw_config_args:
-      - "customize [ 'modifyvm', :id, '--uartmode1', 'disconnected' ]"
-      - "customize [ 'createhd', '--filename', \"/tmp/#{vagrant_config_hash['instance']['name']}.vmdk\", '--size', 10 * 1024 ]"
-      - "customize [ 'storagectl', :id, '--name', 'SCSI Controller', '--add', 'scsi' ]"
-      - "customize [ 'storageattach', :id, '--storagectl', 'SCSI Controller', '--port', 3, '--device', 0, '--type', 'hdd', '--medium', \"/tmp/#{vagrant_config_hash['instance']['name']}.vmdk\" ]"
-    groups:
-      - etcd
-  - name: ${MOLECULE_INSTANCE_NAME}-2
-    box: generic/ubuntu1804
-    cpu: 2
-    memory: 4096
-    interfaces:
-      - auto_config: true
-        network_name: private_network
-        type: dhcp
-    provider_raw_config_args:
-      - "customize [ 'modifyvm', :id, '--uartmode1', 'disconnected' ]"
-      - "customize [ 'createhd', '--filename', \"/tmp/#{vagrant_config_hash['instance']['name']}.vmdk\", '--size', 10 * 1024 ]"
-      - "customize [ 'storagectl', :id, '--name', 'SCSI Controller', '--add', 'scsi' ]"
-      - "customize [ 'storageattach', :id, '--storagectl', 'SCSI Controller', '--port', 3, '--device', 0, '--type', 'hdd', '--medium', \"/tmp/#{vagrant_config_hash['instance']['name']}.vmdk\" ]"
-    groups:
-      - etcd
-  - name: ${MOLECULE_INSTANCE_NAME}-3
-    box: generic/ubuntu1804
+    box: generic/rhel7
     cpu: 2
     memory: 4096
     interfaces:
