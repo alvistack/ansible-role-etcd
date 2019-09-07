@@ -69,7 +69,7 @@
     - name: etcdctl put foo bar
       shell: |
         set -o pipefail
-        ETCDCTL_API=3 etcdctl \
+        etcdctl \
           --cacert=/etc/etcd/pki/ca.crt \
           --cert=/etc/etcd/pki/server.crt \
           --endpoints=https://127.0.0.1:2379 \
@@ -84,7 +84,7 @@
     - name: etcdctl get foo
       shell: |
         set -o pipefail
-        ETCDCTL_API=3 etcdctl \
+        etcdctl \
           --cacert=/etc/etcd/pki/ca.crt \
           --cert=/etc/etcd/pki/server.crt \
           --endpoints=https://127.0.0.1:2379 \
