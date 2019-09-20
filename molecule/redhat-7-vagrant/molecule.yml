@@ -14,15 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-scenario:
-  name: ubuntu-18.04-multinode
 driver:
   name: vagrant
   provider:
     name: virtualbox
 platforms:
   - name: ${MOLECULE_INSTANCE_NAME}-1
-    box: generic/ubuntu1804
+    box: generic/rhel7
     cpu: 2
     memory: 4096
     interfaces:
@@ -34,10 +32,14 @@ platforms:
       - "customize [ 'createhd', '--filename', \"/tmp/#{vagrant_config_hash['instance']['name']}.vmdk\", '--size', 10 * 1024 ]"
       - "customize [ 'storagectl', :id, '--name', 'SCSI Controller', '--add', 'scsi' ]"
       - "customize [ 'storageattach', :id, '--storagectl', 'SCSI Controller', '--port', 3, '--device', 0, '--type', 'hdd', '--medium', \"/tmp/#{vagrant_config_hash['instance']['name']}.vmdk\" ]"
+    provision: true
+    instance_raw_config_args:
+      - "vm.provision \"shell\", inline: \"subscription-manager register --autosubscribe --username=${REDHAT_USERNAME} --password=${REDHAT_PASSWORD}\""
+      - "vm.provision \"shell\", inline: \"echo 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games' > /etc/environment\""
     groups:
       - etcd
   - name: ${MOLECULE_INSTANCE_NAME}-2
-    box: generic/ubuntu1804
+    box: generic/rhel7
     cpu: 2
     memory: 4096
     interfaces:
@@ -49,10 +51,14 @@ platforms:
       - "customize [ 'createhd', '--filename', \"/tmp/#{vagrant_config_hash['instance']['name']}.vmdk\", '--size', 10 * 1024 ]"
       - "customize [ 'storagectl', :id, '--name', 'SCSI Controller', '--add', 'scsi' ]"
       - "customize [ 'storageattach', :id, '--storagectl', 'SCSI Controller', '--port', 3, '--device', 0, '--type', 'hdd', '--medium', \"/tmp/#{vagrant_config_hash['instance']['name']}.vmdk\" ]"
+    provision: true
+    instance_raw_config_args:
+      - "vm.provision \"shell\", inline: \"subscription-manager register --autosubscribe --username=${REDHAT_USERNAME} --password=${REDHAT_PASSWORD}\""
+      - "vm.provision \"shell\", inline: \"echo 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games' > /etc/environment\""
     groups:
       - etcd
   - name: ${MOLECULE_INSTANCE_NAME}-3
-    box: generic/ubuntu1804
+    box: generic/rhel7
     cpu: 2
     memory: 4096
     interfaces:
@@ -64,6 +70,10 @@ platforms:
       - "customize [ 'createhd', '--filename', \"/tmp/#{vagrant_config_hash['instance']['name']}.vmdk\", '--size', 10 * 1024 ]"
       - "customize [ 'storagectl', :id, '--name', 'SCSI Controller', '--add', 'scsi' ]"
       - "customize [ 'storageattach', :id, '--storagectl', 'SCSI Controller', '--port', 3, '--device', 0, '--type', 'hdd', '--medium', \"/tmp/#{vagrant_config_hash['instance']['name']}.vmdk\" ]"
+    provision: true
+    instance_raw_config_args:
+      - "vm.provision \"shell\", inline: \"subscription-manager register --autosubscribe --username=${REDHAT_USERNAME} --password=${REDHAT_PASSWORD}\""
+      - "vm.provision \"shell\", inline: \"echo 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games' > /etc/environment\""
     groups:
       - etcd
 lint:
@@ -83,6 +93,8 @@ provisioner:
   inventory:
     links:
       group_vars: group_vars
+  playbooks:
+    prepare: prepare.yml
 verifier:
   name: testinfra
   lint:
