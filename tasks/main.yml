@@ -109,6 +109,8 @@
   tags: etcd
 
 - name: generate trusted ca private key
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"
   openssl_privatekey:
     path: "{{ etcd_trusted_ca_file | splitext | first }}.key"
   when: ansible_hostname == ansible_play_hosts[0]
@@ -118,6 +120,8 @@
   tags: etcd
 
 - name: generate trusted ca csr
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"
   openssl_csr:
     path: "{{ etcd_trusted_ca_file | splitext | first }}.csr"
     privatekey_path: "{{ etcd_trusted_ca_file | splitext | first }}.key"
@@ -132,6 +136,8 @@
   tags: etcd
 
 - name: generate trusted ca selfsigned certificate
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"
   openssl_certificate:
     path: "{{ etcd_trusted_ca_file }}"
     csr_path: "{{ etcd_trusted_ca_file | splitext | first }}.csr"
@@ -144,6 +150,8 @@
   tags: etcd
 
 - name: generate client server private key
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"
   openssl_privatekey:
     path: "{{ etcd_key_file }}"
   when: ansible_hostname == ansible_play_hosts[0]
@@ -153,6 +161,8 @@
   tags: etcd
 
 - name: generate client server csr
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"
   openssl_csr:
     path: "{{ etcd_cert_file | splitext | first }}.csr"
     privatekey_path: "{{ etcd_key_file }}"
@@ -175,6 +185,8 @@
   tags: etcd
 
 - name: generate client server ownca certificate
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"
   openssl_certificate:
     path: "{{ etcd_cert_file }}"
     csr_path: "{{ etcd_cert_file | splitext | first }}.csr"
@@ -189,6 +201,8 @@
   tags: etcd
 
 - name: generate peer server trusted ca private key
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"
   openssl_privatekey:
     path: "{{ etcd_peer_trusted_ca_file | splitext | first }}.key"
   when: ansible_hostname == ansible_play_hosts[0]
@@ -198,6 +212,8 @@
   tags: etcd
 
 - name: generate peer server trusted ca csr
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"
   openssl_csr:
     path: "{{ etcd_peer_trusted_ca_file | splitext | first }}.csr"
     privatekey_path: "{{ etcd_peer_trusted_ca_file | splitext | first }}.key"
@@ -212,6 +228,8 @@
   tags: etcd
 
 - name: generate peer server trusted ca selfsigned certificate
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"
   openssl_certificate:
     path: "{{ etcd_peer_trusted_ca_file }}"
     csr_path: "{{ etcd_peer_trusted_ca_file | splitext | first }}.csr"
@@ -224,6 +242,8 @@
   tags: etcd
 
 - name: generate peer private key
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"
   openssl_privatekey:
     path: "{{ etcd_peer_key_file }}"
   when: ansible_hostname == ansible_play_hosts[0]
@@ -233,6 +253,8 @@
   tags: etcd
 
 - name: generate peer csr
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"
   openssl_csr:
     path: "{{ etcd_peer_cert_file | splitext | first }}.csr"
     privatekey_path: "{{ etcd_peer_key_file }}"
@@ -255,6 +277,8 @@
   tags: etcd
 
 - name: generate peer ownca certificate
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"
   openssl_certificate:
     path: "{{ etcd_peer_cert_file }}"
     csr_path: "{{ etcd_peer_cert_file | splitext | first }}.csr"
