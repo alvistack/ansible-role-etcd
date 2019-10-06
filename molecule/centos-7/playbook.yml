@@ -29,6 +29,8 @@
 
   post_tasks:
     - name: etcd --version
+      environment:
+        PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       command: etcd --version
       register: result
       changed_when: result is not succeeded
@@ -41,6 +43,8 @@
       ignore_errors: true
 
     - name: etcdctl put foo bar
+      environment:
+        PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       shell: |
         set -o pipefail
         etcdctl \
@@ -56,6 +60,8 @@
       changed_when: result is not succeeded
 
     - name: etcdctl get foo
+      environment:
+        PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       shell: |
         set -o pipefail
         etcdctl \
