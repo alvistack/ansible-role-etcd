@@ -61,12 +61,36 @@
       register: result
       changed_when: result is not succeeded
 
+    - name: etcdctl version
+      environment:
+        PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      command: etcdctl version
+      register: result
+      changed_when: result is not succeeded
+
     - name: start service
       service:
         name: "etcd"
         state: "started"
       changed_when: false
       ignore_errors: true
+
+    - name: etcdctl endpoint health
+      environment:
+        PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      shell: |
+        set -o pipefail
+        etcdctl \
+          --cacert=/etc/etcd/pki/ca.crt \
+          --cert=/etc/etcd/pki/server.crt \
+          --endpoints=https://127.0.0.1:2379 \
+          --key=/etc/etcd/pki/server.key \
+          endpoint health
+      args:
+        executable: "/bin/bash"
+      when: ansible_hostname == ansible_play_hosts[0]
+      register: result
+      changed_when: result is not succeeded
 
     - name: etcdctl put foo bar
       environment:
