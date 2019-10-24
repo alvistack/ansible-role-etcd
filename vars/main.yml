@@ -15,6 +15,10 @@
 # limitations under the License.
 
 _etcd_download:
+  v3.4.3:
+    url: "https://github.com/etcd-io/etcd/releases/download/v3.4.3/etcd-v3.4.3-linux-amd64.tar.gz"
+    dest: "/var/cache/ansible/etcd-v3.4.3-linux-amd64.tar.gz"
+    checksum: "sha1:a410180624265b385b5091734767c112598ab95a"
   v3.4.2:
     url: "https://github.com/etcd-io/etcd/releases/download/v3.4.2/etcd-v3.4.2-linux-amd64.tar.gz"
     dest: "/var/cache/ansible/etcd-v3.4.2-linux-amd64.tar.gz"
