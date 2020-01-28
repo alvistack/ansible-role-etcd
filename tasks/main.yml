@@ -87,6 +87,8 @@
     cd /usr/local/bin
     TMP_DIR="`mktemp -d`" \
       && tar -zx -C $TMP_DIR -f {{ etcd_download.dest }} \
+      && chown root:root $TMP_DIR/*/etcd* \
+      && chmod 0755 $TMP_DIR/*/etcd* \
       && mv $TMP_DIR/*/etcd* . \
       && rm -rf $TMP_DIR
   args:
@@ -110,6 +112,20 @@
   notify:
     - etcd | systemctl daemon-reload
     - etcd | systemctl restart
+  tags: etcd
+
+- name: prepare files
+  file:
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+    state: "{{ item.state | default('file') }}"
+  loop:
+    - { dest: "/etc/default/etcd" }
+    - { dest: "/lib/systemd/system/etcd.service" }
+    - { dest: "/usr/local/bin/etcd", mode: "0755" }
+    - { dest: "/usr/local/bin/etcdctl", mode: "0755" }
   tags: etcd
 
 - name: generate trusted ca private key
@@ -358,10 +374,6 @@
     mode: "{{ item.mode | default('0644') }}"
     state: "{{ item.state | default('file') }}"
   loop:
-    - { dest: "/etc/default/etcd" }
-    - { dest: "/lib/systemd/system/etcd.service" }
-    - { dest: "/usr/local/bin/etcd", mode: "0755" }
-    - { dest: "/usr/local/bin/etcdctl", mode: "0755" }
     - { dest: "{{ etcd_cert_file }}" }
     - { dest: "{{ etcd_key_file }}", mode: "0600" }
     - { dest: "{{ etcd_peer_cert_file }}" }
