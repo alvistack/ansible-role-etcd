@@ -114,6 +114,20 @@
     - etcd | systemctl restart
   tags: etcd
 
+- name: prepare files
+  file:
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+    state: "{{ item.state | default('file') }}"
+  loop:
+    - { dest: "/etc/default/etcd" }
+    - { dest: "/lib/systemd/system/etcd.service" }
+    - { dest: "/usr/local/bin/etcd", mode: "0755" }
+    - { dest: "/usr/local/bin/etcdctl", mode: "0755" }
+  tags: etcd
+
 - name: generate trusted ca private key
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -360,10 +374,6 @@
     mode: "{{ item.mode | default('0644') }}"
     state: "{{ item.state | default('file') }}"
   loop:
-    - { dest: "/etc/default/etcd" }
-    - { dest: "/lib/systemd/system/etcd.service" }
-    - { dest: "/usr/local/bin/etcd", mode: "0755" }
-    - { dest: "/usr/local/bin/etcdctl", mode: "0755" }
     - { dest: "{{ etcd_cert_file }}" }
     - { dest: "{{ etcd_key_file }}", mode: "0600" }
     - { dest: "{{ etcd_peer_cert_file }}" }
