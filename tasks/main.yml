@@ -87,6 +87,8 @@
     cd /usr/local/bin
     TMP_DIR="`mktemp -d`" \
       && tar -zx -C $TMP_DIR -f {{ etcd_download.dest }} \
+      && chown -Rf root:root $TMP_DIR/*/etcd* \
+      && chmod 0755 $TMP_DIR/*/etcd* \
       && mv $TMP_DIR/*/etcd* . \
       && rm -rf $TMP_DIR
   args:
