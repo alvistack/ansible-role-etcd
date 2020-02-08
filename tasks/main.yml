@@ -70,6 +70,8 @@
   tags: etcd
 
 - name: download archive
+  vars:
+    ansible_python_interpreter: "python3"
   get_url:
     url: "{{ item.url }}"
     dest: "{{ item.dest }}"
