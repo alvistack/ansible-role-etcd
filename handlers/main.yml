@@ -26,6 +26,6 @@
     state: "restarted"
   loop: "{{ ansible_play_hosts }}"
   delegate_to: "{{ item }}"
-  run_once: trun
+  run_once: true
   changed_when: false
   ignore_errors: true
