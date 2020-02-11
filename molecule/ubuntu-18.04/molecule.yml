@@ -28,13 +28,10 @@ platforms:
         network_name: private_network
         type: dhcp
     provider_raw_config_args:
-      - 'cpu_mode = "host-passthrough"'
       - 'nic_model_type = "virtio"'
       - 'disk_bus = "virtio"'
       - 'volume_cache = "none"'
       - 'storage :file, bus: "virtio", cache: "none"'
-    groups:
-      - etcd
   - name: ${MOLECULE_INSTANCE_NAME}-2
     box: generic/ubuntu1804
     cpu: 2
@@ -44,13 +41,10 @@ platforms:
         network_name: private_network
         type: dhcp
     provider_raw_config_args:
-      - 'cpu_mode = "host-passthrough"'
       - 'nic_model_type = "virtio"'
       - 'disk_bus = "virtio"'
       - 'volume_cache = "none"'
       - 'storage :file, bus: "virtio", cache: "none"'
-    groups:
-      - etcd
   - name: ${MOLECULE_INSTANCE_NAME}-3
     box: generic/ubuntu1804
     cpu: 2
@@ -60,13 +54,10 @@ platforms:
         network_name: private_network
         type: dhcp
     provider_raw_config_args:
-      - 'cpu_mode = "host-passthrough"'
       - 'nic_model_type = "virtio"'
       - 'disk_bus = "virtio"'
       - 'volume_cache = "none"'
       - 'storage :file, bus: "virtio", cache: "none"'
-    groups:
-      - etcd
 lint:
   name: yamllint
 dependency:
@@ -79,6 +70,12 @@ provisioner:
   name: ansible
   env:
     ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}
+  config_options:
+    defaults:
+      forks: 20
+    ssh_connection:
+      pipelining: true
+      ssh_args: -o ControlMaster=auto -o ControlPersist=600s
   lint:
     name: ansible-lint
   inventory:

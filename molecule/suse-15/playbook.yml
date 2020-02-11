@@ -21,7 +21,7 @@
     - role: bootstrap
     - role: python
 
-- hosts: etcd
+- hosts: all
   remote_user: root
   become: true
   roles:
