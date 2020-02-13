@@ -384,14 +384,15 @@
     - { dest: "{{ etcd_trusted_ca_file }}" }
   tags: etcd
 
+- name: flush handlers
+  meta: flush_handlers
+  tags: etcd
+
 - name: enable service
   service:
     name: "etcd"
+    state: "started"
     enabled: true
   changed_when: false
   ignore_errors: true
-  tags: etcd
-
-- name: flush handlers
-  meta: flush_handlers
   tags: etcd
