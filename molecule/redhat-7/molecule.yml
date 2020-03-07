@@ -32,6 +32,8 @@ platforms:
       - 'disk_bus = "virtio"'
       - 'volume_cache = "none"'
       - 'storage :file, bus: "virtio", cache: "none"'
+    groups:
+      - etcd
   - name: ${MOLECULE_INSTANCE_NAME}-2
     box: generic/rhel7
     cpu: 2
@@ -45,6 +47,8 @@ platforms:
       - 'disk_bus = "virtio"'
       - 'volume_cache = "none"'
       - 'storage :file, bus: "virtio", cache: "none"'
+    groups:
+      - etcd
 lint: |
   set -e
   yamllint .

@@ -24,5 +24,9 @@
     - include_role:
         name: python
 
+- hosts: etcd
+  remote_user: root
+  become: true
+  tasks:
     - include_role:
         name: etcd
