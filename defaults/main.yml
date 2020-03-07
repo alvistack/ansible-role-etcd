@@ -73,7 +73,7 @@ etcd_csr_subject_alt_name: >-
   {%- for host in ansible_play_hosts -%}
   {%-   set _list = _list.append("IP:" + hostvars[host].ansible_default_ipv4.address) -%}
   {%- endfor -%}
-  {{ _list | join(',') }}
+  {{ _list }}
 
 # Enable client cert authentication.
 etcd_client_cert_auth: true
@@ -99,7 +99,7 @@ etcd_peer_csr_subject_alt_name: >-
   {%- for host in ansible_play_hosts -%}
   {%-   set _list = _list.append("IP:" + hostvars[host].ansible_default_ipv4.address) -%}
   {%- endfor -%}
-  {{ _list | join(',') }}
+  {{ _list }}
 
 # Enable peer client cert authentication.
 etcd_peer_client_cert_auth: true

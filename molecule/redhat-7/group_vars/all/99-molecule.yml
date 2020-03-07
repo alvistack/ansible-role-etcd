@@ -32,7 +32,7 @@ etcd_csr_subject_alt_name: >-
   {%- for host in groups['etcd'] -%}
   {%-   set _list = _list.append("IP:" + hostvars[host].ansible_eth1.ipv4.address) -%}
   {%- endfor -%}
-  {{ _list | join(',') }}
+  {{ _list }}
 etcd_peer_csr_subject_alt_name: >-
   {%- set _list = ["DNS:localhost", "IP:127.0.0.1"] -%}
   {%- for host in groups['etcd'] -%}
@@ -41,4 +41,4 @@ etcd_peer_csr_subject_alt_name: >-
   {%- for host in groups['etcd'] -%}
   {%-   set _list = _list.append("IP:" + hostvars[host].ansible_eth1.ipv4.address) -%}
   {%- endfor -%}
-  {{ _list | join(',') }}
+  {{ _list }}
