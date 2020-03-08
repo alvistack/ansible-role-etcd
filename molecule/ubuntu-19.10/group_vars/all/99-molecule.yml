@@ -18,27 +18,27 @@ etcd_listen_peer_urls: "https://{{ ansible_eth1.ipv4.address }}:2380,https://127
 etcd_listen_client_urls: "https://{{ ansible_eth1.ipv4.address }}:2379,https://127.0.0.1:2379"
 etcd_initial_advertise_peer_urls: "https://{{ ansible_eth1.ipv4.address }}:2380"
 etcd_initial_cluster: >-
-  {%- set _list = [] -%}
+  {%- set _params = [] -%}
   {%- for host in groups['etcd'] -%}
-  {%-   set _list = _list.append(host + "=https://" + hostvars[host].ansible_eth1.ipv4.address + ":2380") -%}
+  {%-   set _params = _params.append(host + "=https://" + hostvars[host].ansible_eth1.ipv4.address + ":2380") -%}
   {%- endfor -%}
-  {{ _list | join(',') }}
+  {{ _params | join(',') }}
 etcd_advertise_client_urls: "https://{{ ansible_eth1.ipv4.address }}:2379"
 etcd_csr_subject_alt_name: >-
-  {%- set _list = ["DNS:localhost", "IP:127.0.0.1"] -%}
+  {%- set _params = ["DNS:localhost", "IP:127.0.0.1"] -%}
   {%- for host in groups['etcd'] -%}
-  {%-   set _list = _list.append("DNS:" + host) -%}
+  {%-   set _params = _params.append("DNS:" + host) -%}
   {%- endfor -%}
   {%- for host in groups['etcd'] -%}
-  {%-   set _list = _list.append("IP:" + hostvars[host].ansible_eth1.ipv4.address) -%}
+  {%-   set _params = _params.append("IP:" + hostvars[host].ansible_eth1.ipv4.address) -%}
   {%- endfor -%}
-  {{ _list }}
+  {{ _params }}
 etcd_peer_csr_subject_alt_name: >-
-  {%- set _list = ["DNS:localhost", "IP:127.0.0.1"] -%}
+  {%- set _params = ["DNS:localhost", "IP:127.0.0.1"] -%}
   {%- for host in groups['etcd'] -%}
-  {%-   set _list = _list.append("DNS:" + host) -%}
+  {%-   set _params = _params.append("DNS:" + host) -%}
   {%- endfor -%}
   {%- for host in groups['etcd'] -%}
-  {%-   set _list = _list.append("IP:" + hostvars[host].ansible_eth1.ipv4.address) -%}
+  {%-   set _params = _params.append("IP:" + hostvars[host].ansible_eth1.ipv4.address) -%}
   {%- endfor -%}
-  {{ _list }}
+  {{ _params }}
