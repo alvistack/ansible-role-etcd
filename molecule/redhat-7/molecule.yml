@@ -50,7 +50,7 @@ platforms:
     groups:
       - etcd
 lint: |
-  set -e
+  set -ex
   yamllint .
   ansible-lint
   flake8
