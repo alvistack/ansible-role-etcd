@@ -15,6 +15,10 @@
 # limitations under the License.
 
 _etcd_download:
+  v3.4.5:
+    url: "https://github.com/etcd-io/etcd/releases/download/v3.4.5/etcd-v3.4.5-linux-amd64.tar.gz"
+    dest: "{{ ansible_user_dir }}/.ansible/tmp/etcd-v3.4.5-linux-amd64.tar.gz"
+    checksum: "sha1:85379c9178f6387b6104ead0ef3e158077fa0acc"
   v3.4.4:
     url: "https://github.com/etcd-io/etcd/releases/download/v3.4.4/etcd-v3.4.4-linux-amd64.tar.gz"
     dest: "{{ ansible_user_dir }}/.ansible/tmp/etcd-v3.4.4-linux-amd64.tar.gz"
@@ -35,6 +39,22 @@ _etcd_download:
     url: "https://github.com/etcd-io/etcd/releases/download/v3.4.0/etcd-v3.4.0-linux-amd64.tar.gz"
     dest: "{{ ansible_user_dir }}/.ansible/tmp/etcd-v3.4.0-linux-amd64.tar.gz"
     checksum: "sha1:af01072da1dd5c74d83ca45fe52c304afbce15a2"
+  v3.3.19:
+    url: "https://github.com/etcd-io/etcd/releases/download/v3.3.19/etcd-v3.3.19-linux-amd64.tar.gz"
+    dest: "{{ ansible_user_dir }}/.ansible/tmp/etcd-v3.3.19-linux-amd64.tar.gz"
+    checksum: "sha1:504c7f56e940f2d8aa6e819b1dd4730ccf5a8e25"
+  v3.3.18:
+    url: "https://github.com/etcd-io/etcd/releases/download/v3.3.18/etcd-v3.3.18-linux-amd64.tar.gz"
+    dest: "{{ ansible_user_dir }}/.ansible/tmp/etcd-v3.3.18-linux-amd64.tar.gz"
+    checksum: "sha1:d5ca6b3ea93f53b6200b295114eb68635862c3c7"
+  v3.3.17:
+    url: "https://github.com/etcd-io/etcd/releases/download/v3.3.17/etcd-v3.3.17-linux-amd64.tar.gz"
+    dest: "{{ ansible_user_dir }}/.ansible/tmp/etcd-v3.3.17-linux-amd64.tar.gz"
+    checksum: "sha1:442c283ad15d7a46e05cdeb60e4479b7acef096f"
+  v3.3.15:
+    url: "https://github.com/etcd-io/etcd/releases/download/v3.3.15/etcd-v3.3.15-linux-amd64.tar.gz"
+    dest: "{{ ansible_user_dir }}/.ansible/tmp/etcd-v3.3.15-linux-amd64.tar.gz"
+    checksum: "sha1:441cd763c9c59fea754786d3a7ed3d67487a8307"
   v3.3.14:
     url: "https://github.com/etcd-io/etcd/releases/download/v3.3.14/etcd-v3.3.14-linux-amd64.tar.gz"
     dest: "{{ ansible_user_dir }}/.ansible/tmp/etcd-v3.3.14-linux-amd64.tar.gz"
