@@ -130,7 +130,7 @@
     - { dest: "/usr/local/bin/etcdctl", mode: "0755" }
   tags: etcd
 
-- name: generate trusted ca private key
+- name: "generate {{ etcd_trusted_ca_file | splitext | first }}.key"
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -143,7 +143,7 @@
     - etcd | systemctl restart
   tags: etcd
 
-- name: generate trusted ca csr
+- name: "generate {{ etcd_trusted_ca_file | splitext | first }}.csr"
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -161,7 +161,7 @@
     - etcd | systemctl restart
   tags: etcd
 
-- name: generate trusted ca selfsigned certificate
+- name: "generate {{ etcd_trusted_ca_file }}"
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -177,7 +177,7 @@
     - etcd | systemctl restart
   tags: etcd
 
-- name: generate client server private key
+- name: "generate {{ etcd_key_file }}"
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -190,7 +190,7 @@
     - etcd | systemctl restart
   tags: etcd
 
-- name: generate client server csr
+- name: "generate {{ etcd_cert_file | splitext | first }}.csr"
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -216,7 +216,7 @@
     - etcd | systemctl restart
   tags: etcd
 
-- name: generate client server ownca certificate
+- name: "generate {{ etcd_cert_file }}"
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -234,7 +234,7 @@
     - etcd | systemctl restart
   tags: etcd
 
-- name: generate peer server trusted ca private key
+- name: "generate {{ etcd_peer_trusted_ca_file | splitext | first }}.key"
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -247,7 +247,7 @@
     - etcd | systemctl restart
   tags: etcd
 
-- name: generate peer server trusted ca csr
+- name: "generate {{ etcd_peer_trusted_ca_file | splitext | first }}.csr"
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -265,7 +265,7 @@
     - etcd | systemctl restart
   tags: etcd
 
-- name: generate peer server trusted ca selfsigned certificate
+- name: "generate {{ etcd_peer_trusted_ca_file }}"
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -281,7 +281,7 @@
     - etcd | systemctl restart
   tags: etcd
 
-- name: generate peer private key
+- name: "generate {{ etcd_peer_key_file }}"
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -294,7 +294,7 @@
     - etcd | systemctl restart
   tags: etcd
 
-- name: generate peer csr
+- name: "generate {{ etcd_peer_cert_file | splitext | first }}.csr"
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -320,7 +320,7 @@
     - etcd | systemctl restart
   tags: etcd
 
-- name: generate peer ownca certificate
+- name: "generate {{ etcd_peer_cert_file }}"
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
