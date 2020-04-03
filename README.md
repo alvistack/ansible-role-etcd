@@ -1,6 +1,6 @@
 # Ansible Role for etcd
 
-[![Travis](https://img.shields.io/travis/alvistack/ansible-role-etcd.svg)](https://travis-ci.org/alvistack/ansible-role-etcd)
+[![Travis](https://img.shields.io/travis/com/alvistack/ansible-role-etcd.svg)](https://travis-ci.com/alvistack/ansible-role-etcd)
 [![GitHub release](https://img.shields.io/github/release/alvistack/ansible-role-etcd.svg)](https://github.com/alvistack/ansible-role-etcd)
 [![GitHub license](https://img.shields.io/github/license/alvistack/ansible-role-etcd.svg)](https://github.com/alvistack/ansible-role-etcd/blob/master/LICENSE)
 [![Ansible Role](https://img.shields.io/badge/galaxy-alvistack.etcd-blue.svg)](https://galaxy.ansible.com/alvistack/etcd)
