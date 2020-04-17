@@ -20,7 +20,7 @@
   changed_when: false
   ignore_errors: true
 
-- name: etcd | systemctl restart
+- name: etcd | systemctl restart etcd
   service:
     name: "etcd"
     state: "restarted"
