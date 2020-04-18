@@ -389,7 +389,7 @@
   meta: flush_handlers
   tags: etcd
 
-- name: start service
+- name: systemctl start etcd
   service:
     name: "etcd"
     state: "started"
