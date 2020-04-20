@@ -385,10 +385,6 @@
     - { dest: "{{ etcd_trusted_ca_file }}" }
   tags: etcd
 
-- name: flush handlers
-  meta: flush_handlers
-  tags: etcd
-
 - name: systemctl start etcd
   service:
     name: "etcd"
@@ -396,4 +392,8 @@
     enabled: true
   changed_when: false
   ignore_errors: true
+  tags: etcd
+
+- name: flush handlers
+  meta: flush_handlers
   tags: etcd
