@@ -45,7 +45,7 @@
           endpoint health
       args:
         executable: "/bin/bash"
-      when: ansible_hostname == ansible_play_hosts[0]
+      when: inventory_hostname == ansible_play_hosts[0]
       register: result
       changed_when: result is not succeeded
 
@@ -62,7 +62,7 @@
           put foo bar
       args:
         executable: "/bin/bash"
-      when: ansible_hostname == ansible_play_hosts[0]
+      when: inventory_hostname == ansible_play_hosts[0]
       register: result
       changed_when: result is not succeeded
 

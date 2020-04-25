@@ -21,7 +21,7 @@ etcd_version: "v3.4.7"
 etcd_download: "{{ _etcd_download[etcd_version] }}"
 
 # Human-readable name for this member.
-etcd_name: "{{ ansible_hostname }}"
+etcd_name: "{{ inventory_hostname }}"
 
 # Path to the data directory.
 etcd_data_dir: "/var/lib/etcd/default"
