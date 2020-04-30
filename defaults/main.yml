@@ -40,11 +40,12 @@ etcd_initial_advertise_peer_urls: "https://{{ ansible_default_ipv4.address }}:23
 
 # initial cluster configuration for bootstrapping.
 etcd_initial_cluster: >-
-  {%- set _params = [] -%}
+  {%- set _ns = namespace() -%}
+  {%- set _ns._params = [] -%}
   {%- for host in ansible_play_hosts -%}
-  {%-   set _params = _params.append(host + "=https://" + hostvars[host].ansible_default_ipv4.address + ":2380") -%}
+  {%-   set _ns._params = _ns._params + [host + "=https://" + hostvars[host].ansible_default_ipv4.address + ":2380"] -%}
   {%- endfor -%}
-  {{ _params | join(',') }}
+  {{ _ns._params | join(',') }}
 
 # Initial cluster state ("new" or "existing").
 etcd_initial_cluster_state: "new"
@@ -66,14 +67,12 @@ etcd_csr_common_name: "{{ ansible_play_hosts[0] }}"
 
 # subjectAltName field of the CSR.
 etcd_csr_subject_alt_name: >-
-  {%- set _params = ["DNS:localhost", "IP:127.0.0.1"] -%}
+  {%- set _ns = namespace() -%}
+  {%- set _ns._params = ["DNS:localhost", "IP:127.0.0.1"] -%}
   {%- for host in ansible_play_hosts -%}
-  {%-   set _params = _params.append("DNS:" + host) -%}
+  {%-   set _ns._params = _ns._params + ["DNS:" + host, "IP:" + hostvars[host].ansible_default_ipv4.address] -%}
   {%- endfor -%}
-  {%- for host in ansible_play_hosts -%}
-  {%-   set _params = _params.append("IP:" + hostvars[host].ansible_default_ipv4.address) -%}
-  {%- endfor -%}
-  {{ _params }}
+  {{ _ns._params }}
 
 # Enable client cert authentication.
 etcd_client_cert_auth: true
@@ -92,14 +91,12 @@ etcd_peer_csr_common_name: "{{ ansible_play_hosts[0] }}"
 
 # subjectAltName field of the CSR.
 etcd_peer_csr_subject_alt_name: >-
-  {%- set _params = ["DNS:localhost", "IP:127.0.0.1"] -%}
+  {%- set _ns = namespace() -%}
+  {%- set _ns._params = ["DNS:localhost", "IP:127.0.0.1"] -%}
   {%- for host in ansible_play_hosts -%}
-  {%-   set _params = _params.append("DNS:" + host) -%}
+  {%-   set _ns._params = _ns._params + ["DNS:" + host, "IP:" + hostvars[host].ansible_default_ipv4.address] -%}
   {%- endfor -%}
-  {%- for host in ansible_play_hosts -%}
-  {%-   set _params = _params.append("IP:" + hostvars[host].ansible_default_ipv4.address) -%}
-  {%- endfor -%}
-  {{ _params }}
+  {{ _ns._params }}
 
 # Enable peer client cert authentication.
 etcd_peer_client_cert_auth: true
