@@ -20,6 +20,7 @@
   tasks:
     - include_role:
         name: python
+      tags: python
 
 - hosts: etcd
   remote_user: root
@@ -27,3 +28,4 @@
   tasks:
     - include_role:
         name: etcd
+      tags: etcd
