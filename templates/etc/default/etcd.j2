@@ -198,12 +198,12 @@ ETCD_ADVERTISE_CLIENT_URLS="{{ etcd_advertise_client_urls }}"
 ##### -cert-file
 ## Path to the client server TLS cert file.
 ## default: none
-ETCD_CERT_FILE="{{ etcd_cert_file | default(None) }}"
+ETCD_CERT_FILE="{{ etcd_cert_file }}"
 
 ##### -key-file
 ## Path to the client server TLS key file.
 ## default: none
-ETCD_KEY_FILE="{{ etcd_key_file | default(None) }}"
+ETCD_KEY_FILE="{{ etcd_key_file }}"
 
 ##### -client-cert-auth
 ## Enable client cert authentication.
@@ -213,7 +213,7 @@ ETCD_CLIENT_CERT_AUTH={{ etcd_client_cert_auth | default(false) | bool | lower }
 ##### -trusted-ca-file
 ## Path to the client server TLS trusted CA key file.
 ## default: none
-ETCD_TRUSTED_CA_FILE="{{ etcd_trusted_ca_file | default(None) }}"
+ETCD_TRUSTED_CA_FILE="{{ etcd_trusted_ca_file }}"
 
 ##### -peer-ca-file [DEPRECATED]
 ## Path to the peer server TLS CA file. `-peer-ca-file ca.crt` could be replaced
@@ -224,12 +224,12 @@ ETCD_TRUSTED_CA_FILE="{{ etcd_trusted_ca_file | default(None) }}"
 ##### -peer-cert-file
 ## Path to the peer server TLS cert file.
 ## default: none
-ETCD_PEER_CERT_FILE="{{ etcd_peer_cert_file | default(None) }}"
+ETCD_PEER_CERT_FILE="{{ etcd_peer_cert_file }}"
 
 ##### -peer-key-file
 ## Path to the peer server TLS key file.
 ## default: none
-ETCD_PEER_KEY_FILE="{{ etcd_peer_key_file | default(None) }}"
+ETCD_PEER_KEY_FILE="{{ etcd_peer_key_file }}"
 
 ##### -peer-client-cert-auth
 ## Enable peer client cert authentication.
@@ -239,7 +239,7 @@ ETCD_PEER_CLIENT_CERT_AUTH={{ etcd_peer_client_cert_auth | default(false) | bool
 ##### -peer-trusted-ca-file
 ## Path to the peer server TLS trusted CA file.
 ## default: none
-ETCD_PEER_TRUSTED_CA_FILE="{{ etcd_peer_trusted_ca_file | default(None) }}"
+ETCD_PEER_TRUSTED_CA_FILE="{{ etcd_peer_trusted_ca_file }}"
 
 ### Logging Flags
 ##### -debug
