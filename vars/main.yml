@@ -15,6 +15,10 @@
 # limitations under the License.
 
 _etcd_download:
+  v3.4.11:
+    url: "https://github.com/etcd-io/etcd/releases/download/v3.4.11/etcd-v3.4.11-linux-amd64.tar.gz"
+    dest: "{{ ansible_user_dir }}/.ansible/tmp/etcd-v3.4.11-linux-amd64.tar.gz"
+    checksum: "sha1:596d5dfe64879e5573c4401200b384bd0df3890a"
   v3.4.10:
     url: "https://github.com/etcd-io/etcd/releases/download/v3.4.10/etcd-v3.4.10-linux-amd64.tar.gz"
     dest: "{{ ansible_user_dir }}/.ansible/tmp/etcd-v3.4.10-linux-amd64.tar.gz"
@@ -23,10 +27,10 @@ _etcd_download:
     url: "https://github.com/etcd-io/etcd/releases/download/v3.4.9/etcd-v3.4.9-linux-amd64.tar.gz"
     dest: "{{ ansible_user_dir }}/.ansible/tmp/etcd-v3.4.9-linux-amd64.tar.gz"
     checksum: "sha1:3ecc9563bb3f5043ad763070b026ab1375d99175"
-  v3.4.8:
-    url: "https://github.com/etcd-io/etcd/releases/download/v3.4.8/etcd-v3.4.8-linux-amd64.tar.gz"
-    dest: "{{ ansible_user_dir }}/.ansible/tmp/etcd-v3.4.8-linux-amd64.tar.gz"
-    checksum: "sha1:003aa6ce162140e26cb272a241ba4651f3d7b608"
+  v3.3.24:
+    url: "https://github.com/etcd-io/etcd/releases/download/v3.3.24/etcd-v3.3.24-linux-amd64.tar.gz"
+    dest: "{{ ansible_user_dir }}/.ansible/tmp/etcd-v3.3.24-linux-amd64.tar.gz"
+    checksum: "sha1:45e9e7af217df97f56b2cf240d9a7753d602b24d"
   v3.3.23:
     url: "https://github.com/etcd-io/etcd/releases/download/v3.3.23/etcd-v3.3.23-linux-amd64.tar.gz"
     dest: "{{ ansible_user_dir }}/.ansible/tmp/etcd-v3.3.23-linux-amd64.tar.gz"
@@ -35,7 +39,3 @@ _etcd_download:
     url: "https://github.com/etcd-io/etcd/releases/download/v3.3.22/etcd-v3.3.22-linux-amd64.tar.gz"
     dest: "{{ ansible_user_dir }}/.ansible/tmp/etcd-v3.3.22-linux-amd64.tar.gz"
     checksum: "sha1:c7bd07138068b8f5cdeae7cf48b634869924d47d"
-  v3.3.21:
-    url: "https://github.com/etcd-io/etcd/releases/download/v3.3.21/etcd-v3.3.21-linux-amd64.tar.gz"
-    dest: "{{ ansible_user_dir }}/.ansible/tmp/etcd-v3.3.21-linux-amd64.tar.gz"
-    checksum: "sha1:8e663a14f180271414d141618a22d6283b482e4f"
