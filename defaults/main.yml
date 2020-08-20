@@ -15,7 +15,7 @@
 # limitations under the License.
 
 # etcd version.
-etcd_version: "v3.4.11"
+etcd_version: "v3.4.12"
 
 # etcd download details.
 etcd_download: "{{ _etcd_download[etcd_version] }}"
