@@ -20,9 +20,9 @@
   changed_when: false
   ignore_errors: true
 
-- name: etcd | systemctl restart etcd
+- name: etcd | systemctl restart etcd.service
   service:
-    name: "etcd"
+    name: "etcd.service"
     state: "restarted"
     enabled: true
   loop: "{{ ansible_play_hosts }}"

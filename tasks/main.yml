@@ -58,6 +58,7 @@
   loop:
     - { dest: "/etc/default" }
     - { dest: "/lib/systemd/system" }
+    - { dest: "/lib/systemd/system/etcd.service.d" }
     - { dest: "/usr/local/bin" }
     - { dest: "/var/lib/etcd" }
     - { dest: "{{ etcd_cert_file | dirname }}" }
@@ -99,7 +100,7 @@
   when: get_url_result is changed
   notify:
     - etcd | systemctl daemon-reload
-    - etcd | systemctl restart etcd
+    - etcd | systemctl restart etcd.service
   tags: etcd
 
 - name: copy templates
@@ -114,7 +115,7 @@
     - { dest: "/lib/systemd/system/etcd.service" }
   notify:
     - etcd | systemctl daemon-reload
-    - etcd | systemctl restart etcd
+    - etcd | systemctl restart etcd.service
   tags: etcd
 
 - name: prepare files
@@ -141,7 +142,7 @@
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
-    - etcd | systemctl restart etcd
+    - etcd | systemctl restart etcd.service
   tags: etcd
 
 - name: "generate {{ etcd_trusted_ca_file | splitext | first }}.csr"
@@ -159,7 +160,7 @@
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
-    - etcd | systemctl restart etcd
+    - etcd | systemctl restart etcd.service
   tags: etcd
 
 - name: "generate {{ etcd_trusted_ca_file }}"
@@ -175,7 +176,7 @@
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
-    - etcd | systemctl restart etcd
+    - etcd | systemctl restart etcd.service
   tags: etcd
 
 - name: "generate {{ etcd_key_file }}"
@@ -188,7 +189,7 @@
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
-    - etcd | systemctl restart etcd
+    - etcd | systemctl restart etcd.service
   tags: etcd
 
 - name: "generate {{ etcd_cert_file | splitext | first }}.csr"
@@ -214,7 +215,7 @@
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
-    - etcd | systemctl restart etcd
+    - etcd | systemctl restart etcd.service
   tags: etcd
 
 - name: "generate {{ etcd_cert_file }}"
@@ -232,7 +233,7 @@
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
-    - etcd | systemctl restart etcd
+    - etcd | systemctl restart etcd.service
   tags: etcd
 
 - name: "generate {{ etcd_peer_trusted_ca_file | splitext | first }}.key"
@@ -245,7 +246,7 @@
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
-    - etcd | systemctl restart etcd
+    - etcd | systemctl restart etcd.service
   tags: etcd
 
 - name: "generate {{ etcd_peer_trusted_ca_file | splitext | first }}.csr"
@@ -263,7 +264,7 @@
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
-    - etcd | systemctl restart etcd
+    - etcd | systemctl restart etcd.service
   tags: etcd
 
 - name: "generate {{ etcd_peer_trusted_ca_file }}"
@@ -279,7 +280,7 @@
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
-    - etcd | systemctl restart etcd
+    - etcd | systemctl restart etcd.service
   tags: etcd
 
 - name: "generate {{ etcd_peer_key_file }}"
@@ -292,7 +293,7 @@
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
-    - etcd | systemctl restart etcd
+    - etcd | systemctl restart etcd.service
   tags: etcd
 
 - name: "generate {{ etcd_peer_cert_file | splitext | first }}.csr"
@@ -318,7 +319,7 @@
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
-    - etcd | systemctl restart etcd
+    - etcd | systemctl restart etcd.service
   tags: etcd
 
 - name: "generate {{ etcd_peer_cert_file }}"
@@ -336,7 +337,7 @@
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
-    - etcd | systemctl restart etcd
+    - etcd | systemctl restart etcd.service
   tags: etcd
 
 - name: base64 encode
@@ -386,9 +387,9 @@
     - { dest: "{{ etcd_trusted_ca_file }}" }
   tags: etcd
 
-- name: systemctl start etcd
+- name: systemctl start etcd.service
   service:
-    name: "etcd"
+    name: "etcd.service"
     state: "started"
     enabled: true
   changed_when: false
