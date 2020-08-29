@@ -5,6 +5,7 @@ Description=etcd - highly-available key value store
 Documentation=https://github.com/coreos/etcd
 After=network-online.target time-sync.target
 Wants=network-online.target time-sync.target
+RequiresMountsFor=/var/lib/etcd
 
 [Service]
 Environment=DAEMON_ARGS=
