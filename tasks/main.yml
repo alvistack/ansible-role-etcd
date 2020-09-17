@@ -130,6 +130,9 @@
     - { dest: "/lib/systemd/system/etcd.service" }
     - { dest: "/usr/local/bin/etcd", mode: "0755" }
     - { dest: "/usr/local/bin/etcdctl", mode: "0755" }
+  notify:
+    - etcd | systemctl daemon-reload
+    - etcd | systemctl restart etcd.service
   tags: etcd
 
 - name: "generate {{ etcd_trusted_ca_file | splitext | first }}.key"
