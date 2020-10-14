@@ -3,9 +3,8 @@
 [Unit]
 Description=etcd - highly-available key value store
 Documentation=https://github.com/coreos/etcd
-After=network-online.target time-sync.target
-Wants=network-online.target time-sync.target
-RequiresMountsFor=/var/lib/etcd
+After=network-online.target local-fs.target remote-fs.target time-sync.target
+Wants=network-online.target local-fs.target remote-fs.target time-sync.target
 
 [Service]
 Environment=DAEMON_ARGS=

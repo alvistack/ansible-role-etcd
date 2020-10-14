@@ -16,7 +16,6 @@
 
 - name: include default variables
   include_vars: "../vars/main.yml"
-  tags: etcd
 
 - name: include release specific variables
   include_vars: "{{ lookup('first_found', _params) }}"
@@ -31,7 +30,6 @@
       paths:
         - "../vars"
   ignore_errors: true
-  tags: etcd
 
 - name: include release specific tasks
   include_tasks: "{{ lookup('first_found', _params) }}"
@@ -46,7 +44,6 @@
       paths:
         - "."
   ignore_errors: true
-  tags: etcd
 
 - name: prepare directories
   file:
@@ -68,7 +65,6 @@
     - { dest: "{{ etcd_peer_key_file | dirname }}" }
     - { dest: "{{ etcd_peer_trusted_ca_file | dirname }}" }
     - { dest: "{{ etcd_trusted_ca_file | dirname }}" }
-  tags: etcd
 
 - name: download archive
   vars:
@@ -83,7 +79,6 @@
     - "{{ etcd_download }}"
   register: get_url_result
   until: get_url_result is succeeded
-  tags: etcd
 
 - name: unarchive package
   shell: |
@@ -101,7 +96,6 @@
   notify:
     - etcd | systemctl daemon-reload
     - etcd | systemctl restart etcd.service
-  tags: etcd
 
 - name: copy templates
   template:
@@ -116,7 +110,6 @@
   notify:
     - etcd | systemctl daemon-reload
     - etcd | systemctl restart etcd.service
-  tags: etcd
 
 - name: prepare files
   file:
@@ -133,7 +126,6 @@
   notify:
     - etcd | systemctl daemon-reload
     - etcd | systemctl restart etcd.service
-  tags: etcd
 
 - name: "generate {{ etcd_trusted_ca_file | splitext | first }}.key"
   environment:
@@ -146,7 +138,6 @@
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart etcd.service
-  tags: etcd
 
 - name: "generate {{ etcd_trusted_ca_file | splitext | first }}.csr"
   environment:
@@ -164,7 +155,6 @@
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart etcd.service
-  tags: etcd
 
 - name: "generate {{ etcd_trusted_ca_file }}"
   environment:
@@ -180,7 +170,6 @@
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart etcd.service
-  tags: etcd
 
 - name: "generate {{ etcd_key_file }}"
   environment:
@@ -193,7 +182,6 @@
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart etcd.service
-  tags: etcd
 
 - name: "generate {{ etcd_cert_file | splitext | first }}.csr"
   environment:
@@ -219,7 +207,6 @@
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart etcd.service
-  tags: etcd
 
 - name: "generate {{ etcd_cert_file }}"
   environment:
@@ -237,7 +224,6 @@
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart etcd.service
-  tags: etcd
 
 - name: "generate {{ etcd_peer_trusted_ca_file | splitext | first }}.key"
   environment:
@@ -250,7 +236,6 @@
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart etcd.service
-  tags: etcd
 
 - name: "generate {{ etcd_peer_trusted_ca_file | splitext | first }}.csr"
   environment:
@@ -268,7 +253,6 @@
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart etcd.service
-  tags: etcd
 
 - name: "generate {{ etcd_peer_trusted_ca_file }}"
   environment:
@@ -284,7 +268,6 @@
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart etcd.service
-  tags: etcd
 
 - name: "generate {{ etcd_peer_key_file }}"
   environment:
@@ -297,7 +280,6 @@
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart etcd.service
-  tags: etcd
 
 - name: "generate {{ etcd_peer_cert_file | splitext | first }}.csr"
   environment:
@@ -323,7 +305,6 @@
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart etcd.service
-  tags: etcd
 
 - name: "generate {{ etcd_peer_cert_file }}"
   environment:
@@ -341,7 +322,6 @@
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
     - etcd | systemctl restart etcd.service
-  tags: etcd
 
 - name: base64 encode
   shell: |
@@ -361,7 +341,6 @@
   delegate_to: "{{ ansible_play_hosts[0] }}"
   register: base64_encode_result
   changed_when: base64_encode_result is not succeeded
-  tags: etcd
 
 - name: base64 decode
   shell: |
@@ -372,7 +351,6 @@
   when: inventory_hostname != ansible_play_hosts[0]
   register: base64_decode_result
   changed_when: base64_decode_result is not succeeded
-  tags: etcd
 
 - name: prepare files
   file:
@@ -388,7 +366,9 @@
     - { dest: "{{ etcd_peer_key_file }}", mode: "0600" }
     - { dest: "{{ etcd_peer_trusted_ca_file }}" }
     - { dest: "{{ etcd_trusted_ca_file }}" }
-  tags: etcd
+
+- name: flush handlers
+  meta: flush_handlers
 
 - name: systemctl start etcd.service
   service:
@@ -397,8 +377,3 @@
     enabled: true
   changed_when: false
   ignore_errors: true
-  tags: etcd
-
-- name: flush handlers
-  meta: flush_handlers
-  tags: etcd
