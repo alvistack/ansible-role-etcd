@@ -82,7 +82,7 @@
 
 - name: unarchive package
   shell: |
-    set -o pipefail
+    set -euo pipefail
     cd /usr/local/bin
     TMP_DIR="$(mktemp -d)" \
       && tar -zx -C $TMP_DIR -f {{ etcd_download.dest }} \
@@ -325,7 +325,7 @@
 
 - name: base64 encode
   shell: |
-    set -o pipefail
+    set -euo pipefail
     tar zcfP - {{ _params | join(' ') }} | base64 -w 0
   vars:
     _params:
@@ -344,7 +344,7 @@
 
 - name: base64 decode
   shell: |
-    set -o pipefail
+    set -euo pipefail
     echo -n {{ base64_encode_result.stdout | quote }} | base64 -d | tar zx -C /
   args:
     executable: "/bin/bash"

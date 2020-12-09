@@ -60,7 +60,7 @@ platforms:
     groups:
       - etcd
 lint: |
-  set -ex
+  set -euo pipefail
   yamllint .
   ansible-lint
   flake8
@@ -75,9 +75,6 @@ dependency:
     force: false
 provisioner:
   name: ansible
-  env:
-    ANSIBLE_FORCE_COLOR: 1
-    PY_COLORS: 1
   config_options:
     defaults:
       forks: 20
