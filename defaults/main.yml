@@ -80,6 +80,9 @@ etcd_client_cert_auth: true
 # Path to the client server TLS trusted CA key file.
 etcd_trusted_ca_file: "/etc/etcd/pki/ca.crt"
 
+# Client TLS using generated certificates.
+etcd_auto_tls: false
+
 # Path to the peer server TLS cert file.
 etcd_peer_cert_file: "/etc/etcd/pki/peer.crt"
 
@@ -100,6 +103,9 @@ etcd_peer_csr_subject_alt_name: >-
 
 # Enable peer client cert authentication.
 etcd_peer_client_cert_auth: true
+
+# Peer TLS using generated certificates.
+etcd_peer_auto_tls: false
 
 # Path to the peer server TLS trusted CA file.
 etcd_peer_trusted_ca_file: "{{ etcd_trusted_ca_file }}"
