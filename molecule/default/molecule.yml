@@ -22,6 +22,8 @@ driver:
       ansible_connection: local
 platforms:
   - name: localhost
+    groups:
+      - etcd
 lint: |
   set -euo pipefail
   yamllint .

@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: all
+- hosts: etcd
   remote_user: root
   become: true
   tasks:
@@ -45,7 +45,7 @@
           endpoint health
       args:
         executable: "/bin/bash"
-      when: inventory_hostname == groups['all'][0]
+      when: inventory_hostname == groups['etcd'][0]
       register: result
       changed_when: result is not succeeded
 
@@ -62,7 +62,7 @@
           put foo bar
       args:
         executable: "/bin/bash"
-      when: inventory_hostname == groups['all'][0]
+      when: inventory_hostname == groups['etcd'][0]
       register: result
       changed_when: result is not succeeded
 

@@ -42,7 +42,7 @@ etcd_initial_advertise_peer_urls: "https://{{ ansible_default_ipv4.address }}:23
 etcd_initial_cluster: >-
   {%- set _ns = namespace() -%}
   {%- set _ns._params = [] -%}
-  {%- for host in groups['all'] -%}
+  {%- for host in groups['etcd'] -%}
   {%-   set _ns._params = _ns._params + [host + "=https://" + hostvars[host].ansible_default_ipv4.address + ":2380"] -%}
   {%- endfor -%}
   {{ _ns._params | join(',') }}
@@ -63,13 +63,13 @@ etcd_cert_file: "/etc/etcd/pki/server.crt"
 etcd_key_file: "{{ etcd_cert_file | splitext | first }}.key"
 
 # commonName field of the CSR.
-etcd_csr_common_name: "{{ groups['all'][0] }}"
+etcd_csr_common_name: "{{ groups['etcd'][0] }}"
 
 # subjectAltName field of the CSR.
 etcd_csr_subject_alt_name: >-
   {%- set _ns = namespace() -%}
   {%- set _ns._params = ["DNS:localhost", "IP:127.0.0.1"] -%}
-  {%- for host in groups['all'] -%}
+  {%- for host in groups['etcd'] -%}
   {%-   set _ns._params = _ns._params + ["DNS:" + host, "IP:" + hostvars[host].ansible_default_ipv4.address] -%}
   {%- endfor -%}
   {{ _ns._params }}
@@ -90,13 +90,13 @@ etcd_peer_cert_file: "/etc/etcd/pki/peer.crt"
 etcd_peer_key_file: "{{ etcd_peer_cert_file | splitext | first }}.key"
 
 # commonName field of the CSR.
-etcd_peer_csr_common_name: "{{ groups['all'][0] }}"
+etcd_peer_csr_common_name: "{{ groups['etcd'][0] }}"
 
 # subjectAltName field of the CSR.
 etcd_peer_csr_subject_alt_name: >-
   {%- set _ns = namespace() -%}
   {%- set _ns._params = ["DNS:localhost", "IP:127.0.0.1"] -%}
-  {%- for host in groups['all'] -%}
+  {%- for host in groups['etcd'] -%}
   {%-   set _ns._params = _ns._params + ["DNS:" + host, "IP:" + hostvars[host].ansible_default_ipv4.address] -%}
   {%- endfor -%}
   {{ _ns._params }}

@@ -22,6 +22,10 @@
         name: python
       tags: python
 
+- hosts: etcd
+  remote_user: root
+  become: true
+  tasks:
     - include_role:
         name: etcd
       tags: etcd
