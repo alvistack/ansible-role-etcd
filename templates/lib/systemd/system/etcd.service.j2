@@ -13,10 +13,13 @@ Environment=ETCD_DATA_DIR=/var/lib/etcd/default
 EnvironmentFile=-/etc/default/%p
 Type=notify
 PermissionsStartOnly=true
+#ExecStart=/bin/sh -c "GOMAXPROCS=$(nproc) /usr/bin/etcd $DAEMON_ARGS"
 ExecStart=/usr/local/bin/etcd $DAEMON_ARGS
 Restart=on-abnormal
+#RestartSec=10s
 LimitNOFILE=65536
 Nice=-5
 
 [Install]
 WantedBy=multi-user.target
+Alias=etcd2.service
