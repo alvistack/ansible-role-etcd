@@ -65,6 +65,7 @@
     - { dest: "{{ etcd_peer_key_file | dirname }}" }
     - { dest: "{{ etcd_peer_trusted_ca_file | dirname }}" }
     - { dest: "{{ etcd_trusted_ca_file | dirname }}" }
+  register: file_result
 
 - name: download archive
   vars:
@@ -77,12 +78,14 @@
     timeout: 300
   loop:
     - "{{ etcd_download }}"
+  when: file_result is changed
   register: get_url_result
   until: get_url_result is succeeded
 
 - name: unarchive package
   shell: |
     set -euo pipefail
+    exec &> >(tee -a {{ etcd_download.dest }}.log)
     cd /usr/local/bin
     TMP_DIR="$(mktemp -d)" \
       && tar -zx -C $TMP_DIR -f {{ etcd_download.dest }} \
@@ -92,7 +95,7 @@
       && rm -rf $TMP_DIR
   args:
     executable: "/bin/bash"
-  when: get_url_result is changed
+    creates: "{{ etcd_download.dest }}.log"
   notify:
     - etcd | systemctl daemon-reload
     - etcd | systemctl restart etcd.service
