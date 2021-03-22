@@ -16,9 +16,9 @@
 
 _etcd_download:
   "v3.4.15":
-    url: "https://github.com/alvistack/etcd-io-etcd/releases/download/v3.4.15/etcd-v3.4.15-linux-amd64.tar.gz"
-    dest: "/var/cache/ansible/f57141d45ceb727a84e2f0bcd0b98934ea2ad2b59009be90d901710861601651/etcd-v3.4.15-linux-amd64.tar.gz"
-    sha256sum: "9ddcb767e943b78bbf5b8f0221f48e34bcd0756ba759d66af612692c8b267ff2"
+    url: "https://github.com/etcd-io/etcd/releases/download/v3.4.15/etcd-v3.4.15-linux-amd64.tar.gz"
+    dest: "/var/cache/ansible/3bd00836ea328db89ecba3ed2155293934c0d09e64b53d6c9dfc0a256e724b81/etcd-v3.4.15-linux-amd64.tar.gz"
+    sha256sum: "3bd00836ea328db89ecba3ed2155293934c0d09e64b53d6c9dfc0a256e724b81"
   "v3.4.14":
     url: "http://github.com/etcd-io/etcd/releases/download/v3.4.14/etcd-v3.4.14-linux-amd64.tar.gz"
     dest: "/var/cache/ansible/f57141d45ceb727a84e2f0bcd0b98934ea2ad2b59009be90d901710861601651/etcd-v3.4.14-linux-amd64.tar.gz"
