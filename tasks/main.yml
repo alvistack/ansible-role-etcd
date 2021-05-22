@@ -60,10 +60,8 @@
     state: "{{ item.state | default('directory') }}"
   loop:
     - { dest: "/etc/default" }
-    - { dest: "/lib/systemd/system/etcd.service.d", state: "absent" }
+    - { dest: "/lib/systemd/system" }
     - { dest: "/usr/local/bin" }
-    - { dest: "/usr/local/lib/systemd/system" }
-    - { dest: "/usr/local/lib/systemd/system/etcd.service.d" }
     - { dest: "/var/lib/etcd" }
     - { dest: "{{ etcd_cert_file | dirname }}" }
     - { dest: "{{ etcd_key_file | dirname }}" }
@@ -118,7 +116,7 @@
     mode: "{{ item.mode | default('0644') }}"
   loop:
     - { dest: "/etc/default/etcd" }
-    - { dest: "/usr/local/lib/systemd/system/etcd.service" }
+    - { dest: "/lib/systemd/system/etcd.service" }
   notify:
     - etcd | systemctl daemon-reload
     - etcd | systemctl restart etcd.service
@@ -132,10 +130,9 @@
     state: "{{ item.state | default('file') }}"
   loop:
     - { dest: "/etc/default/etcd" }
-    - { dest: "/lib/systemd/system/etcd.service", state: "absent" }
     - { dest: "/usr/local/bin/etcd", mode: "0755" }
     - { dest: "/usr/local/bin/etcdctl", mode: "0755" }
-    - { dest: "/usr/local/lib/systemd/system/etcd.service" }
+    - { dest: "/lib/systemd/system/etcd.service" }
   notify:
     - etcd | systemctl daemon-reload
     - etcd | systemctl restart etcd.service
