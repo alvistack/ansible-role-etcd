@@ -61,7 +61,6 @@
   loop:
     - { dest: "/etc/default" }
     - { dest: "/lib/systemd/system" }
-    - { dest: "/lib/systemd/system/etcd.service.d" }
     - { dest: "/usr/local/bin" }
     - { dest: "/var/lib/etcd" }
     - { dest: "{{ etcd_cert_file | dirname }}" }
@@ -131,9 +130,9 @@
     state: "{{ item.state | default('file') }}"
   loop:
     - { dest: "/etc/default/etcd" }
-    - { dest: "/lib/systemd/system/etcd.service" }
     - { dest: "/usr/local/bin/etcd", mode: "0755" }
     - { dest: "/usr/local/bin/etcdctl", mode: "0755" }
+    - { dest: "/lib/systemd/system/etcd.service" }
   notify:
     - etcd | systemctl daemon-reload
     - etcd | systemctl restart etcd.service
