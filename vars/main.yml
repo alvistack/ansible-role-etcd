@@ -14,6 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+_etcd_version:
+  "v3.4": "v3.4.16"
+  "v3.3": "v3.3.25"
+
 _etcd_download:
   "v3.4.16":
     url: "http://github.com/etcd-io/etcd/releases/download/v3.4.16/etcd-v3.4.16-linux-amd64.tar.gz"
