@@ -14,8 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# etcd release.
+etcd_release: "v3.4"
+
 # etcd version.
-etcd_version: "v3.4.16"
+etcd_version: "{{ _etcd_version[etcd_release] }}"
 
 # etcd download details.
 etcd_download: "{{ _etcd_download[etcd_version] }}"
