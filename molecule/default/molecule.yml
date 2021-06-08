@@ -25,7 +25,7 @@ platforms:
     groups:
       - etcd
 lint: |
-  set -euo pipefail
+  set -euxo pipefail
   yamllint .
   ansible-lint
   flake8

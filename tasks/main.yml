@@ -74,28 +74,28 @@
 
 - name: download archive
   shell: |
-    set -euo pipefail
+    set -euxo pipefail
+    mkdir -p /var/log/ansible
+    exec &> >(tee -a /var/log/ansible/{{ etcd_download.checksum }}-get_url.log)
     TMP_DIR="$(mktemp -d)" \
       && cd $TMP_DIR \
-      && mkdir -p .{{ item.dest | dirname }} \
-      && curl -skL -m 300 {{ item.url }} > .{{ item.dest }} \
-      && echo -n "{{ item.checksum }} .{{ item.dest }}" | sha256sum -c - \
-      && mkdir -p {{ item.dest | dirname }} \
-      && mv .{{ item.dest }} {{ item.dest }} \
+      && mkdir -p .{{ etcd_download.dest | dirname }} \
+      && curl -skL -m 300 {{ etcd_download.url }} > .{{ etcd_download.dest }} \
+      && echo -n "{{ etcd_download.checksum }} .{{ etcd_download.dest }}" | sha256sum -c - \
+      && mkdir -p {{ etcd_download.dest | dirname }} \
+      && mv .{{ etcd_download.dest }} {{ etcd_download.dest }} \
       && rm -rf $TMP_DIR
   args:
     executable: "/bin/bash"
-    creates: "{{ item.dest | dirname }}"
-  loop:
-    - "{{ etcd_download }}"
+    creates: "/var/log/ansible/{{ etcd_download.checksum }}-get_url.log"
   register: result
   until: result is succeeded
 
 - name: unarchive package
   shell: |
-    set -euo pipefail
+    set -euxo pipefail
     mkdir -p /var/log/ansible
-    exec &> >(tee -a /var/log/ansible/{{ etcd_download.checksum }}.log)
+    exec &> >(tee -a /var/log/ansible/{{ etcd_download.checksum }}-unarchive.log)
     cd /usr/local/bin
     TMP_DIR="$(mktemp -d)" \
       && tar -zx -C $TMP_DIR -f {{ etcd_download.dest }} \
@@ -105,7 +105,7 @@
       && rm -rf $TMP_DIR
   args:
     executable: "/bin/bash"
-    creates: "/var/log/ansible/{{ etcd_download.checksum }}.log"
+    creates: "/var/log/ansible/{{ etcd_download.checksum }}-unarchive.log"
   notify:
     - etcd | systemctl daemon-reload
     - etcd | systemctl restart etcd.service
@@ -338,7 +338,7 @@
 
 - name: base64 encode
   shell: |
-    set -euo pipefail
+    set -euxo pipefail
     tar zcfP - {{ _params | join(' ') }} | base64 -w 0
   vars:
     _params:
@@ -357,7 +357,7 @@
 
 - name: base64 decode
   shell: |
-    set -euo pipefail
+    set -euxo pipefail
     echo -n {{ base64_encode_result.stdout | quote }} | base64 -d | tar zx -C /
   args:
     executable: "/bin/bash"

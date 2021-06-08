@@ -36,7 +36,7 @@
       environment:
         PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       shell: |
-        set -euo pipefail
+        set -euxo pipefail
         etcdctl \
           --cacert=/etc/etcd/pki/ca.crt \
           --cert=/etc/etcd/pki/server.crt \
@@ -53,7 +53,7 @@
       environment:
         PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       shell: |
-        set -euo pipefail
+        set -euxo pipefail
         etcdctl \
           --cacert=/etc/etcd/pki/ca.crt \
           --cert=/etc/etcd/pki/server.crt \
@@ -70,7 +70,7 @@
       environment:
         PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       shell: |
-        set -euo pipefail
+        set -euxo pipefail
         etcdctl \
           --cacert=/etc/etcd/pki/ca.crt \
           --cert=/etc/etcd/pki/server.crt \
