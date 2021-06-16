@@ -15,7 +15,7 @@
 # limitations under the License.
 
 # etcd release.
-etcd_release: "v3.4"
+etcd_release: "v3.5"
 
 # etcd version.
 etcd_version: "{{ _etcd_version[etcd_release] }}"
