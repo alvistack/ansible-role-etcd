@@ -2,36 +2,18 @@
 
 # (c) Wong Hoi Sing Edison <hswong3i@pantarei-design.com>
 #
-# Licensed under the Apache License. Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
-# Unless required by applicable law or agreed to in writing. software
-# distributed under the License is distributed on an "AS IS" BASIS.
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND. either express or implied.
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
 _etcd_version:
   "3.5": "3.5.0"
   "3.4": "3.4.16"
-
-_etcd_download:
-  "3.5.0":
-    url: "http://github.com/etcd-io/etcd/releases/download/v3.5.0/etcd-v3.5.0-linux-amd64.tar.gz"
-    dest: "/var/cache/ansible/864baa0437f8368e0713d44b83afe21dce1fb4ee7dae4ca0f9dd5f0df22d01c4/etcd-v3.5.0-linux-amd64.tar.gz"
-    checksum: "864baa0437f8368e0713d44b83afe21dce1fb4ee7dae4ca0f9dd5f0df22d01c4"
-  "3.4.16":
-    url: "http://github.com/etcd-io/etcd/releases/download/v3.4.16/etcd-v3.4.16-linux-amd64.tar.gz"
-    dest: "/var/cache/ansible/2e2d5b3572e077e7641193ed07b4929b0eaf0dc2f9463e9b677765528acafb89/etcd-v3.4.16-linux-amd64.tar.gz"
-    checksum: "2e2d5b3572e077e7641193ed07b4929b0eaf0dc2f9463e9b677765528acafb89"
-  "3.4.15":
-    url: "http://github.com/etcd-io/etcd/releases/download/v3.4.15/etcd-v3.4.15-linux-amd64.tar.gz"
-    dest: "/var/cache/ansible/3bd00836ea328db89ecba3ed2155293934c0d09e64b53d6c9dfc0a256e724b81/etcd-v3.4.15-linux-amd64.tar.gz"
-    checksum: "3bd00836ea328db89ecba3ed2155293934c0d09e64b53d6c9dfc0a256e724b81"
-  "3.4.14":
-    url: "http://github.com/etcd-io/etcd/releases/download/v3.4.14/etcd-v3.4.14-linux-amd64.tar.gz"
-    dest: "/var/cache/ansible/f57141d45ceb727a84e2f0bcd0b98934ea2ad2b59009be90d901710861601651/etcd-v3.4.14-linux-amd64.tar.gz"
-    checksum: "f57141d45ceb727a84e2f0bcd0b98934ea2ad2b59009be90d901710861601651"

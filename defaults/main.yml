@@ -20,9 +20,6 @@ etcd_release: "3.5"
 # etcd version.
 etcd_version: "{{ _etcd_version[etcd_release] }}"
 
-# etcd download details.
-etcd_download: "{{ _etcd_download[etcd_version] }}"
-
 # Human-readable name for this member.
 etcd_name: "{{ inventory_hostname }}"
 

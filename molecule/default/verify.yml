@@ -19,22 +19,16 @@
   become: true
   tasks:
     - name: etcd --version
-      environment:
-        PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       command: etcd --version
       register: result
       changed_when: result is not succeeded
 
     - name: etcdctl version
-      environment:
-        PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       command: etcdctl version
       register: result
       changed_when: result is not succeeded
 
     - name: etcdctl endpoint health
-      environment:
-        PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       shell: |
         set -euxo pipefail
         etcdctl \
@@ -50,8 +44,6 @@
       changed_when: result is not succeeded
 
     - name: etcdctl put foo bar
-      environment:
-        PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       shell: |
         set -euxo pipefail
         etcdctl \
@@ -67,8 +59,6 @@
       changed_when: result is not succeeded
 
     - name: etcdctl get foo
-      environment:
-        PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       shell: |
         set -euxo pipefail
         etcdctl \

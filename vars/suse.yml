@@ -13,3 +13,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+_kube_release: "1.20"
+
+_zypper_repository:
+  - name: "home:alvistack"
+    repo: "http://download.opensuse.org/repositories/home:/alvistack/openSUSE_Tumbleweed"
+    state: "present"
+
+_zypper:
+  - { state: "present", name: "etcd-100:{{ etcd_version }}" }

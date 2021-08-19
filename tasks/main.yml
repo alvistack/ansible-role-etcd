@@ -63,7 +63,6 @@
   loop:
     - { dest: "/etc/default" }
     - { dest: "/lib/systemd/system" }
-    - { dest: "/usr/local/bin" }
     - { dest: "/var/lib/etcd" }
     - { dest: "{{ etcd_cert_file | dirname }}" }
     - { dest: "{{ etcd_key_file | dirname }}" }
@@ -71,44 +70,6 @@
     - { dest: "{{ etcd_peer_key_file | dirname }}" }
     - { dest: "{{ etcd_peer_trusted_ca_file | dirname }}" }
     - { dest: "{{ etcd_trusted_ca_file | dirname }}" }
-
-- name: download archive
-  shell: |
-    set -euxo pipefail
-    mkdir -p /var/log/ansible
-    exec &> >(tee -a /var/log/ansible/{{ etcd_download.checksum }}-get_url.log)
-    TMP_DIR="$(mktemp -d)" \
-      && cd $TMP_DIR \
-      && mkdir -p .{{ etcd_download.dest | dirname }} \
-      && curl -skL -m 300 {{ etcd_download.url }} > .{{ etcd_download.dest }} \
-      && echo -n "{{ etcd_download.checksum }} .{{ etcd_download.dest }}" | sha256sum -c - \
-      && mkdir -p {{ etcd_download.dest | dirname }} \
-      && mv .{{ etcd_download.dest }} {{ etcd_download.dest }} \
-      && rm -rf $TMP_DIR
-  args:
-    executable: "/bin/bash"
-    creates: "/var/log/ansible/{{ etcd_download.checksum }}-get_url.log"
-  register: result
-  until: result is succeeded
-
-- name: unarchive package
-  shell: |
-    set -euxo pipefail
-    mkdir -p /var/log/ansible
-    exec &> >(tee -a /var/log/ansible/{{ etcd_download.checksum }}-unarchive.log)
-    cd /usr/local/bin
-    TMP_DIR="$(mktemp -d)" \
-      && tar -zx -C $TMP_DIR -f {{ etcd_download.dest }} \
-      && chown root:root $TMP_DIR/*/etcd* \
-      && chmod 0755 $TMP_DIR/*/etcd* \
-      && mv $TMP_DIR/*/etcd* . \
-      && rm -rf $TMP_DIR
-  args:
-    executable: "/bin/bash"
-    creates: "/var/log/ansible/{{ etcd_download.checksum }}-unarchive.log"
-  notify:
-    - etcd | systemctl daemon-reload
-    - etcd | systemctl restart etcd.service
 
 - name: copy templates
   template:
@@ -133,8 +94,6 @@
     state: "{{ item.state | default('file') }}"
   loop:
     - { dest: "/etc/default/etcd" }
-    - { dest: "/usr/local/bin/etcd", mode: "0755" }
-    - { dest: "/usr/local/bin/etcdctl", mode: "0755" }
     - { dest: "/lib/systemd/system/etcd.service" }
   notify:
     - etcd | systemctl daemon-reload
