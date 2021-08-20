@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-_etcd_release: "3.5"
+_etcd_release: "3.4"
 
 _rpm_key:
   - key: "http://download.opensuse.org/repositories/home:/alvistack/Fedora_34/repodata/repomd.xml.key"
