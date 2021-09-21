@@ -1,5 +1,7 @@
 # Ansible Role for etcd
 
+<img src="/alvistack.svg" width="75" alt="AlviStack">
+
 [![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/alvistack/ansible-role-etcd/master)](https://gitlab.com/alvistack/ansible-role-etcd/-/pipelines)
 [![GitHub release](https://img.shields.io/github/release/alvistack/ansible-role-etcd.svg)](https://github.com/alvistack/ansible-role-etcd/releases)
 [![GitHub license](https://img.shields.io/github/license/alvistack/ansible-role-etcd.svg)](https://github.com/alvistack/ansible-role-etcd/blob/master/LICENSE)
