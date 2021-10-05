@@ -109,3 +109,9 @@ etcd_peer_auto_tls: false
 
 # Path to the peer server TLS trusted CA file.
 etcd_peer_trusted_ca_file: "{{ etcd_trusted_ca_file }}"
+
+# Auto compaction retention for mvcc key value store in hour. 0 means disabled
+etcd_auto_compaction_retention: 0
+
+# Interpret ‘auto-compaction-retention’ as duration or revision retention
+etcd_auto_compaction_mode: "periodic"
