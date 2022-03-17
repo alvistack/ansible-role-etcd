@@ -19,17 +19,17 @@
   become: true
   tasks:
     - name: etcd --version
-      command: etcd --version
+      ansible.builtin.command: etcd --version
       register: result
       changed_when: result is not succeeded
 
     - name: etcdctl version
-      command: etcdctl version
+      ansible.builtin.command: etcdctl version
       register: result
       changed_when: result is not succeeded
 
     - name: etcdctl endpoint health
-      shell: |
+      ansible.builtin.shell: |
         set -euxo pipefail
         etcdctl \
           --cacert=/etc/etcd/pki/ca.crt \
@@ -44,7 +44,7 @@
       changed_when: result is not succeeded
 
     - name: etcdctl put foo bar
-      shell: |
+      ansible.builtin.shell: |
         set -euxo pipefail
         etcdctl \
           --cacert=/etc/etcd/pki/ca.crt \
@@ -59,7 +59,7 @@
       changed_when: result is not succeeded
 
     - name: etcdctl get foo
-      shell: |
+      ansible.builtin.shell: |
         set -euxo pipefail
         etcdctl \
           --cacert=/etc/etcd/pki/ca.crt \

@@ -15,10 +15,10 @@
 # limitations under the License.
 
 - name: include default variables
-  include_vars: "../vars/main.yml"
+  ansible.builtin.include_vars: "../vars/main.yml"
 
 - name: include release specific variables
-  include_vars: "{{ _loop_var }}"
+  ansible.builtin.include_vars: "{{ _loop_var }}"
   loop: "{{ query('first_found', _params) }}"
   loop_control:
     loop_var: _loop_var
@@ -54,10 +54,10 @@
       skip: true
 
 - name: prepare directories
-  file:
+  ansible.builtin.file:
     dest: "{{ item.dest }}"
     owner: "{{ item.owner | default('root') }}"
-    group: "{{ item.group | default('root') }}"
+    ansible.builtin.group: "{{ item.group | default('root') }}"
     mode: "{{ item.mode | default('0755') }}"
     state: "{{ item.state | default('directory') }}"
   loop:
@@ -72,11 +72,11 @@
     - { dest: "{{ etcd_trusted_ca_file | dirname }}" }
 
 - name: copy templates
-  template:
+  ansible.builtin.template:
     dest: "{{ item.dest }}"
     src: "{{ item.src | default('./templates' + item.dest + '.j2') }}"
     owner: "{{ item.owner | default('root') }}"
-    group: "{{ item.group | default('root') }}"
+    ansible.builtin.group: "{{ item.group | default('root') }}"
     mode: "{{ item.mode | default('0644') }}"
   loop:
     - { dest: "/etc/default/etcd" }
@@ -86,10 +86,10 @@
     - etcd | systemctl restart etcd.service
 
 - name: prepare files
-  file:
+  ansible.builtin.file:
     dest: "{{ item.dest }}"
     owner: "{{ item.owner | default('root') }}"
-    group: "{{ item.group | default('root') }}"
+    ansible.builtin.group: "{{ item.group | default('root') }}"
     mode: "{{ item.mode | default('0644') }}"
     state: "{{ item.state | default('file') }}"
   loop:
@@ -296,7 +296,7 @@
     - etcd | systemctl restart etcd.service
 
 - name: base64 encode
-  shell: |
+  ansible.builtin.shell: |
     set -euxo pipefail
     tar zcfP - {{ _params | join(' ') }} | base64 -w 0
   vars:
@@ -315,7 +315,7 @@
   changed_when: base64_encode_result is not succeeded
 
 - name: base64 decode
-  shell: |
+  ansible.builtin.shell: |
     set -euxo pipefail
     echo -n {{ base64_encode_result.stdout | quote }} | base64 -d | tar zx -C /
   args:
@@ -325,10 +325,10 @@
   changed_when: base64_decode_result is not succeeded
 
 - name: prepare files
-  file:
+  ansible.builtin.file:
     dest: "{{ item.dest }}"
     owner: "{{ item.owner | default('root') }}"
-    group: "{{ item.group | default('root') }}"
+    ansible.builtin.group: "{{ item.group | default('root') }}"
     mode: "{{ item.mode | default('0644') }}"
     state: "{{ item.state | default('file') }}"
   loop:
@@ -340,10 +340,10 @@
     - { dest: "{{ etcd_trusted_ca_file }}" }
 
 - name: flush handlers
-  meta: flush_handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: systemctl start etcd.service
-  service:
+  ansible.builtin.service:
     name: "etcd.service"
     state: "started"
     enabled: true

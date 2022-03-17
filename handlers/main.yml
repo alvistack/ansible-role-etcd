@@ -15,13 +15,13 @@
 # limitations under the License.
 
 - name: etcd | systemctl daemon-reload
-  systemd:
+  ansible.builtin.systemd:
     daemon_reload: true
   changed_when: false
   failed_when: false
 
 - name: etcd | systemctl restart etcd.service
-  service:
+  ansible.builtin.service:
     name: "etcd.service"
     state: "restarted"
     enabled: true
