@@ -14,16 +14,61 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: all
+- hosts: etcd
   remote_user: root
   become: true
   tasks:
-    - name: ansible --version
-      ansible.builtin.command: ansible --version
+    - name: etcd --version
+      ansible.builtin.command: etcd --version
       register: result
       changed_when: result is not succeeded
 
-    - name: ansible-lint --version
-      ansible.builtin.command: ansible-lint --version
+    - name: etcdctl version
+      ansible.builtin.command: etcdctl version
       register: result
       changed_when: result is not succeeded
+
+    - name: etcdctl endpoint health
+      ansible.builtin.shell: |
+        set -euxo pipefail
+        etcdctl \
+          --cacert=/etc/etcd/pki/ca.crt \
+          --cert=/etc/etcd/pki/server.crt \
+          --endpoints=https://127.0.0.1:2379 \
+          --key=/etc/etcd/pki/server.key \
+          endpoint health
+      args:
+        executable: "/bin/bash"
+      when: inventory_hostname == groups['etcd'][0]
+      register: result
+      changed_when: result is not succeeded
+
+    - name: etcdctl put foo bar
+      ansible.builtin.shell: |
+        set -euxo pipefail
+        etcdctl \
+          --cacert=/etc/etcd/pki/ca.crt \
+          --cert=/etc/etcd/pki/server.crt \
+          --endpoints=https://127.0.0.1:2379 \
+          --key=/etc/etcd/pki/server.key \
+          put foo bar
+      args:
+        executable: "/bin/bash"
+      when: inventory_hostname == groups['etcd'][0]
+      register: result
+      changed_when: result is not succeeded
+
+    - name: etcdctl get foo
+      ansible.builtin.shell: |
+        set -euxo pipefail
+        etcdctl \
+          --cacert=/etc/etcd/pki/ca.crt \
+          --cert=/etc/etcd/pki/server.crt \
+          --endpoints=https://127.0.0.1:2379 \
+          --key=/etc/etcd/pki/server.key \
+          get foo
+      args:
+        executable: "/bin/bash"
+      register: result
+      changed_when: result is not succeeded
+      failed_when: "'bar' not in result.stdout"
