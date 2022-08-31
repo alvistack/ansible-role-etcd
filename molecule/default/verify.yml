@@ -14,7 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: etcd
+- name: verify | etcd
+  hosts: etcd
   remote_user: root
   become: true
   tasks:
