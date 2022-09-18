@@ -62,7 +62,6 @@
     state: "{{ item.state | default('directory') }}"
   loop:
     - { dest: "/etc/default" }
-    - { dest: "/etc/systemd/system" }
     - { dest: "/var/lib/etcd" }
     - { dest: "{{ etcd_cert_file | dirname }}" }
     - { dest: "{{ etcd_key_file | dirname }}" }
@@ -80,7 +79,6 @@
     mode: "{{ item.mode | default('0644') }}"
   loop:
     - { dest: "/etc/default/etcd" }
-    - { dest: "/etc/systemd/system/etcd.service" }
   notify:
     - etcd | systemctl daemon-reload
     - etcd | systemctl restart etcd.service
@@ -94,7 +92,7 @@
     state: "{{ item.state | default('file') }}"
   loop:
     - { dest: "/etc/default/etcd" }
-    - { dest: "/etc/systemd/system/etcd.service" }
+    - { dest: "/etc/systemd/system/etcd.service", state: "absent" }
   notify:
     - etcd | systemctl daemon-reload
     - etcd | systemctl restart etcd.service
@@ -178,6 +176,7 @@
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
+    - etcd | rm -rf {{ etcd_data_dir }}
     - etcd | systemctl restart etcd.service
 
 - name: "generate {{ etcd_cert_file }}"
@@ -276,6 +275,7 @@
   when: inventory_hostname == ansible_play_hosts[0]
   delegate_to: "{{ ansible_play_hosts[0] }}"
   notify:
+    - etcd | rm -rf {{ etcd_data_dir }}
     - etcd | systemctl restart etcd.service
 
 - name: "generate {{ etcd_peer_cert_file }}"
