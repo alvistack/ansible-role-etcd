@@ -20,6 +20,18 @@
   changed_when: false
   failed_when: false
 
+- name: etcd | rm -rf {{ etcd_data_dir }}
+  ansible.builtin.shell: |
+    set -euxo pipefail
+    rm -rf {{ etcd_data_dir }}
+  args:
+    executable: "/bin/bash"
+  loop: "{{ ansible_play_hosts }}"
+  delegate_to: "{{ item }}"
+  run_once: true
+  changed_when: false
+  failed_when: false
+
 - name: etcd | systemctl restart etcd.service
   ansible.builtin.service:
     name: "etcd.service"

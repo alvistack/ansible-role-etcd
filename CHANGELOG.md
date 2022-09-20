@@ -4,6 +4,8 @@
 
 ### Major Changes
 
+  - Flush and reconfigure if cluster member changed
+
 ## 6.4.0 - 2022-09-15
 
 ### Major Changes

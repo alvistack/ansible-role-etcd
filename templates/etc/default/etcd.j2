@@ -1,313 +1,312 @@
 # {{ ansible_managed }}
 
-## etcd(1) daemon options
-## See "/usr/share/doc/etcd-server/op-guide/configuration.md.gz"
+## Member:
 
-### Member flags
-
-##### --name
-## Human-readable name for this member.
-## This value is referenced as this node's own entries listed in the
-## `--initial-cluster` flag (e.g., `default=http://localhost:2380`). This
-## needs to match the key used in the flag if using static bootstrapping. When
-## using discovery, each member must have a unique name. `Hostname` or
-## `machine-id` can be a good choice.
-## default: "default"
+# Human-readable name for this member.
 ETCD_NAME="{{ etcd_name }}"
 
-##### --data-dir
-## Path to the data directory.
-## default: "${name}.etcd"
+# Path to the data directory.
 ETCD_DATA_DIR="{{ etcd_data_dir }}"
 
-##### --wal-dir
-## Path to the dedicated wal directory. If this flag is set, etcd will write
-## the WAL files to the walDir rather than the dataDir. This allows a
-## dedicated disk to be used, and helps avoid io competition between logging
-## and other IO operations.
-## default: ""
-# ETCD_WAL_DIR
+# Path to the dedicated wal directory.
+# ETCD_WAL_DIR=""
 
-##### --snapshot-count
-## Number of committed transactions to trigger a snapshot to disk.
-## default: "100000"
+# Number of committed transactions to trigger a snapshot to disk.
 ETCD_SNAPSHOT_COUNT="{{ etcd_snapshot_count }}"
 
-##### --heartbeat-interval
-## Time (in milliseconds) of a heartbeat interval.
-## default: "100"
+# Time (in milliseconds) of a heartbeat interval.
 # ETCD_HEARTBEAT_INTERVAL="100"
 
-##### --election-timeout
-## Time (in milliseconds) for an election to timeout. See
-## /usr/share/doc/etcd-server/tuning.md.gz for details.
-## default: "1000"
+# Time (in milliseconds) for an election to timeout. See tuning documentation for details.
 # ETCD_ELECTION_TIMEOUT="1000"
 
-##### --listen-peer-urls
-## List of URLs to listen on for peer traffic. This flag tells the etcd to
-## accept incoming requests from its peers on the specified scheme://IP:port
-## combinations. Scheme can be either http or https.If 0.0.0.0 is specified as
-## the IP, etcd listens to the given port on all interfaces. If an IP address is
-## given as well as a port, etcd will listen on the given port and interface.
-## Multiple URLs may be used to specify a number of addresses and ports to listen
-## on. The etcd will respond to requests from any of the listed addresses and
-## ports.
-## default: "http://localhost:2380"
-## example: "http://10.0.0.1:2380"
-## invalid example: "http://example.com:2380" (domain name is invalid for binding)
+# Whether to fast-forward initial election ticks on boot for faster election.
+# ETCD_INITIAL_ELECTION_TICK_ADVANCE="true"
+
+# List of URLs to listen on for peer traffic.
 ETCD_LISTEN_PEER_URLS="{{ etcd_listen_peer_urls }}"
 
-##### --listen-client-urls
-## List of URLs to listen on for client traffic. This flag tells the etcd to
-## accept incoming requests from the clients on the specified scheme://IP:port
-## combinations. Scheme can be either http or https. If 0.0.0.0 is specified as
-## the IP, etcd listens to the given port on all interfaces. If an IP address is
-## given as well as a port, etcd will listen on the given port and interface.
-## Multiple URLs may be used to specify a number of addresses and ports to listen
-## on. The etcd will respond to requests from any of the listed addresses and
-## ports.
-## default: "http://localhost:2379"
-## example: "http://10.0.0.1:2379"
-## invalid example: "http://example.com:2379" (domain name is invalid for binding)
+# List of URLs to listen on for client traffic.
 ETCD_LISTEN_CLIENT_URLS="{{ etcd_listen_client_urls }}"
 
-##### --max-snapshots
-## Maximum number of snapshot files to retain (0 is unlimited)
-## The default for users on Windows is unlimited, and manual purging down to 5
-## (or some preference for safety) is recommended.
-## default: 5
+# Maximum number of snapshot files to retain (0 is unlimited).
 # ETCD_MAX_SNAPSHOTS="5"
 
-##### --max-wals
-## Maximum number of wal files to retain (0 is unlimited)
-## The default for users on Windows is unlimited, and manual purging down to 5
-## (or some preference for safety) is recommended.
-## default: 5
+# Maximum number of wal files to retain (0 is unlimited).
 # ETCD_MAX_WALS="5"
 
-##### --cors
-## Comma-separated white list of origins for CORS (cross-origin resource
-## sharing).
-## default: none
-# ETCD_CORS
+# Raise alarms when backend size exceeds the given quota (0 defaults to low space quota).
+# ETCD_QUOTA_BACKEND_BYTES="0"
 
-### Clustering flags
+# BackendFreelistType specifies the type of freelist that boltdb backend uses(array and map are supported types).
+# ETCD_BACKEND_BBOLT_FREELIST_TYPE="map"
 
-# `--initial` prefix flags are used in bootstrapping (static bootstrap,
-# discovery-service bootstrap or runtime reconfiguration) a new member, and
-# ignored when restarting an existing member.
+# BackendBatchInterval is the maximum time before commit the backend transaction.
+# ETCD_BACKEND_BATCH_INTERVAL=""
 
-# `--discovery` prefix flags need to be set when using discovery service.
+# BackendBatchLimit is the maximum operations before commit the backend transaction.
+# ETCD_BACKEND_BATCH_LIMIT="0"
 
-##### --initial-advertise-peer-urls
+# Maximum number of operations permitted in a transaction.
+# ETCD_MAX_TXN_OPS="128"
 
-## List of this member's peer URLs to advertise to the rest of the cluster.
-## These addresses are used for communicating etcd data around the cluster. At
-## least one must be routable to all cluster members. These URLs can contain
-## domain names.
-## default: "http://localhost:2380"
-## example: "http://example.com:2380, http://10.0.0.1:2380"
+# Maximum client request size in bytes the server will accept.
+# ETCD_MAX_REQUEST_BYTES="1572864"
+
+# Maximum concurrent streams that each client can open at a time.
+# ETCD_MAX_CONCURRENT_STREAMS="math.MaxUint32"
+
+# Minimum duration interval that a client should wait before pinging server.
+# ETCD_GRPC_KEEPALIVE_MIN_TIME="5s"
+
+# Frequency duration of server-to-client ping to check if a connection is alive (0 to disable).
+# ETCD_GRPC_KEEPALIVE_INTERVAL="2h"
+
+# Additional duration of wait before closing a non-responsive connection (0 to disable).
+# ETCD_GRPC_KEEPALIVE_TIMEOUT="20s"
+
+# Enable to set socket option SO_REUSEPORT on listeners allowing rebinding of a port already in use.
+# ETCD_SOCKET_REUSE_PORT="false"
+
+# Enable to set socket option SO_REUSEADDR on listeners allowing binding to an address in TIME_WAIT state.
+# ETCD_SOCKET_REUSE_ADDRESS="false"
+
+
+## Clustering:
+
+# List of this member's peer URLs to advertise to the rest of the cluster.
 ETCD_INITIAL_ADVERTISE_PEER_URLS="{{ etcd_initial_advertise_peer_urls }}"
 
-##### --initial-cluster
-## Initial cluster configuration for bootstrapping.
-## The key is the value of the `--name` flag for each node provided. The
-## default uses `default` for the key because this is the default for the
-## `--name` flag.
-## default: "default=http://localhost:2380"
+# Initial cluster configuration for bootstrapping.
 ETCD_INITIAL_CLUSTER="{{ etcd_initial_cluster }}"
 
-##### --initial-cluster-state
-## Initial cluster state ("new" or "existing"). Set to `new` for all members
-## present during initial static or DNS bootstrapping. If this option is set to
-## `existing`, etcd will attempt to join the existing cluster. If the wrong value
-## is set, etcd will attempt to start but fail safely.
-## default: "new"
+# Initial cluster state ('new' or 'existing').
 ETCD_INITIAL_CLUSTER_STATE="{{ etcd_initial_cluster_state }}"
 
-##### --initial-cluster-token
-## Initial cluster token for the etcd cluster during bootstrap.
-## default: "etcd-cluster"
+# Initial cluster token for the etcd cluster during bootstrap.
+# Specifying this can protect you from unintended cross-cluster interaction when running multiple clusters.
 ETCD_INITIAL_CLUSTER_TOKEN="{{ etcd_initial_cluster_token }}"
 
-##### --advertise-client-urls
-## List of this member's client URLs to advertise to the rest of the cluster.
-## These URLs can contain domain names.
-## Be careful if advertising URLs such as http://localhost:2379 from a cluster
-## member and are using the proxy feature of etcd. This will cause loops, because
-## the proxy will be forwarding requests to itself until its resources (memory,
-## file descriptors) are eventually depleted.
-## default: "http://localhost:2379"
-## example: "http://example.com:2379, http://10.0.0.1:2379"
+# List of this member's client URLs to advertise to the public.
+# The client URLs advertised should be accessible to machines that talk to etcd cluster. etcd client libraries parse these URLs to connect to the cluster.
 ETCD_ADVERTISE_CLIENT_URLS="{{ etcd_advertise_client_urls }}"
 
-##### --discovery
-## Discovery URL used to bootstrap the cluster.
-## default: none
-# ETCD_DISCOVERY
+# Discovery URL used to bootstrap the cluster.
+# ETCD_DISCOVERY=""
 
-##### --discovery-srv
-## DNS srv domain used to bootstrap the cluster.
-## default: none
-# ETCD_DISCOVERY_SRV
-
-##### --discovery-fallback
-## Expected behavior ("exit" or "proxy") when discovery services fails. "proxy"
-## supports v2 API only.
-## default: "proxy"
+# Expected behavior ('exit' or 'proxy') when discovery services fails.
+# "proxy" supports v2 API only.
 # ETCD_DISCOVERY_FALLBACK="proxy"
 
-##### --discovery-proxy
-## HTTP proxy to use for traffic to discovery service.
-## default: none
-# ETCD_DISCOVERY_PROXY
+# HTTP proxy to use for traffic to discovery service.
+# ETCD_DISCOVERY_PROXY=""
 
-##### --strict-reconfig-check
-## Reject reconfiguration requests that would cause quorum loss.
-## default: false
-# ETCD_STRICT_RECONFIG_CHECK
+# DNS srv domain used to bootstrap the cluster.
+# ETCD_DISCOVERY_SRV=""
 
-##### --auto-compaction-retention
-## Auto compaction retention for mvcc key value store in hour. 0 means disable
-## auto compaction.
-## default: 0
+# Suffix to the dns srv name queried when bootstrapping.
+# ETCD_DISCOVERY_SRV_NAME=""
+
+# Reject reconfiguration requests that would cause quorum loss.
+# ETCD_STRICT_RECONFIG_CHECK="true"
+
+# Enable to run an additional Raft election phase.
+# ETCD_PRE_VOTE="true"
+
+# Auto compaction retention length. 0 means disable auto compaction.
 # ETCD_AUTO_COMPACTION_RETENTION="0"
 
+# Interpret 'auto-compaction-retention' one of: periodic|revision. 'periodic' for duration based retention, defaulting to hours if no time unit is provided (e.g. '5m'). 'revision' for revision number based retention.
+# ETCD_AUTO_COMPACTION_MODE="periodic"
 
-##### --enable-v2
-## Accept etcd V2 client requests
-## default: true
-# ETCD_ENABLE_V2="true"
+# Accept etcd V2 client requests. Deprecated and to be decommissioned in v3.6.
+# ETCD_ENABLE_V2="false"
 
-### Proxy flags
+# Phase of v2store deprecation. Allows to opt-in for higher compatibility mode.
+# Supported values:
+#   'not-yet'                // Issues a warning if v2store have meaningful content (default in v3.5)
+#   'write-only'             // Custom v2 state is not allowed (planned default in v3.6)
+#   'write-only-drop-data'   // Custom v2 state will get DELETED !
+#   'gone'                   // v2store is not maintained any longer. (planned default in v3.7)
+# ETCD_V2_DEPRECATION="not_yet"
 
-# `--proxy` prefix flags configures etcd to run in proxy mode. "proxy" supports
-# v2 API only.
 
-##### --proxy
-## Proxy mode setting ("off", "readonly" or "on").
-## default: "off"
-# ETCD_PROXY="off"
+## Security:
 
-##### --proxy-failure-wait
-## Time (in milliseconds) an endpoint will be held in a failed state before
-## being reconsidered for proxied requests.
-## default: 5000
-# ETCD_PROXY_FAILURE_WAIT="5000"
-
-##### --proxy-refresh-interval
-## Time (in milliseconds) of the endpoints refresh interval.
-## default: 30000
-# ETCD_PROXY_REFRESH_INTERVAL="30000"
-
-##### --proxy-dial-timeout
-## Time (in milliseconds) for a dial to timeout or 0 to disable the timeout
-## default: 1000
-# ETCD_PROXY_DIAL_TIMEOUT="1000"
-
-##### --proxy-write-timeout
-## Time (in milliseconds) for a write to timeout or 0 to disable the timeout.
-## default: 5000
-# ETCD_PROXY_WRITE_TIMEOUT="5000"
-
-##### --proxy-read-timeout
-## Time (in milliseconds) for a read to timeout or 0 to disable the timeout.
-## Don't change this value if using watches because use long polling requests.
-## default: 0
-# ETCD_PROXY_READ_TIMEOUT="0"
-
-### Security flags
-
-# The security flags help to build a secure etcd cluster.
-
-##### --ca-file (**DEPRECATED**)
-## Path to the client server TLS CA file. `--ca-file ca.crt` could be replaced
-## by `--trusted-ca-file ca.crt --client-cert-auth` and etcd will perform the
-## same.
-## default: none
-# ETCD_CA_FILE
-
-##### --cert-file
-## Path to the client server TLS cert file.
-## default: none
+# Path to the client server TLS cert file.
 ETCD_CERT_FILE="{{ etcd_cert_file }}"
 
-##### --key-file
-## Path to the client server TLS key file.
-## default: none
+# Path to the client server TLS key file.
 ETCD_KEY_FILE="{{ etcd_key_file }}"
 
-##### --client-cert-auth
-## Enable client cert authentication.
-## default: false
-ETCD_CLIENT_CERT_AUTH={{ etcd_client_cert_auth | default(false) | bool | lower }}
+# Enable client cert authentication.
+ETCD_CLIENT_CERT_AUTH="{{ etcd_client_cert_auth | default(false) | bool | lower }}"
 
-##### --trusted-ca-file
-## Path to the client server TLS trusted CA key file.
-## default: none
+# Path to the client certificate revocation list file.
+# ETCD_CLIENT_CRL_FILE=""
+
+# Allowed TLS hostname for client cert authentication.
+# ETCD_CLIENT_CERT_ALLOWED_HOSTNAME=""
+
+# Path to the client server TLS trusted CA cert file.
 ETCD_TRUSTED_CA_FILE="{{ etcd_trusted_ca_file }}"
 
-##### --auto-tls
-## Client TLS using generated certificates
-## default: false
-ETCD_AUTO_TLS={{ etcd_auto_tls | default(false) | bool | lower }}
+# Client TLS using generated certificates.
+ETCD_AUTO_TLS="{{ etcd_auto_tls | default(false) | bool | lower }}"
 
-##### --peer-ca-file (**DEPRECATED**)
-## Path to the peer server TLS CA file. `--peer-ca-file ca.crt` could be
-## replaced by `--peer-trusted-ca-file ca.crt --peer-client-cert-auth` and etcd
-## will perform the same.
-## default: none
-# ETCD_PEER_CA_FILE
-
-##### --peer-cert-file
-## Path to the peer server TLS cert file.
-## default: none
+# Path to the peer server TLS cert file.
 ETCD_PEER_CERT_FILE="{{ etcd_peer_cert_file }}"
 
-##### --peer-key-file
-## Path to the peer server TLS key file.
-## default: none
+# Path to the peer server TLS key file.
 ETCD_PEER_KEY_FILE="{{ etcd_peer_key_file }}"
 
-##### --peer-client-cert-auth
-## Enable peer client cert authentication.
-## default: false
-ETCD_PEER_CLIENT_CERT_AUTH={{ etcd_peer_client_cert_auth | default(false) | bool | lower }}
+# Enable peer client cert authentication.
+ETCD_PEER_CLIENT_CERT_AUTH="{{ etcd_peer_client_cert_auth | default(false) | bool | lower }}"
 
-##### --peer-trusted-ca-file
-## Path to the peer server TLS trusted CA file.
-## default: none
+# Path to the peer server TLS trusted CA file.
 ETCD_PEER_TRUSTED_CA_FILE="{{ etcd_peer_trusted_ca_file }}"
 
-##### --peer-auto-tls
-## Peer TLS using generated certificates
-## default: false
-ETCD_PEER_AUTO_TLS={{ etcd_peer_auto_tls | default(false) | bool | lower }}
+# Required CN for client certs connecting to the peer endpoint.
+# ETCD_PEER_CERT_ALLOWED_CN=""
 
-### Logging flags
+# Allowed TLS hostname for inter peer authentication.
+# ETCD_PEER_CERT_ALLOWED_HOSTNAME=""
 
-##### --debug
-## Drop the default log level to DEBUG for all subpackages.
-## default: false (INFO for all packages)
-# ETCD_DEBUG
+# Peer TLS using self-generated certificates if --peer-key-file and --peer-cert-file are not provided.
+ETCD_PEER_AUTO_TLS="{{ etcd_peer_auto_tls | default(false) | bool | lower }}"
 
-##### --log-package-levels
-## Set individual etcd subpackages to specific log levels. An example being
-## `etcdserver=WARNING,security=DEBUG`
-## default: none (INFO for all packages)
-# ETCD_LOG_PACKAGE_LEVELS
+# The validity period of the client and peer certificates that are automatically generated by etcd when you specify ClientAutoTLS and PeerAutoTLS, the unit is year, and the default is 1.
+# ETCD_SELF_SIGNED_CERT_VALIDITY="1"
+
+# Path to the peer certificate revocation list file.
+# ETCD_PEER_CRL_FILE=""
+
+# Comma-separated list of supported TLS cipher suites between client/server and peers (empty will be auto-populated by Go).
+# ETCD_CIPHER_SUITES=""
+
+# Comma-separated whitelist of origins for CORS, or cross-origin resource sharing, (empty or * means allow all).
+# ETCD_CORS="*"
+
+# Acceptable hostnames from HTTP client requests, if server is not secure (empty or * means allow all).
+# ETCD_HOST_WHITELIST="*"
 
 
-### Unsafe flags
+## Auth:
 
-# Please be CAUTIOUS when using unsafe flags because it will break the guarantees given by the consensus protocol.
-# For example, it may panic if other members in the cluster are still alive.
-# Follow the instructions when using these flags.
+# Specify a v3 authentication token type and its options ('simple' or 'jwt').
+# ETCD_AUTH_TOKEN="simple"
 
-##### --force-new-cluster
-## Force to create a new one-member cluster. It commits configuration changes
-## forcing to remove all existing members in the cluster and add itself. It needs
-## to be set to restore a backup.
-## default: false
-# ETCD_FORCE_NEW_CLUSTER
+# Specify the cost / strength of the bcrypt algorithm for hashing auth passwords. Valid values are between 4 and 31.
+# ETCD_BCRYPT_COST="10"
+
+# Time (in seconds) of the auth-token-ttl.
+# ETCD_AUTH_TOKEN_TTL="300"
+
+
+## Profiling and Monitoring:
+
+# Enable runtime profiling data via HTTP server. Address is at client URL + "/debug/pprof/"
+# ETCD_ENABLE_PPROF="false"
+
+# Set level of detail for exported metrics, specify 'extensive' to include server side grpc histogram metrics.
+# ETCD_METRICS="basic"
+
+# List of URLs to listen on for the metrics and health endpoints.
+# ETCD_LISTEN_METRICS_URLS=""
+
+
+## Logging:
+
+# Currently only supports 'zap' for structured logging.
+# ETCD_LOGGER="zap"
+
+# Specify 'stdout' or 'stderr' to skip journald logging even when running under systemd, or list of comma separated output targets.
+# ETCD_LOG_OUTPUTS="default"
+
+# Configures log level. Only supports debug, info, warn, error, panic, or fatal.
+# ETCD_LOG_LEVEL="info"
+
+# Enable log rotation of a single log-outputs file target.
+# ETCD_ENABLE_LOG_ROTATION="false"
+
+# Configures log rotation if enabled with a JSON logger config. MaxSize(MB), MaxAge(days,0=no limit), MaxBackups(0=no limit), LocalTime(use computers local time), Compress(gzip)".
+# ETCD_LOG_ROTATION_CONFIG_JSON="{\"maxsize\": 100, \"maxage\": 0, \"maxbackups\": 0, \"localtime\": false, \"compress\": false}"
+
+
+## Experimental distributed tracing:
+
+# Enable experimental distributed tracing.
+# ETCD_EXPERIMENTAL_ENABLE_DISTRIBUTED_TRACING="false"
+
+# Distributed tracing collector address.
+# ETCD_EXPERIMENTAL_DISTRIBUTED_TRACING_ADDRESS="localhost:4317"
+
+# Distributed tracing service name, must be same across all etcd instances.
+# ETCD_EXPERIMENTAL_DISTRIBUTED_TRACING_SERVICE_NAME="etcd"
+
+# Distributed tracing instance ID, must be unique per each etcd instance.
+# ETCD_EXPERIMENTAL_DISTRIBUTED_TRACING_INSTANCE_ID=""
+
+
+## v2 Proxy (to be deprecated in v3.6):
+
+# Proxy mode setting ('off', 'readonly' or 'on').
+# ETCD_PROXY="off"
+
+# Time (in milliseconds) an endpoint will be held in a failed state.
+# ETCD_PROXY_FAILURE_WAIT="5000"
+
+# Time (in milliseconds) of the endpoints refresh interval.
+# ETCD_PROXY_REFRESH_INTERVAL="30000"
+
+# Time (in milliseconds) for a dial to timeout.
+# ETCD_PROXY_DIAL_TIMEOUT="1000"
+
+# Time (in milliseconds) for a write to timeout.
+# ETCD_PROXY_WRITE_TIMEOUT="5000"
+
+# Time (in milliseconds) for a read to timeout.
+# ETCD_PROXY_READ_TIMEOUT="0"
+
+
+## Experimental feature:
+
+# Enable to check data corruption before serving any client/peer traffic.
+# ETCD_EXPERIMENTAL_INITIAL_CORRUPT_CHECK="false"
+
+# Duration of time between cluster corruption check passes.
+# ETCD_EXPERIMENTAL_CORRUPT_CHECK_TIME="0s"
+
+# Serve v2 requests through the v3 backend under a given prefix. Deprecated and to be decommissioned in v3.6.
+# ETCD_EXPERIMENTAL_ENABLE_V2V3=""
+
+# ExperimentalEnableLeaseCheckpoint enables primary lessor to persist lease remainingTTL to prevent indefinite auto-renewal of long lived leases.
+# ETCD_EXPERIMENTAL_ENABLE_LEASE_CHECKPOINT="false"
+
+# ExperimentalCompactionBatchLimit sets the maximum revisions deleted in each compaction batch.
+# ETCD_EXPERIMENTAL_COMPACTION_BATCH_LIMIT="1000"
+
+# Skip verification of SAN field in client certificate for peer connections.
+# ETCD_EXPERIMENTAL_PEER_SKIP_CLIENT_SAN_VERIFICATION="false"
+
+# Duration of periodical watch progress notification.
+# ETCD_EXPERIMENTAL_WATCH_PROGRESS_NOTIFY_INTERVAL="10m"
+
+# Warning is generated if requests take more than this duration.
+# ETCD_EXPERIMENTAL_WARNING_APPLY_DURATION="100ms"
+
+# Enable the write transaction to use a shared buffer in its readonly check operations.
+# ETCD_EXPERIMENTAL_TXN_MODE_WRITE_WITH_SHARED_BUFFER="true"
+
+# Enable the defrag during etcd server bootstrap on condition that it will free at least the provided threshold of disk space. Needs to be set to non-zero value to take effect.
+# ETCD_EXPERIMENTAL_BOOTSTRAP_DEFRAG_THRESHOLD_MEGABYTES="0"
+
+
+## Unsafe feature:
+## CAUTIOUS with unsafe flag! It may break the guarantees given by the consensus protocol!
+
+# Force to create a new one-member cluster.
+# ETCD_FORCE_NEW_CLUSTER="false"
+
+# Disables fsync, unsafe, will cause data loss.
+# ETCD_UNSAFE_NO_FSYNC="false"
