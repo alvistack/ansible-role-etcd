@@ -97,7 +97,7 @@
     - etcd | systemctl daemon-reload
     - etcd | systemctl restart etcd.service
 
-- name: "generate {{ etcd_trusted_ca_file | splitext | first }}.key"
+- name: generate /etc/etcd/pki/ca.key
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -109,7 +109,7 @@
   notify:
     - etcd | systemctl restart etcd.service
 
-- name: "generate {{ etcd_trusted_ca_file | splitext | first }}.csr"
+- name: generate /etc/etcd/pki/ca.csr
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -126,7 +126,7 @@
   notify:
     - etcd | systemctl restart etcd.service
 
-- name: "generate {{ etcd_trusted_ca_file }}"
+- name: generate /etc/etcd/pki/ca.crt
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -141,7 +141,7 @@
   notify:
     - etcd | systemctl restart etcd.service
 
-- name: "generate {{ etcd_key_file }}"
+- name: generate /etc/etcd/pki/server.key
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -153,7 +153,7 @@
   notify:
     - etcd | systemctl restart etcd.service
 
-- name: "generate {{ etcd_cert_file | splitext | first }}.csr"
+- name: generate /etc/etcd/pki/server.csr
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -179,7 +179,7 @@
     - etcd | rm -rf {{ etcd_data_dir }}
     - etcd | systemctl restart etcd.service
 
-- name: "generate {{ etcd_cert_file }}"
+- name: generate /etc/etcd/pki/server.crt
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -196,7 +196,7 @@
   notify:
     - etcd | systemctl restart etcd.service
 
-- name: "generate {{ etcd_peer_trusted_ca_file | splitext | first }}.key"
+- name: generate /etc/etcd/pki/ca.key
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -208,7 +208,7 @@
   notify:
     - etcd | systemctl restart etcd.service
 
-- name: "generate {{ etcd_peer_trusted_ca_file | splitext | first }}.csr"
+- name: generate /etc/etcd/pki/ca.csr
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -225,7 +225,7 @@
   notify:
     - etcd | systemctl restart etcd.service
 
-- name: "generate {{ etcd_peer_trusted_ca_file }}"
+- name: generate /etc/etcd/pki/ca.crt
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -240,7 +240,7 @@
   notify:
     - etcd | systemctl restart etcd.service
 
-- name: "generate {{ etcd_peer_key_file }}"
+- name: generate /etc/etcd/pki/peer.key
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -252,7 +252,7 @@
   notify:
     - etcd | systemctl restart etcd.service
 
-- name: "generate {{ etcd_peer_cert_file | splitext | first }}.csr"
+- name: generate /etc/etcd/pki/peer.csr
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
@@ -278,7 +278,7 @@
     - etcd | rm -rf {{ etcd_data_dir }}
     - etcd | systemctl restart etcd.service
 
-- name: "generate {{ etcd_peer_cert_file }}"
+- name: generate /etc/etcd/pki/peer.crt
   environment:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
