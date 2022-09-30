@@ -114,10 +114,10 @@ ETCD_ADVERTISE_CLIENT_URLS="{{ etcd_advertise_client_urls }}"
 # ETCD_PRE_VOTE="true"
 
 # Auto compaction retention length. 0 means disable auto compaction.
-# ETCD_AUTO_COMPACTION_RETENTION="0"
+ETCD_AUTO_COMPACTION_RETENTION="{{ etcd_auto_compaction_retention }}"
 
 # Interpret 'auto-compaction-retention' one of: periodic|revision. 'periodic' for duration based retention, defaulting to hours if no time unit is provided (e.g. '5m'). 'revision' for revision number based retention.
-# ETCD_AUTO_COMPACTION_MODE="periodic"
+# ETCD_AUTO_COMPACTION_MODE="{{ etcd_auto_compaction_mode }}"
 
 # Accept etcd V2 client requests. Deprecated and to be decommissioned in v3.6.
 # ETCD_ENABLE_V2="false"

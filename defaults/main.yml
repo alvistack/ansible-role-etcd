@@ -56,6 +56,15 @@ etcd_initial_cluster_token: "etcd-cluster"
 # List of this member's client URLs to advertise to the rest of the cluster.
 etcd_advertise_client_urls: "https://{{ ansible_default_ipv4.address }}:2379"
 
+# Auto compaction retention length. 0 means disable auto compaction.
+etcd_auto_compaction_retention: "1h"
+
+# Interpret 'auto-compaction-retention' one of: periodic|revision.
+# 'periodic' for duration based retention, defaulting to hours if no time
+# unit is provided (e.g. '5m'). 'revision' for revision number based
+# retention.
+etcd_auto_compaction_mode: "periodic"
+
 # Path to the client server TLS cert file.
 etcd_cert_file: "/etc/etcd/pki/server.crt"
 
