@@ -131,7 +131,7 @@
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
     ansible_python_interpreter: "python3"
-  community.crypto.openssl_certificate:
+  community.crypto.x509_certificate:
     path: "{{ etcd_trusted_ca_file }}"
     csr_path: "{{ etcd_trusted_ca_file | splitext | first }}.csr"
     privatekey_path: "{{ etcd_trusted_ca_file | splitext | first }}.key"
@@ -184,7 +184,7 @@
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
     ansible_python_interpreter: "python3"
-  community.crypto.openssl_certificate:
+  community.crypto.x509_certificate:
     path: "{{ etcd_cert_file }}"
     csr_path: "{{ etcd_cert_file | splitext | first }}.csr"
     privatekey_path: "{{ etcd_key_file }}"
@@ -230,7 +230,7 @@
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
     ansible_python_interpreter: "python3"
-  community.crypto.openssl_certificate:
+  community.crypto.x509_certificate:
     path: "{{ etcd_peer_trusted_ca_file }}"
     csr_path: "{{ etcd_peer_trusted_ca_file | splitext | first }}.csr"
     privatekey_path: "{{ etcd_peer_trusted_ca_file | splitext | first }}.key"
@@ -283,7 +283,7 @@
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   vars:
     ansible_python_interpreter: "python3"
-  community.crypto.openssl_certificate:
+  community.crypto.x509_certificate:
     path: "{{ etcd_peer_cert_file }}"
     csr_path: "{{ etcd_peer_cert_file | splitext | first }}.csr"
     privatekey_path: "{{ etcd_peer_key_file }}"
