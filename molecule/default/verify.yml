@@ -30,14 +30,15 @@
       changed_when: result is not succeeded
 
     - name: etcdctl endpoint health
-      ansible.builtin.shell: |
-        set -euxo pipefail
-        etcdctl \
-          --cacert=/etc/etcd/pki/ca.crt \
-          --cert=/etc/etcd/pki/server.crt \
-          --endpoints=https://127.0.0.1:2379 \
-          --key=/etc/etcd/pki/server.key \
-          endpoint health
+      ansible.builtin.shell:
+        cmd: |
+          set -euxo pipefail
+          etcdctl \
+            --cacert=/etc/etcd/pki/ca.crt \
+            --cert=/etc/etcd/pki/server.crt \
+            --endpoints=https://127.0.0.1:2379 \
+            --key=/etc/etcd/pki/server.key \
+            endpoint health
       args:
         executable: "/bin/bash"
       when: inventory_hostname == groups['etcd'][0]
@@ -45,14 +46,15 @@
       changed_when: result is not succeeded
 
     - name: etcdctl put foo bar
-      ansible.builtin.shell: |
-        set -euxo pipefail
-        etcdctl \
-          --cacert=/etc/etcd/pki/ca.crt \
-          --cert=/etc/etcd/pki/server.crt \
-          --endpoints=https://127.0.0.1:2379 \
-          --key=/etc/etcd/pki/server.key \
-          put foo bar
+      ansible.builtin.shell:
+        cmd: |
+          set -euxo pipefail
+          etcdctl \
+            --cacert=/etc/etcd/pki/ca.crt \
+            --cert=/etc/etcd/pki/server.crt \
+            --endpoints=https://127.0.0.1:2379 \
+            --key=/etc/etcd/pki/server.key \
+            put foo bar
       args:
         executable: "/bin/bash"
       when: inventory_hostname == groups['etcd'][0]
@@ -60,14 +62,15 @@
       changed_when: result is not succeeded
 
     - name: etcdctl get foo
-      ansible.builtin.shell: |
-        set -euxo pipefail
-        etcdctl \
-          --cacert=/etc/etcd/pki/ca.crt \
-          --cert=/etc/etcd/pki/server.crt \
-          --endpoints=https://127.0.0.1:2379 \
-          --key=/etc/etcd/pki/server.key \
-          get foo
+      ansible.builtin.shell:
+        cmd: |
+          set -euxo pipefail
+          etcdctl \
+            --cacert=/etc/etcd/pki/ca.crt \
+            --cert=/etc/etcd/pki/server.crt \
+            --endpoints=https://127.0.0.1:2379 \
+            --key=/etc/etcd/pki/server.key \
+            get foo
       args:
         executable: "/bin/bash"
       register: result
