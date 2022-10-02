@@ -296,9 +296,10 @@
     - etcd | systemctl restart etcd.service
 
 - name: base64 encode
-  ansible.builtin.shell: |
-    set -euxo pipefail
-    tar zcfP - {{ _params | join(' ') }} | base64 -w 0
+  ansible.builtin.shell:
+    cmd: |
+      set -euxo pipefail
+      tar zcfP - {{ _params | join(' ') }} | base64 -w 0
   vars:
     _params:
       - "{{ etcd_cert_file }}"
@@ -315,9 +316,10 @@
   changed_when: base64_encode_result is not succeeded
 
 - name: base64 decode
-  ansible.builtin.shell: |
-    set -euxo pipefail
-    echo -n {{ base64_encode_result.stdout | quote }} | base64 -d | tar zx -C /
+  ansible.builtin.shell:
+    cmd: |
+      set -euxo pipefail
+      echo -n {{ base64_encode_result.stdout | quote }} | base64 -d | tar zx -C /
   args:
     executable: "/bin/bash"
   when: inventory_hostname != ansible_play_hosts[0]
