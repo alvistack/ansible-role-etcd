@@ -20,12 +20,14 @@
   become: true
   tasks:
     - name: etcd --version
-      ansible.builtin.command: etcd --version
+      ansible.builtin.command:
+        cmd: etcd --version
       register: result
       changed_when: result is not succeeded
 
     - name: etcdctl version
-      ansible.builtin.command: etcdctl version
+      ansible.builtin.command:
+        cmd: etcdctl version
       register: result
       changed_when: result is not succeeded
 
