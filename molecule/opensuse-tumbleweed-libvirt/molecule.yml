@@ -50,11 +50,6 @@ platforms:
       - "vm.box_check_update = false"
     groups:
       - etcd
-lint: |
-  set -euxo pipefail
-  flake8
-  yamllint .
-  ansible-lint
 dependency:
   name: galaxy
   options:
