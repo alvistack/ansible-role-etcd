@@ -94,7 +94,7 @@ etcd_auto_tls: false
 
 # Comma-separated list of supported TLS cipher suites between
 # client/server and peers (empty will be auto-populated by Go).
-etcd_cipher_suites: "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"
+etcd_cipher_suites: "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
 
 # Path to the peer server TLS cert file.
 etcd_peer_cert_file: "/etc/etcd/pki/peer.crt"
