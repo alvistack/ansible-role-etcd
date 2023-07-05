@@ -182,7 +182,7 @@ ETCD_PEER_AUTO_TLS="{{ etcd_peer_auto_tls | default(false) | bool | lower }}"
 # ETCD_PEER_CRL_FILE=""
 
 # Comma-separated list of supported TLS cipher suites between client/server and peers (empty will be auto-populated by Go).
-# ETCD_CIPHER_SUITES=""
+ETCD_CIPHER_SUITES="{{ etcd_cipher_suites }}"
 
 # Comma-separated whitelist of origins for CORS, or cross-origin resource sharing, (empty or * means allow all).
 # ETCD_CORS="*"
