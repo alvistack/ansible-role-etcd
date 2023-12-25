@@ -27,4 +27,3 @@
     - name: include role
       ansible.builtin.include_role:
         name: alvistack.etcd
-      tags: alvistack.etcd
