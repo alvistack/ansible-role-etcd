@@ -24,19 +24,19 @@ etcd_version: "{{ _etcd_version[etcd_release] }}"
 etcd_name: "{{ inventory_hostname }}"
 
 # Path to the data directory.
-etcd_data_dir: "/var/lib/etcd/default"
+etcd_data_dir: /var/lib/etcd/default
 
 # Number of committed transactions to trigger a snapshot to disk.
 etcd_snapshot_count: 10000
 
 # List of URLs to listen on for peer traffic.
-etcd_listen_peer_urls: "https://{{ ansible_default_ipv4.address }}:2380,https://127.0.0.1:2380"
+etcd_listen_peer_urls: https://{{ ansible_default_ipv4.address }}:2380,https://127.0.0.1:2380
 
 # List of URLs to listen on for client traffic.
-etcd_listen_client_urls: "https://{{ ansible_default_ipv4.address }}:2379,https://127.0.0.1:2379"
+etcd_listen_client_urls: https://{{ ansible_default_ipv4.address }}:2379,https://127.0.0.1:2379
 
 # List of this member's peer URLs to advertise to the rest of the cluster.
-etcd_initial_advertise_peer_urls: "https://{{ ansible_default_ipv4.address }}:2380"
+etcd_initial_advertise_peer_urls: https://{{ ansible_default_ipv4.address }}:2380
 
 # initial cluster configuration for bootstrapping.
 etcd_initial_cluster: >-
@@ -48,25 +48,25 @@ etcd_initial_cluster: >-
   {{ _ns._params | join(',') }}
 
 # Initial cluster state ("new" or "existing").
-etcd_initial_cluster_state: "new"
+etcd_initial_cluster_state: new
 
 # Initial cluster token for the etcd cluster during bootstrap.
-etcd_initial_cluster_token: "etcd-cluster"
+etcd_initial_cluster_token: etcd-cluster
 
 # List of this member's client URLs to advertise to the rest of the cluster.
-etcd_advertise_client_urls: "https://{{ ansible_default_ipv4.address }}:2379"
+etcd_advertise_client_urls: https://{{ ansible_default_ipv4.address }}:2379
 
 # Auto compaction retention length. 0 means disable auto compaction.
-etcd_auto_compaction_retention: "1h"
+etcd_auto_compaction_retention: 1h
 
 # Interpret 'auto-compaction-retention' one of: periodic|revision.
 # 'periodic' for duration based retention, defaulting to hours if no time
 # unit is provided (e.g. '5m'). 'revision' for revision number based
 # retention.
-etcd_auto_compaction_mode: "periodic"
+etcd_auto_compaction_mode: periodic
 
 # Path to the client server TLS cert file.
-etcd_cert_file: "/etc/etcd/pki/server.crt"
+etcd_cert_file: /etc/etcd/pki/server.crt
 
 # Path to the client server TLS key file.
 etcd_key_file: "{{ etcd_cert_file | splitext | first }}.key"
@@ -87,17 +87,17 @@ etcd_csr_subject_alt_name: >-
 etcd_client_cert_auth: true
 
 # Path to the client server TLS trusted CA key file.
-etcd_trusted_ca_file: "/etc/etcd/pki/ca.crt"
+etcd_trusted_ca_file: /etc/etcd/pki/ca.crt
 
 # Client TLS using generated certificates.
 etcd_auto_tls: false
 
 # Comma-separated list of supported TLS cipher suites between
 # client/server and peers (empty will be auto-populated by Go).
-etcd_cipher_suites: "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"
+etcd_cipher_suites: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 
 # Path to the peer server TLS cert file.
-etcd_peer_cert_file: "/etc/etcd/pki/peer.crt"
+etcd_peer_cert_file: /etc/etcd/pki/peer.crt
 
 # Path to the peer server TLS key file.
 etcd_peer_key_file: "{{ etcd_peer_cert_file | splitext | first }}.key"
