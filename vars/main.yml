@@ -15,5 +15,5 @@
 # limitations under the License.
 
 _etcd_version:
-  "3.6": 3.6.3
+  "3.6": 3.6.4
   "3.5": 3.5.22
