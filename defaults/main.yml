@@ -40,12 +40,12 @@ etcd_initial_advertise_peer_urls: https://{{ ansible_default_ipv4.address }}:238
 
 # initial cluster configuration for bootstrapping.
 etcd_initial_cluster: >-
-  {%- set _ns = namespace() -%}
-  {%- set _ns._params = [] -%}
+  {%- set ns = namespace() -%}
+  {%- set ns.params = [] -%}
   {%- for host in groups['etcd'] -%}
-  {%-   set _ns._params = _ns._params + [host + "=https://" + hostvars[host].ansible_default_ipv4.address + ":2380"] -%}
+  {%-   set ns.params = ns.params + [host + "=https://" + hostvars[host].ansible_default_ipv4.address + ":2380"] -%}
   {%- endfor -%}
-  {{ _ns._params | join(',') }}
+  {{ ns.params | join(',') }}
 
 # Initial cluster state ("new" or "existing").
 etcd_initial_cluster_state: new
@@ -76,12 +76,12 @@ etcd_csr_common_name: "{{ groups['etcd'][0] }}"
 
 # subjectAltName field of the CSR.
 etcd_csr_subject_alt_name: >-
-  {%- set _ns = namespace() -%}
-  {%- set _ns._params = ["DNS:localhost", "IP:127.0.0.1"] -%}
+  {%- set ns = namespace() -%}
+  {%- set ns.params = ["DNS:localhost", "IP:127.0.0.1"] -%}
   {%- for host in groups['etcd'] -%}
-  {%-   set _ns._params = _ns._params + ["DNS:" + host, "IP:" + hostvars[host].ansible_default_ipv4.address] -%}
+  {%-   set ns.params = ns.params + ["DNS:" + host, "IP:" + hostvars[host].ansible_default_ipv4.address] -%}
   {%- endfor -%}
-  {{ _ns._params }}
+  {{ ns.params }}
 
 # Enable client cert authentication.
 etcd_client_cert_auth: true
@@ -107,12 +107,12 @@ etcd_peer_csr_common_name: "{{ groups['etcd'][0] }}"
 
 # subjectAltName field of the CSR.
 etcd_peer_csr_subject_alt_name: >-
-  {%- set _ns = namespace() -%}
-  {%- set _ns._params = ["DNS:localhost", "IP:127.0.0.1"] -%}
+  {%- set ns = namespace() -%}
+  {%- set ns.params = ["DNS:localhost", "IP:127.0.0.1"] -%}
   {%- for host in groups['etcd'] -%}
-  {%-   set _ns._params = _ns._params + ["DNS:" + host, "IP:" + hostvars[host].ansible_default_ipv4.address] -%}
+  {%-   set ns.params = ns.params + ["DNS:" + host, "IP:" + hostvars[host].ansible_default_ipv4.address] -%}
   {%- endfor -%}
-  {{ _ns._params }}
+  {{ ns.params }}
 
 # Enable peer client cert authentication.
 etcd_peer_client_cert_auth: true
