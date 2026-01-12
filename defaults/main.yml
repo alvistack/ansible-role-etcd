@@ -30,20 +30,20 @@ etcd_data_dir: /var/lib/etcd/default
 etcd_snapshot_count: 10000
 
 # List of URLs to listen on for peer traffic.
-etcd_listen_peer_urls: https://{{ ansible_default_ipv4.address }}:2380,https://127.0.0.1:2380
+etcd_listen_peer_urls: https://{{ ansible_facts['default_ipv4'].address }}:2380,https://127.0.0.1:2380
 
 # List of URLs to listen on for client traffic.
-etcd_listen_client_urls: https://{{ ansible_default_ipv4.address }}:2379,https://127.0.0.1:2379
+etcd_listen_client_urls: https://{{ ansible_facts['default_ipv4'].address }}:2379,https://127.0.0.1:2379
 
 # List of this member's peer URLs to advertise to the rest of the cluster.
-etcd_initial_advertise_peer_urls: https://{{ ansible_default_ipv4.address }}:2380
+etcd_initial_advertise_peer_urls: https://{{ ansible_facts['default_ipv4'].address }}:2380
 
 # initial cluster configuration for bootstrapping.
 etcd_initial_cluster: >-
   {%- set ns = namespace() -%}
   {%- set ns.params = [] -%}
   {%- for host in groups['etcd'] -%}
-  {%-   set ns.params = ns.params + [host + "=https://" + hostvars[host].ansible_default_ipv4.address + ":2380"] -%}
+  {%-   set ns.params = ns.params + [host + "=https://" + hostvars[host].ansible_facts['default_ipv4'].address + ":2380"] -%}
   {%- endfor -%}
   {{ ns.params | join(',') }}
 
@@ -54,7 +54,7 @@ etcd_initial_cluster_state: new
 etcd_initial_cluster_token: etcd-cluster
 
 # List of this member's client URLs to advertise to the rest of the cluster.
-etcd_advertise_client_urls: https://{{ ansible_default_ipv4.address }}:2379
+etcd_advertise_client_urls: https://{{ ansible_facts['default_ipv4'].address }}:2379
 
 # Auto compaction retention length. 0 means disable auto compaction.
 etcd_auto_compaction_retention: 1h
@@ -79,7 +79,7 @@ etcd_csr_subject_alt_name: >-
   {%- set ns = namespace() -%}
   {%- set ns.params = ["DNS:localhost", "IP:127.0.0.1"] -%}
   {%- for host in groups['etcd'] -%}
-  {%-   set ns.params = ns.params + ["DNS:" + host, "IP:" + hostvars[host].ansible_default_ipv4.address] -%}
+  {%-   set ns.params = ns.params + ["DNS:" + host, "IP:" + hostvars[host].ansible_facts['default_ipv4'].address] -%}
   {%- endfor -%}
   {{ ns.params }}
 
@@ -110,7 +110,7 @@ etcd_peer_csr_subject_alt_name: >-
   {%- set ns = namespace() -%}
   {%- set ns.params = ["DNS:localhost", "IP:127.0.0.1"] -%}
   {%- for host in groups['etcd'] -%}
-  {%-   set ns.params = ns.params + ["DNS:" + host, "IP:" + hostvars[host].ansible_default_ipv4.address] -%}
+  {%-   set ns.params = ns.params + ["DNS:" + host, "IP:" + hostvars[host].ansible_facts['default_ipv4'].address] -%}
   {%- endfor -%}
   {{ ns.params }}
 
