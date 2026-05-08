@@ -18,7 +18,7 @@
 etcd_release: "{{ _etcd_release }}"
 
 # etcd version.
-etcd_version: "{{ _etcd_version[etcd_release] }}"
+etcd_version: "{{ _etcd_version }}"
 
 # Human-readable name for this member.
 etcd_name: "{{ inventory_hostname }}"
