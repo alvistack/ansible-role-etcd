@@ -16,5 +16,5 @@
 
 _etcd_version: "{{ __etcd_version[etcd_release] }}"
 __etcd_version:
-  "3.6": 3.6.12
-  "3.5": 3.5.31
+  "3.7": 3.7.1
+  "3.6": 3.6.14

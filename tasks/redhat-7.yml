@@ -64,8 +64,8 @@
   notify:
     - etcd | systemctl daemon-reload
     - etcd | systemctl restart etcd.service
-    tags:
-      - _yum
+  tags:
+    - _yum
 
 - name: yum versionlock add
   ansible.builtin.shell:
